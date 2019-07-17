@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    container_name: acoder-postgres
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    volumes: # DBデータをホストに保存
+      - ./.db/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=acoder
+    networks:
+      - acoder-nw
+    networks:
+        - acoder-nw
+networks:
+  acoder-nw:
+    external: false
+

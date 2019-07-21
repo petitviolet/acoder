@@ -1,8 +1,6 @@
 class User < ApplicationRecord
   include Sensitive
 
-  sensitive_fields :password_salt, :password_digest
-
   # virtual attr
   attr_writer :password, :password_confirmation
 
@@ -14,6 +12,10 @@ class User < ApplicationRecord
   end
 
   validate :password_validation
+
+  sensitive_fields :password_salt, :password_digest
+  validates :password_salt, presence: true
+  validates :password_digest, presence: true
 
   def authenticate(password)
     Security.match(password_digest, concat_password(password, password_salt)) && self

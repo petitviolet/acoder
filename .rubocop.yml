@@ -1,0 +1,44 @@
+Metrics/MethodLength:
+  Max: 30
+  Exclude:
+    - 'db/migrate/**/*'
+    - 'lib/workers/europe_nutritional_requirement.rb'
+    - 'lib/tasks/**/*'
+
+Metrics/LineLength:
+  Max: 120
+
+Layout/IndentationConsistency:
+  EnforcedStyle: rails
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  AutoCorrect: true
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+  EnforcedStyle: compact
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Rails:
+  Enabled: true
+
+AsciiComments:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - config/unicorn.rb
+    - config/unicorn_staging.rb
+    - tmp/**/*
+    - bin/*
+    - lib/*

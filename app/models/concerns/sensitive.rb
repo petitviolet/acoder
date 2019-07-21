@@ -5,7 +5,6 @@ module Sensitive
     def sensitive_fields(*fields)
       @@excludes ||= []
       @@excludes = @@excludes.concat(fields)
-      byebug
     end
   end
 

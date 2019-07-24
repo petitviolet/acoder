@@ -10,11 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_21_140416) do
+ActiveRecord::Schema.define(version: 2019_07_24_142817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "token", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["token"], name: "index_access_tokens_on_token", unique: true
+  end
 
   create_table "snippets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
@@ -35,5 +43,6 @@ ActiveRecord::Schema.define(version: 2019_07_21_140416) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "access_tokens", "users"
   add_foreign_key "snippets", "users"
 end

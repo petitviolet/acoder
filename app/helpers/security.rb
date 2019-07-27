@@ -10,6 +10,10 @@ module Security
       BCrypt::Password.create(str, cost: cost)
     end
 
+    def digest_sha(str)
+      Digest::SHA2.new.hexdigest(str)
+    end
+
     # @return [String]
     def new_token
       SecureRandom.urlsafe_base64

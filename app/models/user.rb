@@ -7,7 +7,6 @@ class User < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true, format: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   before_save do
-    binding.pry
     email.downcase!
     set_password_digest
   end
@@ -21,14 +20,15 @@ class User < ApplicationRecord
   has_many :access_tokens, dependent: :destroy
   has_many :snippets, dependent: :nullify
 
-  scope :find_by_token, ->(token) do
+  # access_token => User
+  scope :authenticate, ->(token) do
     joins(:access_tokens)
-      .where(access_tokens: { token: token })
+      .merge(AccessToken.token(token))
       .limit(1)
   end
 
-
-  def authenticate(password)
+  # email + password => User
+  def login(password)
     Security.match(password_digest, concat_password(password, password_salt)) && self
   end
 

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :user_authenticate!, only: %i[update destroy]
   def index
     render json: User.all
   end
@@ -13,13 +14,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    binding.pry
-    user.save!
-    render json: user, status: :ok
+    user = User.create!(user_params)
+    render json: user, status: :created
   end
 
   def update
+    current_user.update(user_params)
+    render json: user, status: :ok
   end
 
   def destroy

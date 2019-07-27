@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 2019_07_24_142817) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.uuid "user_id", null: false
-    t.string "token", null: false
+    t.string "digest", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["token"], name: "index_access_tokens_on_token", unique: true
+    t.index ["digest"], name: "index_access_tokens_on_digest", unique: true
   end
 
   create_table "snippets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -43,6 +43,6 @@ ActiveRecord::Schema.define(version: 2019_07_24_142817) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "access_tokens", "users"
+  add_foreign_key "access_tokens", "users", on_delete: :cascade
   add_foreign_key "snippets", "users"
 end

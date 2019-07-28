@@ -5,9 +5,13 @@ class Snippet < ApplicationRecord
   validates :description, length: { maximum: 128 }
   validates :file_type, presence: true
   before_save do
-    file_type.save!
+    file_type.downcase!
   end
 
   validates :content, presence: true
+
+  scope :feed, -> do
+    order(:created_at)
+  end
 
 end

@@ -21,10 +21,11 @@ class User < ApplicationRecord
   has_many :snippets, dependent: :nullify
 
   # access_token => User
-  scope :authenticate, ->(token) do
+  def self.authenticate(token)
     joins(:access_tokens)
-      .merge(AccessToken.token(token))
+      .merge(AccessToken.by_token(token))
       .limit(1)
+      .first
   end
 
   # email + password => User

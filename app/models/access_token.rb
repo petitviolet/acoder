@@ -10,7 +10,7 @@ class AccessToken < ApplicationRecord
   validate :check_expiration
   before_save :generate
 
-  scope :token, ->(token) do
+  scope :by_token, ->(token) do
     where(digest: Security.digest_sha(token))
   end
 

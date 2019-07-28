@@ -5,7 +5,6 @@ module Sessions
 
   refine ActionDispatch::Request do
     def current_user
-      binding.pry
       User.authenticate(access_token) if access_token
     end
 

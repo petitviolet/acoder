@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root 'home#index'
+  get '*page', to: 'home#index', constraints: ->(req) do
+    !req.xhr? && req.format.html?
+  end
 
   namespace :api, defaults: { format: :json } do
     resources :users

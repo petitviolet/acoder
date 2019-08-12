@@ -12,6 +12,7 @@ const Login = () => {
         password: '',
         passwordConfirmation: '',
     });
+
     const onChangeInputText = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             event.persist();
@@ -23,17 +24,37 @@ const Login = () => {
         []
     );
 
-    return <div>
-        <div id={'email'}>
-            Email: {state.email}
-        </div>
-        <div id={'password'}>
-            Password: {state.password}
-        </div>
-        <div id={'password_confirmation'}>
-            Password Confirmation: {state.passwordConfirmation}
-        </div>
-    </div>
+    return <form>
+        <label>Email:
+            <input
+                key={'email'}
+                name={'email'}
+                type={'email'}
+                value={state['email']}
+                onChange={onChangeInputText}
+            />
+        </label>
+        <label>Password:
+            <input
+                key={'password'}
+                name={'password'}
+                type={'password'}
+                value={state['password']}
+                onChange={onChangeInputText}
+            />
+        </label>
+        <label>Password(again):
+            <input
+                key={'passwordConfirmation'}
+                name={'passwordConfirmation'}
+                type={'passwordConfirmation'}
+                value={state['passwordConfirmation']}
+                onChange={onChangeInputText}
+            />
+        </label>
+    </form>
 };
+
+
 
 export default Login;

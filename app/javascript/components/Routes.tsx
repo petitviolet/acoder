@@ -8,7 +8,6 @@ const Routes: React.FC = () => {
             <div>Header</div>
             <Switch>
                 <Route exact path={"/"} render={() => ("Home!!!")}/>
-                <Route exact path={"/hoge"} render={() => ("Hoge!!!")}/>
                 <Route path={"/login"} component={Login}/>
             </Switch>
         </div>

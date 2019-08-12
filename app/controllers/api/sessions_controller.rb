@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class Api::SessionsController < Api::ApiController
   before_action :user_authenticate!, only: %i[whoami]
 
   def whoami

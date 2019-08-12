@@ -1,4 +1,4 @@
-class SnippetsController < ApplicationController
+class Api::SnippetsController < Api::ApiController
   before_action :user_authenticate!
 
   def index
@@ -15,21 +15,20 @@ class SnippetsController < ApplicationController
   end
 
   def create
-    begin
     snippet = current_user.snippets.create!(snippet_params)
-    rescue => e
-      binding.pry
-    end
     render json: snippet, status: :created
   end
 
   def update
     snippet = current_user.snippets.find(params[:id])
-    snippet.update(snippet_params)
+    snippet.update!(snippet_params)
     render json: snippet, status: :ok
   end
 
   def destroy
+    snippet = current_user.snippets.find(params[:id])
+    snippet.delete!
+    render json: { id: snippet.id }, status: :ok
   end
 
   private

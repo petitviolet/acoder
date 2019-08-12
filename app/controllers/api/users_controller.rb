@@ -1,5 +1,6 @@
-class UsersController < ApplicationController
+class Api::UsersController < Api::ApiController
   before_action :user_authenticate!, only: %i[update destroy]
+
   def index
     render json: User.all
   end

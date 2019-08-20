@@ -9,6 +9,7 @@ class Snippet < ApplicationRecord
   end
 
   validates :content, presence: true
+  has_rich_text :content
 
   scope :feed, -> do
     order(:created_at)

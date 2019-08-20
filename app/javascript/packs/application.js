@@ -24,3 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#app'),
     );
 });
+
+require("trix")
+require("@rails/actiontext")

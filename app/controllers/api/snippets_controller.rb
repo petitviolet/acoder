@@ -2,7 +2,11 @@ class Api::SnippetsController < Api::ApiController
   before_action :user_authenticate!
 
   def index
-    render json: Snippet.feed
+    render json: Snippet.feed, status: :ok
+  end
+
+  def my
+    render json: current.user.snippets, status: :ok
   end
 
   def show

@@ -6,10 +6,15 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :users
-    resources :snippets
+    resources :snippets, only: %i[index create update delete]
 
     get '/whoami', to: 'sessions#whoami'
     post '/login', to: 'sessions#login'
     delete '/logout', to: 'sessions#logout'
+  end
+
+  namespace 'html' do
+    get '/snippets/editor', to: 'snippet_editor#editor'
+    get '/snippets/:id/editor', to: 'snippet_editor#editor'
   end
 end

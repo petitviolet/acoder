@@ -13,8 +13,6 @@ Rails.application.routes.draw do
     delete '/logout', to: 'sessions#logout'
   end
 
-  namespace 'html' do
-    get '/snippets/editor', to: 'snippet_editor#editor'
-    get '/snippets/:id/editor', to: 'snippet_editor#editor'
-  end
+  get 'snippets/editor', to: 'snippet_editor#editor'
+  get 'snippets/:id/editor', to: 'snippet_editor#editor'
 end

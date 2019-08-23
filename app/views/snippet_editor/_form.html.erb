@@ -1,5 +1,5 @@
-<%# app/views/snippets/_form.html.erb %>
-<%= form_with(model: snippet) do |form| %>
+<%# app/views/snippet_editor/_form.html.erb %>
+<%= form_with(model: @snippet) do |form| %>
   <div class="field">
     <%= form.label :content %>
     <%= form.rich_text_area :content %>

@@ -1,37 +1,27 @@
 import * as React from "react"
+import useForm from "./useForm";
 
 type LoginState = {
-    email: string,
-    password: string,
-    passwordConfirmation: string,
+    readonly email: string,
+    readonly password: string,
+    readonly passwordConfirmation: string,
 }
 
-const Login = () => {
-    const [state, updateState] = React.useState<LoginState>({
+const Login = (onSubmit) => {
+    const { values, handleChange, handleSubmit } = useForm<LoginState>(onSubmit, {
         email: '',
         password: '',
         passwordConfirmation: '',
     });
 
-    const onChangeInputText = React.useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            event.persist();
-            updateState(prev => ({
-                ...prev,
-                [event.target.name]: event.target.value
-            }))
-        },
-        []
-    );
-
-    return <form>
+    return <form action={"javascript:void(0)"} onSubmit={handleSubmit}>
         <label>Email:
             <input
                 key={'email'}
                 name={'email'}
                 type={'email'}
-                value={state['email']}
-                onChange={onChangeInputText}
+                value={values.email}
+                onChange={handleChange}
             />
         </label>
         <label>Password:
@@ -39,8 +29,8 @@ const Login = () => {
                 key={'password'}
                 name={'password'}
                 type={'password'}
-                value={state['password']}
-                onChange={onChangeInputText}
+                value={values.password}
+                onChange={handleChange}
             />
         </label>
         <label>Password(again):
@@ -48,13 +38,14 @@ const Login = () => {
                 key={'passwordConfirmation'}
                 name={'passwordConfirmation'}
                 type={'passwordConfirmation'}
-                value={state['passwordConfirmation']}
-                onChange={onChangeInputText}
+                value={values.passwordConfirmation}
+                onChange={handleChange}
             />
         </label>
+        <button type="submit">送信</button>
+
     </form>
 };
-
 
 
 export default Login;

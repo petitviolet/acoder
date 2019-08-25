@@ -1,5 +1,7 @@
 import * as React from "react"
 import useForm from "./useForm";
+import axios from "axios";
+import * as Flash from "../components/Flash";
 
 type LoginState = {
     readonly email: string,
@@ -7,12 +9,28 @@ type LoginState = {
     readonly passwordConfirmation: string,
 }
 
-const Login = (onSubmit) => {
-    const { values, handleChange, handleSubmit } = useForm<LoginState>(onSubmit, {
+const Login = () => {
+    const onSubmit = () => React.useEffect(() => {
+        if (values.email && values.password && values.password == values.passwordConfirmation) {
+            axios.post(`${process.env.API_HOST}/me`, {
+                email: values.email,
+                password: values.password,
+            }).then((res) => {
+                Flash.success("Login successfully");
+            }).catch((err) => {
+                Flash.error(`Failed to login. message = ${err}`);
+            })
+        } else {
+            Flash.error("Invalid inputs");
+        }
+    });
+
+    const {values, handleChange, handleSubmit} = useForm<LoginState>(onSubmit, {
         email: '',
         password: '',
         passwordConfirmation: '',
     });
+
 
     return <form action={"javascript:void(0)"} onSubmit={handleSubmit}>
         <label>Email:
@@ -46,6 +64,5 @@ const Login = (onSubmit) => {
 
     </form>
 };
-
 
 export default Login;

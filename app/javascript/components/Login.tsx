@@ -1,5 +1,5 @@
 import * as React from "react"
-import useForm from "./useForm";
+import {useForm, Validator} from "./useForm";
 import axios from "axios";
 import * as Flash from "../components/Flash";
 
@@ -10,12 +10,13 @@ type LoginState = {
 }
 
 const Login = () => {
-    const onSubmit = () => React.useEffect(() => {
+    const onSubmit = (values) => {
         if (values.email && values.password && values.password == values.passwordConfirmation) {
-            axios.post(`${process.env.API_HOST}/me`, {
+            axios.post('/login', {
                 email: values.email,
                 password: values.password,
             }).then((res) => {
+                console.dir('Login response', res);
                 Flash.success("Login successfully");
             }).catch((err) => {
                 Flash.error(`Failed to login. message = ${err}`);
@@ -23,22 +24,56 @@ const Login = () => {
         } else {
             Flash.error("Invalid inputs");
         }
-    });
+    };
 
-    const {values, handleChange, handleSubmit} = useForm<LoginState>(onSubmit, {
+    const validator: Validator<LoginState> = new class implements Validator<LoginState> {
+        emailValidator(email: string): string | null {
+            if (email.length == 0) {
+                return "Email is empty.";
+            } else if (!email.match(/.+@.+\..+/)) {
+                return "Email is not valid format";
+            }
+        }
+
+        passwordValidator(password: string): string | null {
+            if (password.length == 0) {
+                return "Password is empty.";
+            } else if (password.length < 8) {
+                return "Password min length is 8";
+            } else if (password.length > 100) {
+                return "Password max length is 100";
+            }
+        }
+
+        passwordConfirmationValidator(password: string, passwordConfirmation: string): string | null {
+            if (password != passwordConfirmation) {
+                return "PasswordConfirmation is not match";
+            }
+        }
+
+        runAll(state: LoginState): Map<string, string> {
+            return new Map([
+                ['email', this.emailValidator(state.email)],
+                ['password', this.passwordValidator(state.password)],
+                ['passwordConfirmation', this.passwordConfirmationValidator(state.password, state.passwordConfirmation)],
+            ]);
+        }
+    };
+
+    const {state, disable, handleChange, handleSubmit} = useForm<LoginState>(onSubmit, {
         email: '',
         password: '',
         passwordConfirmation: '',
-    });
+    }, validator);
 
 
-    return <form action={"javascript:void(0)"} onSubmit={handleSubmit}>
+    return <form onSubmit={handleSubmit}>
         <label>Email:
             <input
                 key={'email'}
                 name={'email'}
                 type={'email'}
-                value={values.email}
+                value={state.email}
                 onChange={handleChange}
             />
         </label>
@@ -47,7 +82,7 @@ const Login = () => {
                 key={'password'}
                 name={'password'}
                 type={'password'}
-                value={values.password}
+                value={state.password}
                 onChange={handleChange}
             />
         </label>
@@ -55,12 +90,12 @@ const Login = () => {
             <input
                 key={'passwordConfirmation'}
                 name={'passwordConfirmation'}
-                type={'passwordConfirmation'}
-                value={values.passwordConfirmation}
+                type={'password'}
+                value={state.passwordConfirmation}
                 onChange={handleChange}
             />
         </label>
-        <button type="submit">送信</button>
+        <button type="submit" disabled={disable}>送信</button>
 
     </form>
 };

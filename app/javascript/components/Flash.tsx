@@ -48,7 +48,7 @@ export const FlashComponent = () => {
 
     return (
         visibility && <MessageContainer type={{type}}>
-            <CloseButton class={'close'}><strong>X</strong></CloseButton>
+            <CloseButton className={'close'}><strong>X</strong></CloseButton>
             <Message>{message}</Message>
         </MessageContainer>
     )

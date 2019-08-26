@@ -8,10 +8,12 @@ const flash = (type:FlashType, message: string) => {
 };
 
 export const success = (message: string) => {
+    console.info(`Flash Success: ${message}`);
     flash(FlashType.Success, message);
 };
 
 export const error = (message: string) => {
+    console.warn(`Flash Error: ${message}`);
     flash(FlashType.Error, message);
 };
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import Routes from './Routes';
+import '../utils/ApiClientConfig';
 
 const App: React.FC = () => {
     return (

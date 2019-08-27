@@ -14,6 +14,7 @@ require 'action_view/railtie'
 # require "action_cable/engine"
 require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
+require_relative './error_handler'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -28,5 +29,7 @@ module Acoder
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+    config.middleware.insert_before(ActionDispatch::ShowExceptions, ErrorHandler)
+    config.middleware.delete(ActionDispatch::ShowExceptions)
   end
 end

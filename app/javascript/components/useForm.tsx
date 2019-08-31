@@ -31,7 +31,6 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
         } else {
             console.log(`submit is disabled. error = ${errors}`)
         }
-
     }, [state, errors, disable]);
 
     const handleChange = React.useCallback((event) => {

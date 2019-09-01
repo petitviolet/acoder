@@ -14,14 +14,23 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
 
     React.useEffect(() => {
         if (isEditing) {
-            setDisable(!isValid());
+            setDisable(false);
         }
     }, [isEditing, errors]);
 
     const isValid: () => boolean = React.useCallback(() => {
-        console.dir(errors);
-        return errors.size == 0;
-    }, [errors]);
+        const _errors = Array.from(validator.runAll(state)).reduce<Map<string, string>>((map, [key, error]) => {
+                if (error) { // kill undefined or null
+                    return map.set(key, error);
+                } else {
+                    return map;
+                }
+            }, new Map() // initial value
+        );
+        setErrors(_errors);
+        console.dir(_errors);
+        return _errors.size == 0;
+    }, [state, errors]);
 
     const handleSubmit = React.useCallback((event) => {
         if (event) event.preventDefault();
@@ -39,14 +48,6 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
         const value: string = event.target.value;
         setState(prevState => {
             const newState = {...prevState, [name]: value};
-            const errors = Array.from(validator.runAll(newState)).reduce<Map<string, string>>((map, [key, error]) => {
-                if (error) { // kill undefined or null
-                    return map.set(key, error);
-                } else {
-                    return map;
-                }
-            }, new Map());
-            setErrors(errors);
 
             return newState;
         });
@@ -55,6 +56,7 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
 
     return {
         state,
+        errors,
         disable,
         handleChange,
         handleSubmit,

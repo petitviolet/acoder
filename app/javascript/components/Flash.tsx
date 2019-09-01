@@ -3,7 +3,7 @@ import style from 'styled-components';
 import EventBus from "utils/EventBus";
 
 
-const flash = (type:FlashType, message: string) => {
+const flash = (type: FlashType, message: string) => {
     EventBus.emit('flash', ({type: type, message: message}));
 };
 
@@ -17,38 +17,53 @@ export const error = (message: string) => {
     flash(FlashType.Error, message);
 };
 
+export const dismiss = () => {
+    console.warn(`Flash Dismiss`);
+    flash(FlashType.Dismissed, '');
+}
+
 enum FlashType {
+    Dismissed,
     Success,
     Error
 }
 
 export const FlashComponent = () => {
     let [visibility, setVisibility] = React.useState(false);
-    let [message, setMessage] = React.useState('');
-    let [type, setType] = React.useState('');
+    let [message, setMessage] = React.useState<string>('');
+    let [type, setType] = React.useState<FlashType>(FlashType.Dismissed);
 
     React.useEffect(() => {
-        EventBus.addListener('flash', ({type, message}) => {
-            setVisibility(true);
-            setMessage(message);
-            setType(type);
-            setTimeout(() => {
+        EventBus.on('flash', (msg) => {
+            const {type, message} = msg;
+            console.log(`Flash listened flash event. ${JSON.stringify(msg)}`);
+            if (type != FlashType.Dismissed) {
+                setVisibility(true);
+                setMessage(message);
+                setType(type);
+                setTimeout(() => {
+                    setVisibility(false);
+                }, 4000);
+            } else {
                 setVisibility(false);
-            }, 4000);
+                setMessage('');
+                setType(FlashType.Dismissed);
+            }
         });
-
 
     }, []);
 
     React.useEffect(() => {
-        if (document.querySelector('.close') !== null) {
-            document.querySelector('.close').addEventListener('click', () => setVisibility(false));
+        const closeButton = document.querySelector('.close');
+        if (closeButton) {
+            closeButton.addEventListener('click', dismiss);
         }
     });
 
+    console.log(`[Flash]visibility: ${visibility}, type: ${type}, message: ${message}`);
     return (
-        visibility && <MessageContainer type={{type}}>
-            <CloseButton className={'close'}><strong>X</strong></CloseButton>
+        visibility && <MessageContainer type={type}>
+            <CloseButton className={'close'}><strong>☓</strong></CloseButton>
             <Message>{message}</Message>
         </MessageContainer>
     )
@@ -63,13 +78,16 @@ const MessageContainer = style.div`
     padding: 20px;
     display: flex;
     align-items: center;
-    z-index: 1111;
+    z-index: 1;
     ${props => {
+    console.log(`props: ${props.types}`);
     switch (props.type) {
+        case FlashType.Dismissed:
+            return 'visibility: hidden;';
         case FlashType.Success:
-            return 'background: lightgreen;';
+            return 'background-color: lightgreen;';
         case FlashType.Error:
-            return 'background: lightcoral;';
+            return 'background-color: lightcoral;';
     }
 }}
 `;

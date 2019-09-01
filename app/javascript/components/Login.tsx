@@ -1,4 +1,5 @@
 import * as React from "react"
+import style from 'styled-components';
 import {useForm, Validator} from "./useForm";
 import axios from "axios";
 import * as Flash from "../components/Flash";
@@ -60,7 +61,7 @@ const Login = () => {
         }
     };
 
-    const {state, disable, handleChange, handleSubmit} = useForm<LoginState>(onSubmit, {
+    const {state, errors, disable, handleChange, handleSubmit} = useForm<LoginState>(onSubmit, {
         email: '',
         password: '',
         passwordConfirmation: '',
@@ -68,7 +69,7 @@ const Login = () => {
 
 
     return <form onSubmit={handleSubmit}>
-        <label>Email:
+        <Inputs>Email:
             <input
                 key={'email'}
                 name={'email'}
@@ -76,8 +77,9 @@ const Login = () => {
                 value={state.email}
                 onChange={handleChange}
             />
-        </label>
-        <label>Password:
+            <div>{errors.get('email')}</div>
+        </Inputs>
+        <Inputs>Password:
             <input
                 key={'password'}
                 name={'password'}
@@ -85,8 +87,9 @@ const Login = () => {
                 value={state.password}
                 onChange={handleChange}
             />
-        </label>
-        <label>Password(again):
+            <div>{errors.get('password')}</div>
+        </Inputs>
+        <Inputs>Password(again):
             <input
                 key={'passwordConfirmation'}
                 name={'passwordConfirmation'}
@@ -94,10 +97,18 @@ const Login = () => {
                 value={state.passwordConfirmation}
                 onChange={handleChange}
             />
-        </label>
+            <div>{errors.get('passwordConfirmation')}</div>
+        </Inputs>
         <button type="submit" disabled={disable}>送信</button>
 
     </form>
 };
 
 export default Login;
+
+const Inputs = style.label`
+    div {
+        color: red;
+    }
+    margin-bottom: 10px;
+`;

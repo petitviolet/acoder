@@ -1,25 +1,68 @@
 import * as React from 'react'
 import {Redirect} from 'react-router-dom'
 import User from "models/User";
+import Token from "../models/Token";
 
-type AuthProps = {
+export type Props = {
     readonly currentUser: User,
+    readonly token: Token,
 }
-const AuthContext: React.Context<AuthProps> = React.createContext<AuthProps>(null);
+const initialState: Props = {
+    currentUser: null,
+    token: null,
+}
 
-// const Provider = ({children}) => {
-//     const [user, setUser] = React.useState<AuthProps>(null);
-//     const value = { user, setUser };
-//     return (
-//         <AuthContext.Provider>
-//             {children}
-//         </AuthContext.Provider>
-//     );
-// };
+export enum ActionType {
+    SetToken,
+    SetCurrentUser,
+}
 
-const Auth = (props) => {
-    // const {currentUser} = React.useContext(AuthContext);
-    return (props.currentUser.isLoggedIn ? props.children : <Redirect to={'/login'}/>)
+type Action = SetTokenAction | SetUserAction;
+type SetTokenAction = {
+    readonly type: ActionType.SetToken,
+    readonly token: Token
+}
+type SetUserAction = {
+    readonly type: ActionType.SetCurrentUser,
+    readonly user: User
+}
+
+export const reducer = (state: Props, action: Action) => {
+    switch (action.type) {
+        case ActionType.SetToken:
+            return {
+                ...state,
+                token: action.token,
+            };
+        case ActionType.SetCurrentUser:
+            return {
+                ...state,
+                currentUser: action.user,
+            };
+        default:
+            return state;
+  }
 };
 
-export default Auth
+export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action> }>(null);
+
+export const Component = ({children}) => {
+    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const value = { state, dispatch };
+
+    return (
+        <Context.Provider value={{...value}}>
+            <Context.Consumer>
+                {children}
+            </Context.Consumer>
+        </Context.Provider>
+    );
+};
+
+// const Auth = (props) => {
+//     const onLogin = (token) => {
+//     };
+//     const context = React.useContext(Context);
+//     // return (props.token ? props.children : <Redirect to={'/login'}/>)
+// };
+//

@@ -2,7 +2,9 @@ import * as React from "react"
 import style from 'styled-components';
 import {useForm, Validator} from "./useForm";
 import axios from "axios";
-import * as Flash from "../components/Flash";
+import * as Flash from "./Flash";
+import * as Auth from "./Auth";
+import Token from "../models/Token";
 
 type LoginState = {
     readonly email: string,
@@ -11,6 +13,8 @@ type LoginState = {
 }
 
 const Login = () => {
+    const {state: authState, dispatch: authDispatch} = React.useContext(Auth.Context);
+
     const onSubmit = (values) => {
         if (values.email && values.password && values.password == values.passwordConfirmation) {
             axios.post('/login', {
@@ -18,7 +22,12 @@ const Login = () => {
                 password: values.password,
             }).then((res) => {
                 console.dir('Login response', res);
+                const token: Token = JSON.parse(res.data);
                 Flash.success("Login successfully");
+                authDispatch({
+                    type: Auth.ActionType.SetToken,
+                    token,
+                });
             }).catch((err) => {
                 Flash.error(`Failed to login. message = ${err}`);
             })

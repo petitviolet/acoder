@@ -1,4 +1,5 @@
 import * as React from "react"
+import {Redirect} from 'react-router-dom';
 import style from 'styled-components';
 import {useForm, Validator} from "./useForm";
 import axios from "axios";
@@ -12,8 +13,25 @@ type LoginState = {
     readonly passwordConfirmation: string,
 }
 
+const moveToAfterLogin = (returnUrl: string | null = null) => {
+    console.debug(`[AfterLogin]move to ${returnUrl || '/me'}`);
+    if (returnUrl) {
+        return (
+            <Redirect to={returnUrl}/>
+        )
+    } else {
+        return (
+            <Redirect to={"/me"}/>
+        );
+    }
+};
+
 const Login = () => {
-    const {state: authState, dispatch: authDispatch} = React.useContext(Auth.Context);
+    const {state: authState, dispatch: authDispatch, loggedIn} = React.useContext(Auth.Context);
+
+    if (loggedIn) {
+        return moveToAfterLogin();
+    }
 
     const onSubmit = (values) => {
         console.debug(`authState onSubmit: ${JSON.stringify(authState)}`);
@@ -77,7 +95,6 @@ const Login = () => {
         password: '',
         passwordConfirmation: '',
     }, validator);
-
 
     const u =JSON.stringify(authState);
     return <form onSubmit={handleSubmit}>

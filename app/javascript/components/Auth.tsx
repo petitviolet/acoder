@@ -46,9 +46,10 @@ const reducer = (state: Props, action: Action) => {
     }
 };
 
-export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action> }>({
+export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action>, loggedIn: boolean }>({
     state: initialState,
     dispatch: null,
+    loggedIn: false,
 });
 
 const NOT_LOGIN_REQUIRED_PATHS = [
@@ -59,10 +60,10 @@ export const Component = ({children}) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
     console.log(`Auth.Component state:${JSON.stringify(state)}`);
 
-    const {state: {token}} = React.useContext(Context);
-    if (token || NOT_LOGIN_REQUIRED_PATHS.includes(window.location.pathname)) {
+    const loggedIn: boolean = !!state.token;
+    if (loggedIn || NOT_LOGIN_REQUIRED_PATHS.includes(window.location.pathname)) {
         return (
-            <Context.Provider value={{state, dispatch}}>
+            <Context.Provider value={{state, dispatch, loggedIn}}>
                 {/*<Context.Consumer>*/}
                 {children}
                 {/*</Context.Consumer>*/}
@@ -70,7 +71,7 @@ export const Component = ({children}) => {
         );
     } else {
         Flash.error(`You must login.${window.location.pathname}`);
-        return <Redirect to={'/'}/>
+        return <Redirect to={'/login'}/>
     }
 };
 

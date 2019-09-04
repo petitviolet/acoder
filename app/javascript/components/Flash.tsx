@@ -80,7 +80,7 @@ const MessageContainer = style.div`
     align-items: center;
     z-index: 1;
     ${props => {
-    console.log(`props: ${props.types}`);
+    console.log(`props: ${props.type}`);
     switch (props.type) {
         case FlashType.Dismissed:
             return 'visibility: hidden;';

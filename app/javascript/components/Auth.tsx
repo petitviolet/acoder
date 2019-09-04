@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as Flash from "./Flash";
 import {Redirect} from 'react-router-dom'
 import User from "models/User";
 import Token from "../models/Token";
@@ -42,7 +43,7 @@ const reducer = (state: Props, action: Action) => {
             };
         default:
             return state;
-  }
+    }
 };
 
 export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action> }>({
@@ -50,23 +51,26 @@ export const Context = React.createContext<{ state: Props, dispatch: React.Dispa
     dispatch: null,
 });
 
+const NOT_LOGIN_REQUIRED_PATHS = [
+    '/login',
+];
+
 export const Component = ({children}) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
     console.log(`Auth.Component state:${JSON.stringify(state)}`);
 
-    return (
-        <Context.Provider value={{ state, dispatch }}>
-            {/*<Context.Consumer>*/}
+    const {state: {token}} = React.useContext(Context);
+    if (token || NOT_LOGIN_REQUIRED_PATHS.includes(window.location.pathname)) {
+        return (
+            <Context.Provider value={{state, dispatch}}>
+                {/*<Context.Consumer>*/}
                 {children}
-            {/*</Context.Consumer>*/}
-        </Context.Provider>
-    );
+                {/*</Context.Consumer>*/}
+            </Context.Provider>
+        );
+    } else {
+        Flash.error(`You must login.${window.location.pathname}`);
+        return <Redirect to={'/'}/>
+    }
 };
 
-// const Auth = (props) => {
-//     const onLogin = (token) => {
-//     };
-//     const context = React.useContext(Context);
-//     // return (props.token ? props.children : <Redirect to={'/login'}/>)
-// };
-//

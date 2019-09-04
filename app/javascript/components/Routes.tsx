@@ -11,8 +11,8 @@ const Routes: React.FC = () => {
             <div>Header</div>
             <FlashComponent/>
             <Switch>
+                <Route exact path={"/"} render={() => ("Home!!!")}/>
                 <Auth.Component>
-                    <Route exact path={"/"} render={() => ("Home!!!")}/>
                     <Route path={"/login"} component={Login}/>
                     <Switch>
                         <Route exact path={"/me"} component={(props) => UserComponent(props.currentUser)}/>
@@ -20,7 +20,7 @@ const Routes: React.FC = () => {
                 </Auth.Component>
             </Switch>
         </div>
-    );
+    )
 };
 
 export default Routes;

@@ -16,14 +16,16 @@ const Login = () => {
     const {state: authState, dispatch: authDispatch} = React.useContext(Auth.Context);
 
     const onSubmit = (values) => {
+        console.debug(`authState onSubmit: ${JSON.stringify(authState)}`);
         if (values.email && values.password && values.password == values.passwordConfirmation) {
             axios.post('/login', {
                 email: values.email,
                 password: values.password,
             }).then((res) => {
-                console.log(`Login response: ${res.status}, ${JSON.stringify(res.data)}`);
+                console.debug(`Login response: ${res.status}, ${JSON.stringify(res.data)}`);
                 const token: Token = new Token(res.data['token']);
                 Flash.success("Login successfully");
+                console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
                 authDispatch({
                     type: Auth.ActionType.SetToken,
                     token,
@@ -77,9 +79,11 @@ const Login = () => {
     }, validator);
 
 
+    const u =JSON.stringify(authState);
     return <form onSubmit={handleSubmit}>
+        <div>{u}</div>
         <Inputs>Email:
-            <input
+            <Input
                 key={'email'}
                 name={'email'}
                 type={'email'}
@@ -89,7 +93,7 @@ const Login = () => {
             <div>{errors.get('email')}</div>
         </Inputs>
         <Inputs>Password:
-            <input
+            <Input
                 key={'password'}
                 name={'password'}
                 type={'password'}
@@ -99,7 +103,7 @@ const Login = () => {
             <div>{errors.get('password')}</div>
         </Inputs>
         <Inputs>Password(again):
-            <input
+            <Input
                 key={'passwordConfirmation'}
                 name={'passwordConfirmation'}
                 type={'password'}
@@ -121,3 +125,7 @@ const Inputs = style.label`
     }
     margin-bottom: 10px;
 `;
+
+const Input = style.input`
+    margin: 5px;
+`

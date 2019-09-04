@@ -10,11 +10,11 @@ export type Props = {
 const initialState: Props = {
     currentUser: null,
     token: null,
-}
+};
 
 export enum ActionType {
-    SetToken,
-    SetCurrentUser,
+    SetToken = 'A',
+    SetCurrentUser = 'B',
 }
 
 type Action = SetTokenAction | SetUserAction;
@@ -27,7 +27,8 @@ type SetUserAction = {
     readonly user: User
 }
 
-export const reducer = (state: Props, action: Action) => {
+const reducer = (state: Props, action: Action) => {
+    console.log(`Auth.reducer called. action: ${JSON.stringify(action)}, state: ${JSON.stringify(state)}`);
     switch (action.type) {
         case ActionType.SetToken:
             return {
@@ -44,17 +45,20 @@ export const reducer = (state: Props, action: Action) => {
   }
 };
 
-export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action> }>(null);
+export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action> }>({
+    state: initialState,
+    dispatch: null,
+});
 
 export const Component = ({children}) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
-    const value = { state, dispatch };
+    console.log(`Auth.Component state:${JSON.stringify(state)}`);
 
     return (
-        <Context.Provider value={{...value}}>
-            <Context.Consumer>
+        <Context.Provider value={{ state, dispatch }}>
+            {/*<Context.Consumer>*/}
                 {children}
-            </Context.Consumer>
+            {/*</Context.Consumer>*/}
         </Context.Provider>
     );
 };

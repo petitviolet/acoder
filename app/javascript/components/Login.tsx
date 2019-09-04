@@ -21,8 +21,8 @@ const Login = () => {
                 email: values.email,
                 password: values.password,
             }).then((res) => {
-                console.dir('Login response', res);
-                const token: Token = JSON.parse(res.data);
+                console.log(`Login response: ${res.status}, ${JSON.stringify(res.data)}`);
+                const token: Token = new Token(res.data['token']);
                 Flash.success("Login successfully");
                 authDispatch({
                     type: Auth.ActionType.SetToken,

@@ -5,6 +5,8 @@ import {useForm, Validator} from "./useForm";
 import * as Flash from "./Flash";
 import * as Auth from "./Auth";
 import UserGateway from "gateways/UserGateway";
+import * as bs from "react-bootstrap";
+
 
 type LoginState = {
     readonly email: string,
@@ -46,16 +48,16 @@ const Login = () => {
                     });
                     return token;
                 }).then((token) => {
-                    return UserGateway(token).currentUser(token);
-                }).then((user) => {
-                    console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
-                    authDispatch({
-                        type: Auth.ActionType.SetCurrentUser,
-                        user: user,
-                    });
-                }).catch((err) => {
-                    Flash.error(`Failed to login. message = ${err}`);
-                })
+                return UserGateway(token).currentUser(token);
+            }).then((user) => {
+                console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
+                authDispatch({
+                    type: Auth.ActionType.SetCurrentUser,
+                    user: user,
+                });
+            }).catch((err) => {
+                Flash.error(`Failed to login. message = ${err}`);
+            })
         } else {
             Flash.error("Invalid inputs");
         }
@@ -104,50 +106,71 @@ const Login = () => {
     const u = JSON.stringify(authState);
     return <form onSubmit={handleSubmit}>
         <div>{u}</div>
-        <Inputs>Email:
-            <Input
-                key={'email'}
-                name={'email'}
-                type={'email'}
-                value={state.email}
-                onChange={handleChange}
-            />
-            <div>{errors.get('email')}</div>
-        </Inputs>
-        <Inputs>Password:
-            <Input
-                key={'password'}
-                name={'password'}
-                type={'password'}
-                value={state.password}
-                onChange={handleChange}
-            />
-            <div>{errors.get('password')}</div>
-        </Inputs>
-        <Inputs>Password(again):
-            <Input
-                key={'passwordConfirmation'}
-                name={'passwordConfirmation'}
-                type={'password'}
-                value={state.passwordConfirmation}
-                onChange={handleChange}
-            />
-            <div>{errors.get('passwordConfirmation')}</div>
-        </Inputs>
-        <button type="submit" disabled={disable}>送信</button>
+        <Inputs
+            title={'Email'}
+            name={'email'}
+            type={'email'}
+            value={state.email}
+            placeholder={''}
+            errors={errors}
+            onChange={handleChange}/>
+        <Inputs
+            title={'Password'}
+            name={'password'}
+            type={'password'}
+            value={state.password}
+            placeholder={''}
+            errors={errors}
+            onChange={handleChange}/>
+        <Inputs
+            title={"Password(again)"}
+            name={'passwordConfirmation'}
+            type={'password'}
+            value={state.passwordConfirmation}
+            placeholder={''}
+            errors={errors}
+            onChange={handleChange}/>
+        <bs.Button type="submit" disabled={disable}>送信</bs.Button>
 
     </form>
 };
 
 export default Login;
 
-const Inputs = style.label`
+const Inputs = (props) => {
+    const {title, name, type, value, placeholder, errors, onChange, children} = props;
+    return (<>
+            <bs.InputGroup>
+                <label htmlFor={name}>
+                    <bs.InputGroup.Prepend>
+                        <bs.InputGroup.Text>
+                            {title}
+                        </bs.InputGroup.Text>
+                    </bs.InputGroup.Prepend>
+                </label>
+                <bs.FormControl
+                    id={name}
+                    placeholder={placeholder}
+                    type={type}
+                    aria-label={name}
+                    aria-describedby={name}
+                    onChange={onChange}
+                    value={value}>
+                    {children}
+                </bs.FormControl>
+                <div>{errors.get(name)}</div>
+            </bs.InputGroup>
+        </>
+    )
+};
+
+const Label = style.label`
     div {
         color: red;
     }
     margin-bottom: 10px;
 `;
 
-const Input = style.input`
+const Input = style(bs.InputGroup)`
     margin: 5px;
-`
+`;

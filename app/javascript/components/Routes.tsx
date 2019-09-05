@@ -8,20 +8,20 @@ import MyPageComponent from "components/MyPage";
 
 const Routes: React.FC = () => {
     return (
-        <div>
-            <div>Header</div>
-            <FlashComponent/>
-            <Switch>
-                <Route exact path={"/"} render={() => ("Home!!!")}/>
-                <Auth.Component>
+        <Auth.Component>
+            <div>
+                <div>Header</div>
+                <FlashComponent/>
+                <Switch>
+                    <Route exact path={"/"} render={() => ("Home!!!")}/>
                     <Route path={"/login"} component={Login}/>
                     <Switch>
                         <Route exact path={"/me"} component={MyPageComponent}/>
                         <Route path={"/users/:id"} component={(props) => UserComponent(props.currentUser)}/>
                     </Switch>
-                </Auth.Component>
-            </Switch>
-        </div>
+                </Switch>
+            </div>
+        </Auth.Component>
     )
 };
 

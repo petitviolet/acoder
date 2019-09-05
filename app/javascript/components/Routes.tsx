@@ -4,6 +4,7 @@ import Login from "components/Login";
 import * as Auth from "components/Auth";
 import UserComponent from "components/User";
 import {FlashComponent} from "components/Flash";
+import MyPageComponent from "components/MyPage";
 
 const Routes: React.FC = () => {
     return (
@@ -15,7 +16,8 @@ const Routes: React.FC = () => {
                 <Auth.Component>
                     <Route path={"/login"} component={Login}/>
                     <Switch>
-                        <Route exact path={"/me"} component={(props) => UserComponent(props.currentUser)}/>
+                        <Route exact path={"/me"} component={MyPageComponent}/>
+                        <Route path={"/users/:id"} component={(props) => UserComponent(props.currentUser)}/>
                     </Switch>
                 </Auth.Component>
             </Switch>

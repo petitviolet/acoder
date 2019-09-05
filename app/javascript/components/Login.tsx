@@ -2,10 +2,9 @@ import * as React from "react"
 import {Redirect} from 'react-router-dom';
 import style from 'styled-components';
 import {useForm, Validator} from "./useForm";
-import axios from "axios";
 import * as Flash from "./Flash";
 import * as Auth from "./Auth";
-import Token from "../models/Token";
+import UserGateway from "gateways/UserGateway";
 
 type LoginState = {
     readonly email: string,
@@ -27,7 +26,7 @@ const moveToAfterLogin = (returnUrl: string | null = null) => {
 };
 
 const Login = () => {
-    const {state: authState, dispatch: authDispatch, loggedIn} = React.useContext(Auth.Context);
+    const {authState, authDispatch, loggedIn} = React.useContext(Auth.Context);
 
     if (loggedIn) {
         return moveToAfterLogin();
@@ -36,21 +35,27 @@ const Login = () => {
     const onSubmit = (values) => {
         console.debug(`authState onSubmit: ${JSON.stringify(authState)}`);
         if (values.email && values.password && values.password == values.passwordConfirmation) {
-            axios.post('/login', {
-                email: values.email,
-                password: values.password,
-            }).then((res) => {
-                console.debug(`Login response: ${res.status}, ${JSON.stringify(res.data)}`);
-                const token: Token = new Token(res.data['token']);
-                Flash.success("Login successfully");
-                console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
-                authDispatch({
-                    type: Auth.ActionType.SetToken,
-                    token,
-                });
-            }).catch((err) => {
-                Flash.error(`Failed to login. message = ${err}`);
-            })
+            UserGateway()
+                .login(values.email, values.password)
+                .then((token) => {
+                    Flash.success("Login successfully");
+                    console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
+                    authDispatch({
+                        type: Auth.ActionType.SetToken,
+                        token: token,
+                    });
+                    return token;
+                }).then((token) => {
+                    return UserGateway(token).currentUser(token);
+                }).then((user) => {
+                    console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
+                    authDispatch({
+                        type: Auth.ActionType.SetCurrentUser,
+                        user: user,
+                    });
+                }).catch((err) => {
+                    Flash.error(`Failed to login. message = ${err}`);
+                })
         } else {
             Flash.error("Invalid inputs");
         }
@@ -96,7 +101,7 @@ const Login = () => {
         passwordConfirmation: '',
     }, validator);
 
-    const u =JSON.stringify(authState);
+    const u = JSON.stringify(authState);
     return <form onSubmit={handleSubmit}>
         <div>{u}</div>
         <Inputs>Email:

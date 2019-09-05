@@ -46,9 +46,9 @@ const reducer = (state: Props, action: Action) => {
     }
 };
 
-export const Context = React.createContext<{ state: Props, dispatch: React.Dispatch<Action>, loggedIn: boolean }>({
-    state: initialState,
-    dispatch: null,
+export const Context = React.createContext<{ authState: Props, authDispatch: React.Dispatch<Action>, loggedIn: boolean }>({
+    authState: initialState,
+    authDispatch: null,
     loggedIn: false,
 });
 
@@ -60,10 +60,10 @@ export const Component = ({children}) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
     console.log(`Auth.Component state:${JSON.stringify(state)}`);
 
-    const loggedIn: boolean = !!state.token;
+    const loggedIn: boolean = !!state.token && !!state.currentUser;
     if (loggedIn || NOT_LOGIN_REQUIRED_PATHS.includes(window.location.pathname)) {
         return (
-            <Context.Provider value={{state, dispatch, loggedIn}}>
+            <Context.Provider value={{authState: state, authDispatch: dispatch, loggedIn}}>
                 {/*<Context.Consumer>*/}
                 {children}
                 {/*</Context.Consumer>*/}

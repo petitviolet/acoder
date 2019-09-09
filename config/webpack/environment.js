@@ -1,8 +1,9 @@
 const {environment} = require('@rails/webpacker');
 const typescript = require('./loaders/typescript');
-const tslint = require('./loaders/tslint');
+const eslint =  require('./loaders/eslint');
 
 environment.loaders.prepend('typescript', typescript);
-environment.loaders.append('tslint', tslint);
+environment.loaders.append('eslint', eslint)
+
 
 module.exports = environment;

@@ -23,5 +23,12 @@ class UserGateway extends Gateway {
         return res.data;
       });
   }
+
+  findById(userId: string) {
+    return this.axios.get<User>(`/users/${userId}`).then(res => {
+      this.responseLogging("user", res);
+      return res.data;
+    });
+  }
 }
 export default (token: Token | null = null) => new UserGateway(token);

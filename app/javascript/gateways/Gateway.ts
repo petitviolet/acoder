@@ -18,14 +18,14 @@ const shared = Axios.create({
 
 export default class Gateway {
   protected readonly axios: AxiosInstance = shared;
-  private token: Token;
+  private readonly token: Token;
 
   constructor(token: Token | null) {
     this.token = token;
   }
 
   protected authHeaders(token: Token = null) {
-    return { "X-Access-Token": token };
+    return { "X-Access-Token": token || this.token };
   }
 
   protected defaultOptions(token: Token = null) {

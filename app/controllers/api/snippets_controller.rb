@@ -5,8 +5,9 @@ class Api::SnippetsController < Api::ApiController
     render json: Snippet.feed, status: :ok
   end
 
-  def my
-    render json: current.user.snippets, status: :ok
+  def search
+    user_id = params[:userId]
+    render json: User.find(user_id).snippets, status: :ok
   end
 
   def show

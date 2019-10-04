@@ -56,11 +56,14 @@ export const useForm = <State extends {}>(
 
   const handleChange = React.useCallback(
     event => {
-      setIsEditing(true);
       const name: string = event.target.name;
       const value: string = event.target.value;
+      if (value.length > 0) {
+        setIsEditing(true);
+      }
       setState(prevState => {
         const newState = { ...prevState, [name]: value };
+        console.log(`newState: ${JSON.stringify(newState)}`);
 
         return newState;
       });

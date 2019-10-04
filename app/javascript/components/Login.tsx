@@ -13,13 +13,54 @@ type LoginState = {
   readonly passwordConfirmation: string;
 };
 
-const moveToAfterLogin = (returnUrl: string | null = null) => {
-  console.debug(`[AfterLogin]move to ${returnUrl || "/me"}`);
-  if (returnUrl) {
-    return <Redirect to={returnUrl} />;
-  } else {
-    return <Redirect to={"/me"} />;
+const validator: Validator<LoginState> = new (class
+  implements Validator<LoginState> {
+  emailValidator(email: string): string | null {
+    if (email.length == 0) {
+      return "Email is empty.";
+    } else if (!email.match(/.+@.+\..+/)) {
+      return "Email is not valid format";
+    }
   }
+
+  passwordValidator(password: string): string | null {
+    if (password.length == 0) {
+      return "Password is empty.";
+    } else if (password.length < 8) {
+      return "Password min length is 8";
+    } else if (password.length > 100) {
+      return "Password max length is 100";
+    }
+  }
+
+  passwordConfirmationValidator(
+    password: string,
+    passwordConfirmation: string
+  ): string | null {
+    if (password != passwordConfirmation) {
+      return "PasswordConfirmation is not match";
+    }
+  }
+
+  runAll(state: LoginState): Map<string, string> {
+    return new Map([
+      ["email", this.emailValidator(state.email)],
+      ["password", this.passwordValidator(state.password)],
+      [
+        "passwordConfirmation",
+        this.passwordConfirmationValidator(
+          state.password,
+          state.passwordConfirmation
+        )
+      ]
+    ]);
+  }
+})();
+
+const moveToAfterLogin = (returnUrl: string | null = null) => {
+  const url = returnUrl || "/me";
+  console.debug(`[AfterLogin]move to ${url}`);
+  return <Redirect to={url} />;
 };
 
 const Login = () => {
@@ -64,50 +105,6 @@ const Login = () => {
       Flash.error("Invalid inputs");
     }
   };
-
-  const validator: Validator<LoginState> = new (class
-  implements Validator<LoginState> {
-    emailValidator(email: string): string | null {
-      if (email.length == 0) {
-        return "Email is empty.";
-      } else if (!email.match(/.+@.+\..+/)) {
-        return "Email is not valid format";
-      }
-    }
-
-    passwordValidator(password: string): string | null {
-      if (password.length == 0) {
-        return "Password is empty.";
-      } else if (password.length < 8) {
-        return "Password min length is 8";
-      } else if (password.length > 100) {
-        return "Password max length is 100";
-      }
-    }
-
-    passwordConfirmationValidator(
-      password: string,
-      passwordConfirmation: string
-    ): string | null {
-      if (password != passwordConfirmation) {
-        return "PasswordConfirmation is not match";
-      }
-    }
-
-    runAll(state: LoginState): Map<string, string> {
-      return new Map([
-        ["email", this.emailValidator(state.email)],
-        ["password", this.passwordValidator(state.password)],
-        [
-          "passwordConfirmation",
-          this.passwordConfirmationValidator(
-            state.password,
-            state.passwordConfirmation
-          )
-        ]
-      ]);
-    }
-  })();
 
   const { state, errors, disable, handleChange, handleSubmit } = useForm<
     LoginState
@@ -168,38 +165,28 @@ const Inputs = (props: {
   value: string;
   placeholder: string;
   errors: Errors;
-  onChange: ((event: any) => void);
+  onChange: (event: any) => void;
 }) => {
-  const {
-    title,
-    name,
-    type,
-    value,
-    placeholder,
-    errors,
-    onChange,
-  } = props;
+  const { title, name, type, value, placeholder, errors, onChange } = props;
   return (
-    <>
-      <bs.InputGroup>
-        <label htmlFor={name}>
-          <bs.InputGroup.Prepend>
-            <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
-          </bs.InputGroup.Prepend>
-        </label>
-        <bs.FormControl
-          id={name}
-          placeholder={placeholder}
-          type={type}
-          aria-label={name}
-          aria-describedby={name}
-          onChange={onChange}
-          value={value}
-        >
-        </bs.FormControl>
-        <div>{errors.get(name)}</div>
-      </bs.InputGroup>
-    </>
+    <bs.InputGroup>
+      <label htmlFor={name}>
+        <bs.InputGroup.Prepend>
+          <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
+        </bs.InputGroup.Prepend>
+      </label>
+      <bs.FormControl
+        id={name}
+        placeholder={placeholder}
+        name={name}
+        type={type}
+        aria-label={name}
+        aria-describedby={name}
+        onChange={onChange}
+        value={value}
+      />
+      <div>{errors.get(name)}</div>
+    </bs.InputGroup>
   );
 };
 

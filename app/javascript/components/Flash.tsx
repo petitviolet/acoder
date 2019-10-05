@@ -1,6 +1,7 @@
 import * as React from "react";
 import style from "styled-components";
 import EventBus from "utils/EventBus";
+import * as bs from "react-bootstrap";
 
 enum FlashType {
   Dismissed,
@@ -73,28 +74,16 @@ export const FlashComponent = () => {
   );
 };
 
-const MessageContainer = style.div`
-    color: white;
-    border-radius: 10px;
-    position: absolute;
-    top: 50px;
-    right: 10px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    z-index: 1;
-    ${props => {
-      console.log(`props: ${props.type}`);
-      switch (props.type) {
-        case FlashType.Dismissed:
-          return "visibility: hidden;";
-        case FlashType.Success:
-          return "background-color: lightgreen;";
-        case FlashType.Error:
-          return "background-color: lightcoral;";
-      }
-    }}
-`;
+const MessageContainer = (props: any) => {
+  switch (props.type) {
+    case FlashType.Dismissed:
+      return <></>;
+    case FlashType.Success:
+      return <bs.Alert variant={"success"}>{props.children}</bs.Alert>;
+    case FlashType.Error:
+      return <bs.Alert variant={"danger"}>{props.children}</bs.Alert>;
+  }
+};
 
 const Message = style.p`
     margin: 0;

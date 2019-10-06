@@ -7,11 +7,10 @@ class SnippetGateway extends Gateway {
     this.defaultOptions();
     return this.axios
       .get<Snippet[]>("/snippets/search", {
-
-          params: {
-            userId: userId
-          },
-          headers: this.authHeaders()
+        params: {
+          userId: userId
+        },
+        headers: this.authHeaders()
       })
       .then(res => {
         this.responseLogging("currentSnippet", res);
@@ -24,6 +23,17 @@ class SnippetGateway extends Gateway {
       this.responseLogging("user", res);
       return res.data;
     });
+  }
+
+  editor(snippetId: string) {
+    return this.axios
+      .get<any>(`/snippets/${snippetId}/editor`, {
+        headers: Object.assign({}, this.authHeaders(), this.headers.textHtml)
+      })
+      .then(res => {
+        this.responseLogging("snippet editor", res);
+        return res.data;
+      });
   }
 }
 export default (token: Token | null = null) => new SnippetGateway(token);

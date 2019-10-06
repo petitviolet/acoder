@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export interface Validator<State extends {}> {
   runAll(state: State): Errors;
@@ -6,11 +6,7 @@ export interface Validator<State extends {}> {
 
 export type Errors = Map<string, string>;
 
-export const useForm = <State extends {}>(
-  onSubmit,
-  initial: State,
-  validator: Validator<State>
-) => {
+export const useForm = <State extends {}>(onSubmit, initial: State, validator: Validator<State>) => {
   const [state, setState] = React.useState<State>(initial);
   const [errors, setErrors] = React.useState<Errors>(new Map());
   const [disable, setDisable] = React.useState<boolean>(true);
@@ -23,9 +19,7 @@ export const useForm = <State extends {}>(
   }, [isEditing, errors]);
 
   const isValid: () => boolean = React.useCallback(() => {
-    const _errors = Array.from(validator.runAll(state)).reduce<
-      Map<string, string>
-    >(
+    const _errors = Array.from(validator.runAll(state)).reduce<Map<string, string>>(
       (map, [key, error]) => {
         if (error) {
           // kill undefined or null
@@ -34,7 +28,7 @@ export const useForm = <State extends {}>(
           return map;
         }
       },
-      new Map() // initial value
+      new Map(), // initial value
     );
     setErrors(_errors);
     console.dir(_errors);
@@ -51,7 +45,7 @@ export const useForm = <State extends {}>(
         console.log(`submit is disabled. error = ${errors}`);
       }
     },
-    [state, errors, disable]
+    [state, errors, disable],
   );
 
   const handleChange = React.useCallback(
@@ -68,7 +62,7 @@ export const useForm = <State extends {}>(
         return newState;
       });
     },
-    [validator, state]
+    [validator, state],
   );
 
   return {
@@ -76,6 +70,6 @@ export const useForm = <State extends {}>(
     errors,
     disable,
     handleChange,
-    handleSubmit
+    handleSubmit,
   };
 };

@@ -1,8 +1,8 @@
-import * as React from "react";
-import Snippet from "models/Snippet";
-import * as Flash from "components/Flash";
-import SnippetGateway from "gateways/SnippetGateway";
-import SnippetComponent from "components/Snippet";
+import * as React from 'react';
+import Snippet from 'models/Snippet';
+import * as Flash from 'components/Flash';
+import SnippetGateway from 'gateways/SnippetGateway';
+import SnippetComponent from 'components/Snippet';
 
 export type Query = { userId: string };
 

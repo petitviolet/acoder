@@ -6,14 +6,7 @@ class Snippet {
   readonly description: string;
   readonly content: object;
 
-  constructor(
-    id: string,
-    userId: string,
-    title: string,
-    fileType: string,
-    description: string,
-    content: object
-  ) {
+  constructor(id: string, userId: string, title: string, fileType: string, description: string, content: object) {
     this.id = id;
     this.userId = userId;
     this.title = title;

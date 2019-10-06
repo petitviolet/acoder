@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Redirect } from "react-router-dom";
-import style from "styled-components";
-import { useForm, Validator, Errors } from "./useForm";
-import * as Flash from "./Flash";
-import * as Auth from "./Auth";
-import UserGateway from "gateways/UserGateway";
-import * as bs from "react-bootstrap";
+import * as React from 'react';
+import { Redirect } from 'react-router-dom';
+import style from 'styled-components';
+import { useForm, Validator, Errors } from './useForm';
+import * as Flash from './Flash';
+import * as Auth from './Auth';
+import UserGateway from 'gateways/UserGateway';
+import * as bs from 'react-bootstrap';
 
 type LoginState = {
   readonly email: string;
@@ -13,52 +13,42 @@ type LoginState = {
   readonly passwordConfirmation: string;
 };
 
-const validator: Validator<LoginState> = new (class
-  implements Validator<LoginState> {
+const validator: Validator<LoginState> = new (class implements Validator<LoginState> {
   emailValidator(email: string): string | null {
     if (email.length == 0) {
-      return "Email is empty.";
+      return 'Email is empty.';
     } else if (!email.match(/.+@.+\..+/)) {
-      return "Email is not valid format";
+      return 'Email is not valid format';
     }
   }
 
   passwordValidator(password: string): string | null {
     if (password.length == 0) {
-      return "Password is empty.";
+      return 'Password is empty.';
     } else if (password.length < 8) {
-      return "Password min length is 8";
+      return 'Password min length is 8';
     } else if (password.length > 100) {
-      return "Password max length is 100";
+      return 'Password max length is 100';
     }
   }
 
-  passwordConfirmationValidator(
-    password: string,
-    passwordConfirmation: string
-  ): string | null {
+  passwordConfirmationValidator(password: string, passwordConfirmation: string): string | null {
     if (password != passwordConfirmation) {
-      return "PasswordConfirmation is not match";
+      return 'PasswordConfirmation is not match';
     }
   }
 
   runAll(state: LoginState): Map<string, string> {
     return new Map([
-      ["email", this.emailValidator(state.email)],
-      ["password", this.passwordValidator(state.password)],
-      [
-        "passwordConfirmation",
-        this.passwordConfirmationValidator(
-          state.password,
-          state.passwordConfirmation
-        )
-      ]
+      ['email', this.emailValidator(state.email)],
+      ['password', this.passwordValidator(state.password)],
+      ['passwordConfirmation', this.passwordConfirmationValidator(state.password, state.passwordConfirmation)],
     ]);
   }
 })();
 
 const moveToAfterLogin = (returnUrl: string | null = null) => {
-  const url = returnUrl || "/me";
+  const url = returnUrl || '/me';
   console.debug(`[AfterLogin]move to ${url}`);
   return <Redirect to={url} />;
 };
@@ -72,19 +62,15 @@ const Login = () => {
 
   const onSubmit = values => {
     console.debug(`authState onSubmit: ${JSON.stringify(authState)}`);
-    if (
-      values.email &&
-      values.password &&
-      values.password == values.passwordConfirmation
-    ) {
+    if (values.email && values.password && values.password == values.passwordConfirmation) {
       UserGateway()
         .login(values.email, values.password)
         .then(token => {
-          Flash.success("Login successfully");
+          Flash.success('Login successfully');
           console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
           authDispatch({
             type: Auth.ActionType.SetToken,
-            token: token
+            token: token,
           });
           return token;
         })
@@ -95,27 +81,25 @@ const Login = () => {
           console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
           authDispatch({
             type: Auth.ActionType.SetCurrentUser,
-            user: user
+            user: user,
           });
         })
         .catch(err => {
           Flash.error(`Failed to login. message = ${err}`);
         });
     } else {
-      Flash.error("Invalid inputs");
+      Flash.error('Invalid inputs');
     }
   };
 
-  const { state, errors, disable, handleChange, handleSubmit } = useForm<
-    LoginState
-  >(
+  const { state, errors, disable, handleChange, handleSubmit } = useForm<LoginState>(
     onSubmit,
     {
       email: "",
       password: "",
       passwordConfirmation: ""
     },
-    validator
+    validator,
   );
 
   const u = JSON.stringify(authState);
@@ -123,29 +107,29 @@ const Login = () => {
     <form onSubmit={handleSubmit}>
       <div>{u}</div>
       <Inputs
-        title={"Email"}
-        name={"email"}
-        type={"email"}
+        title={'Email'}
+        name={'email'}
+        type={'email'}
         value={state.email}
-        placeholder={""}
+        placeholder={''}
         errors={errors}
         onChange={handleChange}
       />
       <Inputs
-        title={"Password"}
-        name={"password"}
-        type={"password"}
+        title={'Password'}
+        name={'password'}
+        type={'password'}
         value={state.password}
-        placeholder={""}
+        placeholder={''}
         errors={errors}
         onChange={handleChange}
       />
       <Inputs
-        title={"Password(again)"}
-        name={"passwordConfirmation"}
-        type={"password"}
+        title={'Password(again)'}
+        name={'passwordConfirmation'}
+        type={'password'}
         value={state.passwordConfirmation}
-        placeholder={""}
+        placeholder={''}
         errors={errors}
         onChange={handleChange}
       />

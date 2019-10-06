@@ -1,10 +1,10 @@
-import * as React from "react";
-import Snippet from "models/Snippet";
-import User from "models/User";
-import UserGateway from "gateways/UserGateway";
-import * as Flash from "components/Flash";
-import SnippetGateway from "gateways/SnippetGateway";
-import style from "styled-components";
+import * as React from 'react';
+import Snippet from 'models/Snippet';
+import User from 'models/User';
+import UserGateway from 'gateways/UserGateway';
+import * as Flash from 'components/Flash';
+import SnippetGateway from 'gateways/SnippetGateway';
+import style from 'styled-components';
 
 const SnippetComponent = (snippet: Snippet) => {
   const [user, setUser] = React.useState<User>(null);
@@ -36,7 +36,7 @@ const SnippetComponent = (snippet: Snippet) => {
     <div>
       <div>
         <div>createdBy:</div>
-        <div>{user ? user.name : "loading"}</div>
+        <div>{user ? user.name : 'loading'}</div>
       </div>
       <div>
         <div>id:</div>

@@ -95,9 +95,9 @@ const Login = () => {
   const { state, errors, disable, handleChange, handleSubmit } = useForm<LoginState>(
     onSubmit,
     {
-      email: "",
-      password: "",
-      passwordConfirmation: ""
+      email: 'alice@example.com',
+      password: 'password',
+      passwordConfirmation: 'password',
     },
     validator,
   );

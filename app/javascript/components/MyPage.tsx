@@ -21,7 +21,7 @@ const MyPageComponent = () => {
       .catch(err => {
         Flash.error(`Failed to login. message = ${err}`);
       });
-  }, [snippets.length]);
+  }, [currentUser]);
 
   return (
     <>

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2018", "dom"],
+    "jsx": "react",
+    "rootDirs": [
+      "src"
+    ],
+    "types": [
+      "react", "node"
+    ],
+    "esModuleInterop": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclode": [
+    "node_modules"
+  ],
+  "compileOnSave": false
+}

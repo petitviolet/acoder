@@ -1,8 +1,10 @@
 run/server:
+	cd api && \
 	bundle exec rails server
 
 run/client:
-	./bin/webpack-dev-server
+	cd frontend && \
+	yarn start
 
 api/users/new:
 	curl -i -H "Content-Type: application/json" -d "$$(jo name=alice email=alice@example.com password=password password_confirmation=password)" localhost:3000/api/users -XPOST

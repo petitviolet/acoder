@@ -1,5 +1,6 @@
 import Token from 'models/Token';
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
+import config from 'config';
 
 class Headers {
   static readonly applicationJson = {
@@ -12,7 +13,7 @@ class Headers {
   };
 }
 const shared = Axios.create({
-  baseURL: `${process.env.API_HOST}/api`,
+  baseURL: `${config.API_HOST}/api`,
   timeout: 1000,
   headers: {
     get: Headers.applicationJson,

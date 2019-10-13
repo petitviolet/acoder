@@ -1,4 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import App from "components/App";
 
-ReactDOM.render(<h1>ToDo App</h1>, document.getElementById("app"));
+document.addEventListener("DOMContentLoaded", () => {
+  ReactDOM.render(<App />, document.getElementById("app"));
+});

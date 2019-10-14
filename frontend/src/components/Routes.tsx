@@ -7,12 +7,13 @@ import { FlashComponent } from './Flash';
 import MyPageComponent from './MyPage';
 import SnippetComponent from './Snippet';
 import SnippetListComponent from './SnippetList';
+import Header from './Header';
 
 const Routes: React.FC = () => {
   return (
     <Auth.Component>
       <div>
-        <div>Header</div>
+        <Header />
         <FlashComponent />
         <Switch>
           <Route exact path={'/'} render={() => 'Home!!!'} />

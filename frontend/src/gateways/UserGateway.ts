@@ -1,6 +1,6 @@
 import Token from '../models/Token';
 import Gateway from './Gateway';
-import User from 'models/User';
+import User from '../models/User';
 
 class UserGateway extends Gateway {
   login(email: string, password: string): Promise<Token> {

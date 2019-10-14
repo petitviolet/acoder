@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Flash from './Flash';
 import { Redirect } from 'react-router-dom';
-import User from 'models/User';
+import User from '../models/User';
 import Token from '../models/Token';
 
 export type Props = {

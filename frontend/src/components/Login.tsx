@@ -4,7 +4,7 @@ import style from 'styled-components';
 import { useForm, Validator, Errors } from './useForm';
 import * as Flash from './Flash';
 import * as Auth from './Auth';
-import UserGateway from 'gateways/UserGateway';
+import UserGateway from '../gateways/UserGateway';
 import * as bs from 'react-bootstrap';
 
 type LoginState = {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import User from 'models/User';
+import User from '../models/User';
 
 const UserComponent = (user: User) => {
   return (

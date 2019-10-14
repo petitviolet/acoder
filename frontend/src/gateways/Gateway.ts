@@ -1,6 +1,6 @@
-import Token from 'models/Token';
+import Token from '../models/Token';
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
-import config from 'config';
+import config from '../config';
 
 class Headers {
   static readonly applicationJson = {

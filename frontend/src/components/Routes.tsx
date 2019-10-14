@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Login from 'components/Login';
-import * as Auth from 'components/Auth';
-import UserComponent from 'components/User';
-import { FlashComponent } from 'components/Flash';
-import MyPageComponent from 'components/MyPage';
-import SnippetComponent from 'components/Snippet';
-import SnippetListComponent from 'components/SnippetList';
+import Login from './Login';
+import * as Auth from './Auth';
+import UserComponent from './User';
+import { FlashComponent } from './Flash';
+import MyPageComponent from './MyPage';
+import SnippetComponent from './Snippet';
+import SnippetListComponent from './SnippetList';
 
 const Routes: React.FC = () => {
   return (

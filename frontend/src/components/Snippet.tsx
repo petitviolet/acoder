@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Snippet from 'models/Snippet';
-import User from 'models/User';
-import UserGateway from 'gateways/UserGateway';
-import * as Flash from 'components/Flash';
-import SnippetGateway from 'gateways/SnippetGateway';
+import Snippet from '../models/Snippet';
+import User from '../models/User';
+import UserGateway from '../gateways/UserGateway';
+import * as Flash from './Flash';
+import SnippetGateway from '../gateways/SnippetGateway';
 import style from 'styled-components';
 
 const SnippetComponent = (snippet: Snippet) => {

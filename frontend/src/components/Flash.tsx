@@ -1,6 +1,6 @@
 import * as React from 'react';
 import style from 'styled-components';
-import EventBus from 'utils/EventBus';
+import EventBus from '../utils/EventBus';
 import * as bs from 'react-bootstrap';
 
 enum FlashType {

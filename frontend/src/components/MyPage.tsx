@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as Auth from './Auth';
-import UserComponent from 'components/User';
-import * as Flash from 'components/Flash';
-import Snippet from 'models/Snippet';
-import SnippetGateway from 'gateways/SnippetGateway';
-import SnippetComponent from 'components/Snippet';
+import UserComponent from '../components/User';
+import * as Flash from '../components/Flash';
+import Snippet from '../models/Snippet';
+import SnippetGateway from '../gateways/SnippetGateway';
+import SnippetComponent from '../components/Snippet';
 
 const MyPageComponent = () => {
   const {

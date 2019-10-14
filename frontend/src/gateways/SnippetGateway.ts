@@ -1,6 +1,6 @@
 import Token from '../models/Token';
 import Gateway from './Gateway';
-import Snippet from 'models/Snippet';
+import Snippet from '../models/Snippet';
 
 class SnippetGateway extends Gateway {
   search(userId: string) {

@@ -65,24 +65,15 @@ const Login = () => {
     if (values.email && values.password && values.password == values.passwordConfirmation) {
       UserGateway()
         .login(values.email, values.password)
-        .then(token => {
+        .then(response => {
           Flash.success('Login successfully');
           console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
           authDispatch({
-            type: Auth.ActionType.SetToken,
-            token: token,
+            type: Auth.ActionType.Login,
+            token: response.token,
+            user: response.user,
           });
-          return token;
-        })
-        .then(token => {
-          return UserGateway(token).currentUser(token);
-        })
-        .then(user => {
-          console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
-          authDispatch({
-            type: Auth.ActionType.SetCurrentUser,
-            user: user,
-          });
+          return;
         })
         .catch(err => {
           Flash.error(`Failed to login. message = ${err}`);

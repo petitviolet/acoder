@@ -8,39 +8,49 @@ export type Props = {
   readonly currentUser: User;
   readonly token: Token;
 };
-const initialState: Props = {
+const INITIAL_STATE: Props = {
   currentUser: null,
   token: null,
 };
 
-export enum ActionType {
-  SetToken = 'A',
-  SetCurrentUser = 'B',
+class SessionStore {
+  static readonly KEY = 'Session';
+
+  static save(user: User, token: Token): void {
+    localStorage.setItem(SessionStore.KEY, JSON.stringify({ user: user, token: token }));
+  }
+
+  static load(): { user: User; token: Token } | null {
+    const values = localStorage.getItem(SessionStore.KEY);
+    if (values) {
+      return JSON.parse(values);
+    }
+    return null;
+  }
 }
 
-type Action = SetTokenAction | SetUserAction;
-type SetTokenAction = {
-  readonly type: ActionType.SetToken;
+export enum ActionType {
+  Login = 'A',
+}
+
+type Action = LoginAction;
+type LoginAction = {
+  readonly type: ActionType.Login;
   readonly token: Token;
-};
-type SetUserAction = {
-  readonly type: ActionType.SetCurrentUser;
   readonly user: User;
 };
 
 const reducer = (state: Props, action: Action) => {
   console.log(`Auth.reducer called. action: ${JSON.stringify(action)}, state: ${JSON.stringify(state)}`);
   switch (action.type) {
-  case ActionType.SetToken:
-    return {
+  case ActionType.Login:
+    const newState = {
       ...state,
       token: action.token,
-    };
-  case ActionType.SetCurrentUser:
-    return {
-      ...state,
       currentUser: action.user,
     };
+    SessionStore.save(newState.currentUser, newState.token);
+    return newState;
   default:
     return state;
   }
@@ -51,7 +61,7 @@ export const Context = React.createContext<{
   authDispatch: React.Dispatch<Action>;
   loggedIn: boolean;
 }>({
-  authState: initialState,
+  authState: INITIAL_STATE,
   authDispatch: null,
   loggedIn: false,
 });
@@ -59,6 +69,8 @@ export const Context = React.createContext<{
 const NOT_LOGIN_REQUIRED_PATHS = ['/login'];
 
 export const Component = ({ children }) => {
+  const storedState = SessionStore.load();
+  const initialState = storedState ? { currentUser: storedState.user, token: storedState.token } : INITIAL_STATE;
   const [state, dispatch] = React.useReducer(reducer, initialState);
   console.log(`Auth.Component state:${JSON.stringify(state)}`);
 

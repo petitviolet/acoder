@@ -9,7 +9,7 @@ class Api::SessionsController < Api::ApiController
     email, password = params.require(%i[email password])
 
     if (user = User.find_by(email: email)&.login(password))
-      render json: { token: new_token(user) }, status: :ok
+      render json: { user: user, token: new_token(user) }, status: :ok
     else
       render json: { error: "Failed to login" }, status: :bad_request
     end

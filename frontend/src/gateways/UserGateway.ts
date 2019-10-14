@@ -3,15 +3,15 @@ import Gateway from './Gateway';
 import User from '../models/User';
 
 class UserGateway extends Gateway {
-  login(email: string, password: string): Promise<Token> {
+  login(email: string, password: string): Promise<{token: Token, user: User}> {
     return this.axios
-      .post<{ token: Token }>('/login', {
+      .post<{token: Token, user: User}>('/login', {
         email: email,
         password: password,
       })
       .then(res => {
         this.responseLogging('login', res);
-        return res.data.token;
+        return res.data;
       });
   }
 

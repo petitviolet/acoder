@@ -1,19 +1,38 @@
 import * as React from 'react';
 import style from 'styled-components';
 import * as Auth from './Auth';
+import { Link } from 'react-router-dom';
+import * as Flash from './Flash';
 
 const Header = () => {
-  const {
-    authState: { currentUser, token },
-    loggedIn,
-  } = React.useContext(Auth.Context);
+  const { loggedIn } = React.useContext(Auth.Context);
 
   return (
     <HeaderContainer>
       <HeaderLink>Home</HeaderLink>
       <HeaderLink>About</HeaderLink>
-      <HeaderSession>{loggedIn ? 'Log out' : 'Log in'}</HeaderSession>
+      <HeaderSession>{loggedIn ? <LogoutButton /> : <LoginButton />}</HeaderSession>
     </HeaderContainer>
+  );
+};
+
+const LoginButton = () => {
+  return <Link to={'/login'}>Log in</Link>;
+};
+
+const LogoutButton = () => {
+    const { authDispatch } = React.useContext(Auth.Context);
+  const onClick = () => {
+      authDispatch({
+          type: Auth.ActionType.Logout,
+      });
+      Flash.success('Log out successfully')
+  };
+
+  return (
+    <Link to={'/login'} onClick={onClick}>
+      Log out
+    </Link>
   );
 };
 
@@ -25,7 +44,7 @@ const HeaderContainer = style.header`
   margin-bottom: 0.5em;
 `;
 
-const HeaderLink = style.a`
+const HeaderLink = style.div`
   float: left;
   display: block;
   color: black;

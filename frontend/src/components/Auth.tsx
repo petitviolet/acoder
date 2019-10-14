@@ -27,17 +27,25 @@ class SessionStore {
     }
     return null;
   }
+
+  static clear(): void {
+    localStorage.removeItem(SessionStore.KEY);
+  }
 }
 
 export enum ActionType {
   Login = 'A',
+  Logout = 'B',
 }
 
-type Action = LoginAction;
+type Action = LoginAction | LogoutAction;
 type LoginAction = {
   readonly type: ActionType.Login;
   readonly token: Token;
   readonly user: User;
+};
+type LogoutAction = {
+  readonly type: ActionType.Logout;
 };
 
 const reducer = (state: Props, action: Action) => {
@@ -51,6 +59,9 @@ const reducer = (state: Props, action: Action) => {
     };
     SessionStore.save(newState.currentUser, newState.token);
     return newState;
+  case ActionType.Logout:
+    SessionStore.clear();
+    return INITIAL_STATE;
   default:
     return state;
   }

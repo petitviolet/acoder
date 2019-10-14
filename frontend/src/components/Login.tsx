@@ -104,39 +104,45 @@ const Login = () => {
 
   const u = JSON.stringify(authState);
   return (
-    <form onSubmit={handleSubmit}>
-      <div>{u}</div>
-      <Inputs
-        title={'Email'}
-        name={'email'}
-        type={'email'}
-        value={state.email}
-        placeholder={''}
-        errors={errors}
-        onChange={handleChange}
-      />
-      <Inputs
-        title={'Password'}
-        name={'password'}
-        type={'password'}
-        value={state.password}
-        placeholder={''}
-        errors={errors}
-        onChange={handleChange}
-      />
-      <Inputs
-        title={'Password(again)'}
-        name={'passwordConfirmation'}
-        type={'password'}
-        value={state.passwordConfirmation}
-        placeholder={''}
-        errors={errors}
-        onChange={handleChange}
-      />
-      <bs.Button type="submit" disabled={disable}>
-        送信
-      </bs.Button>
-    </form>
+    <bs.Container>
+      <bs.Row>
+        <bs.Col md={{ span: 6, offset: 3 }}>
+          <form onSubmit={handleSubmit}>
+            <div>{u}</div>
+            <Inputs
+              title={'Email'}
+              name={'email'}
+              type={'email'}
+              value={state.email}
+              placeholder={''}
+              errors={errors}
+              onChange={handleChange}
+            />
+            <Inputs
+              title={'Password'}
+              name={'password'}
+              type={'password'}
+              value={state.password}
+              placeholder={''}
+              errors={errors}
+              onChange={handleChange}
+            />
+            <Inputs
+              title={'Password(again)'}
+              name={'passwordConfirmation'}
+              type={'password'}
+              value={state.passwordConfirmation}
+              placeholder={''}
+              errors={errors}
+              onChange={handleChange}
+            />
+            <bs.Button type="submit" disabled={disable}>
+              送信
+            </bs.Button>
+          </form>
+        </bs.Col>
+      </bs.Row>
+    </bs.Container>
   );
 };
 

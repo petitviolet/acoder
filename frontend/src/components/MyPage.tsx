@@ -15,7 +15,7 @@ const MyPageComponent = () => {
     SnippetGateway(token)
       .search(currentUser.id)
       .then(snippets => {
-        console.log(`SnippetGateway#findById: ${JSON.stringify(snippets)}`);
+        console.log(`SnippetGateway#search: ${JSON.stringify(snippets)}`);
         setSnippets(snippets);
       })
       .catch(err => {

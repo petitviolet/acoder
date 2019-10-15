@@ -1,6 +1,8 @@
 import Token from '../models/Token';
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
 import config from '../config';
+import humps from 'humps';
+import { instanceOf } from 'prop-types';
 
 class Headers {
   static readonly applicationJson = {
@@ -12,16 +14,30 @@ class Headers {
     Accept: 'text/html',
   };
 }
-const shared = Axios.create({
-  baseURL: `${config.API_HOST}/api`,
-  timeout: 1000,
-  headers: {
-    get: Headers.applicationJson,
-    post: Headers.applicationJson,
-    put: Headers.applicationJson,
-    delete: Headers.applicationJson,
-  },
-});
+
+const shared = ((): AxiosInstance => {
+  const merge = <T>(arr: T | T[], t: T): T[] => {
+    if (Array.isArray(arr)) {
+      arr.push(t);
+      return arr;
+    } else {
+      return [arr, t];
+    }
+  };
+
+  return Axios.create({
+    baseURL: `${config.API_HOST}/api`,
+    timeout: 1000,
+    headers: {
+      get: Headers.applicationJson,
+      post: Headers.applicationJson,
+      put: Headers.applicationJson,
+      delete: Headers.applicationJson,
+    },
+    transformResponse: merge(Axios.defaults.transformResponse, data => humps.camelizeKeys(data)),
+    transformRequest: merge(Axios.defaults.transformRequest, data => humps.decamelizeKeys(data)),
+  });
+})();
 
 export default class Gateway {
   protected readonly axios: AxiosInstance = shared;

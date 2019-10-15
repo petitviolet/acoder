@@ -1,10 +1,5 @@
-run/server:
-	cd api && \
+run:
 	bundle exec rails server
-
-run/client:
-	cd frontend && \
-	yarn start
 
 api/users/new:
 	curl -i -H "Content-Type: application/json" -d "$$(jo name=alice email=alice@example.com password=password password_confirmation=password)" localhost:3000/api/users -XPOST

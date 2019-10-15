@@ -25,15 +25,5 @@ class SnippetGateway extends Gateway {
     });
   }
 
-  editor(snippetId: string) {
-    return this.axios
-      .get<any>(`/snippets/${snippetId}/editor`, {
-        headers: Object.assign({}, this.authHeaders(), this.headers.textHtml),
-      })
-      .then(res => {
-        this.responseLogging('snippet editor', res);
-        return res.data;
-      });
-  }
 }
 export default (token: Token | null = null) => new SnippetGateway(token);

@@ -16,7 +16,4 @@ Rails.application.routes.draw do
     post '/login', to: 'sessions#login'
     delete '/logout', to: 'sessions#logout'
   end
-
-  get 'snippets/editor', to: 'snippet_editor#editor'
-  get 'snippets/:id/editor', to: 'snippet_editor#editor'
 end

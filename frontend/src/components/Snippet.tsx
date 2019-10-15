@@ -4,10 +4,24 @@ import User from '../models/User';
 import UserGateway from '../gateways/UserGateway';
 import * as Flash from './Flash';
 import style from 'styled-components';
+import * as bs from 'react-bootstrap';
 
 const SnippetComponent = (snippet: Snippet) => {
+  return (
+    <bs.Container>
+      <bs.Row>
+        <bs.Col md={{ span: 6, offset: 3 }}>
+            <SnippetContainer {...snippet} />
+        </bs.Col>
+      </bs.Row>
+    </bs.Container>
+  );
+};
+
+const SnippetContainer = (snippet: Snippet) => {
   const [user, setUser] = React.useState<User>(null);
   React.useEffect(() => {
+      console.log(JSON.stringify(snippet));
     UserGateway()
       .findById(snippet.userId)
       .then(user => {
@@ -45,7 +59,7 @@ const SnippetComponent = (snippet: Snippet) => {
   );
 };
 
-const SnippetContainer = style.div`
+const SnippetWrapper = style.div`
 `;
 
 export default SnippetComponent;

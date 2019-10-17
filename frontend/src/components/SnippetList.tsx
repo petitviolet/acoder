@@ -1,33 +1,49 @@
 import * as React from 'react';
 import Snippet from '../models/Snippet';
-import * as Flash from './Flash';
-import SnippetGateway from '../gateways/SnippetGateway';
-import SnippetComponent from './Snippet';
+import style from 'styled-components';
+import * as bs from 'react-bootstrap';
 
-export type Query = { userId: string };
-
-const SnippetListComponent = (query: Query) => {
-  const [snippets, setSnippets] = React.useState<Snippet[]>([]);
-
-  React.useEffect(() => {
-    SnippetGateway()
-      .search(query.userId)
-      .then(snippets => {
-        console.log(`SnippetGateway#search: ${JSON.stringify(snippets)}`);
-        setSnippets(snippets);
-      })
-      .catch(err => {
-        Flash.error(`Failed to fetch snippets. message = ${err}`);
-      });
-  }, [query]);
+const SnippetListComponent = (props: { snippets: Snippet[] }) => {
+  const { snippets } = props;
+  if (snippets.length == 0) {
+    return <>No snippets</>;
+  }
+  console.dir(snippets);
 
   return (
-    <>
-      {snippets.map(snippet => (
-        <SnippetComponent key={snippet.id} {...snippet} />
-      ))}
-    </>
+    <SnippetList>
+      <tbody>
+        {snippets.map(snippet => (
+          <SnippetCompactComponent key={snippet.id} {...snippet} />
+        ))}
+      </tbody>
+    </SnippetList>
   );
 };
+
+const SnippetCompactComponent = (snippet: Snippet) => {
+  return (
+    <Container striped bordered hove>
+      <Title>{snippet.title}</Title>
+      <FileType>{snippet.fileType}</FileType>
+      <UpdatedAt>{snippet.updatedAt.toLocaleString('jp-JP')}</UpdatedAt>
+    </Container>
+  );
+};
+
+const SnippetList = style(bs.Table)`
+`;
+
+const Container = style.tr` 
+    margin-bottom: 2px;
+    padding: 1px;
+`;
+const Title = style.td`
+`;
+const FileType = style.td`
+`;
+const UpdatedAt = style.td`
+    background-color: #848;
+`;
 
 export default SnippetListComponent;

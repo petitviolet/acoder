@@ -7,21 +7,9 @@ import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 
 const SnippetComponent = (snippet: Snippet) => {
-  return (
-    <bs.Container>
-      <bs.Row>
-        <bs.Col md={{ span: 6, offset: 3 }}>
-            <SnippetContainer {...snippet} />
-        </bs.Col>
-      </bs.Row>
-    </bs.Container>
-  );
-};
-
-const SnippetContainer = (snippet: Snippet) => {
   const [user, setUser] = React.useState<User>(null);
-  React.useEffect(() => {
-      console.log(JSON.stringify(snippet));
+  React.useMemo(() => {
+    console.log(JSON.stringify(snippet));
     UserGateway()
       .findById(snippet.userId)
       .then(user => {
@@ -59,7 +47,7 @@ const SnippetContainer = (snippet: Snippet) => {
   );
 };
 
-const SnippetWrapper = style.div`
+const Container = style.div`
 `;
 
 export default SnippetComponent;

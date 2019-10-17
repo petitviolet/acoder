@@ -4,14 +4,15 @@ import UserComponent from '../components/User';
 import * as Flash from '../components/Flash';
 import Snippet from '../models/Snippet';
 import SnippetGateway from '../gateways/SnippetGateway';
-import SnippetComponent from '../components/Snippet';
+import * as bs from 'react-bootstrap';
+import SnippetListComponent from './SnippetList';
 
 const MyPageComponent = () => {
   const {
     authState: { currentUser, token },
   } = React.useContext(Auth.Context);
   const [snippets, setSnippets] = React.useState<Snippet[]>([]);
-  React.useEffect(() => {
+  React.useMemo(() => {
     SnippetGateway(token)
       .search(currentUser.id)
       .then(snippets => {
@@ -19,17 +20,23 @@ const MyPageComponent = () => {
         setSnippets(snippets);
       })
       .catch(err => {
-        Flash.error(`Failed to login. message = ${err}`);
+        Flash.error(`Failed to fetch snippets. message = ${err}`);
       });
   }, [currentUser]);
 
+  console.log('MyPage1');
+  console.dir(snippets);
+  console.log('MyPage2');
+
   return (
-    <>
-      <UserComponent {...currentUser} />
-      {snippets.map(snippet => (
-        <SnippetComponent key={snippet.id} {...snippet} />
-      ))}
-    </>
+    <bs.Container>
+      <bs.Row>
+        <bs.Col md={{ span: 8, offset: 2 }}>
+          <UserComponent {...currentUser} />
+          <SnippetListComponent {...{snippets: snippets}} />
+        </bs.Col>
+      </bs.Row>
+    </bs.Container>
   );
 };
 

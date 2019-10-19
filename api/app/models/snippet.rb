@@ -14,4 +14,8 @@ class Snippet < ApplicationRecord
     order(:created_at)
   end
 
+  scope :without_content, -> do
+    except(:content)
+  end
+
 end

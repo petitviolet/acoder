@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :users
-    resources :snippets, only: %i[index create update delete] do
+    resources :snippets, only: %i[index show create update delete] do
       collection do
         get 'search'
       end

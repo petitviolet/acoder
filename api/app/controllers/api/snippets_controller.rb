@@ -2,12 +2,13 @@ class Api::SnippetsController < Api::ApiController
   before_action :user_authenticate!
 
   def index
-    render json: Snippet.feed, status: :ok
+    render json: Snippet.feed.without_content, status: :ok
   end
 
   def search
     user_id = params[:userId]
-    render json: User.find(user_id).snippets, status: :ok
+    render json: User.includes(:snippets)
+                   .find(user_id).snippets.without_content, status: :ok
   end
 
   def show

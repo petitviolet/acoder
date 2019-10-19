@@ -8,7 +8,16 @@ class Snippet {
   readonly createdAt: Date;
   readonly updatedAt: Date;
 
-  constructor(id: string, userId: string, title: string, fileType: string, description: string, content: object, createdAt: Date, updatedAt: Date) {
+  constructor(
+    id: string,
+    userId: string,
+    title: string,
+    fileType: string,
+    description: string,
+    content: object,
+    createdAt: Date,
+    updatedAt: Date,
+  ) {
     this.id = id;
     this.userId = userId;
     this.title = title;
@@ -18,7 +27,6 @@ class Snippet {
     this.createdAt = new Date(createdAt);
     this.updatedAt = new Date(updatedAt);
   }
-
 }
 
 export default Snippet;

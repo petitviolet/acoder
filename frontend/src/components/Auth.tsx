@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Flash from './Flash';
 import { Redirect } from 'react-router-dom';
 import User from '../models/User';
-import Token from '../models/Token';
+import {Token, SessionStore} from '../models/Authentication';
 
 export type Props = {
   readonly currentUser: User;
@@ -12,26 +12,6 @@ const INITIAL_STATE: Props = {
   currentUser: null,
   token: null,
 };
-
-class SessionStore {
-  static readonly KEY = 'Session';
-
-  static save(user: User, token: Token): void {
-    localStorage.setItem(SessionStore.KEY, JSON.stringify({ user: user, token: token }));
-  }
-
-  static load(): { user: User; token: Token } | null {
-    const values = localStorage.getItem(SessionStore.KEY);
-    if (values) {
-      return JSON.parse(values);
-    }
-    return null;
-  }
-
-  static clear(): void {
-    localStorage.removeItem(SessionStore.KEY);
-  }
-}
 
 export enum ActionType {
   Login = 'A',

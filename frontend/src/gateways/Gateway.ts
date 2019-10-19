@@ -1,5 +1,5 @@
-import Token from '../models/Token';
-import Axios, { AxiosInstance, AxiosResponse } from 'axios';
+import {SessionStore, Token} from '../models/Authentication';
+import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import config from '../config';
 import humps from 'humps';
 import { instanceOf } from 'prop-types';
@@ -25,18 +25,27 @@ const shared = ((): AxiosInstance => {
     }
   };
 
-  return Axios.create({
+  const instance = Axios.create({
     baseURL: `${config.API_HOST}/api`,
     timeout: 1000,
     headers: {
       get: Headers.applicationJson,
       post: Headers.applicationJson,
+      patch: Headers.applicationJson,
       put: Headers.applicationJson,
       delete: Headers.applicationJson,
     },
     transformResponse: merge(Axios.defaults.transformResponse, data => humps.camelizeKeys(data)),
     transformRequest: merge(Axios.defaults.transformRequest, data => humps.decamelizeKeys(data)),
   });
+  instance.interceptors.request.use((config: AxiosRequestConfig) => {
+    const session = SessionStore.load();
+    if (session) {
+      config.headers.common = Object.assign({}, config.headers.common, { 'X-Access-Token': session.token.value });
+    }
+    return config;
+  });
+  return instance;
 })();
 
 export default class Gateway {
@@ -48,18 +57,7 @@ export default class Gateway {
     this.token = token;
   }
 
-  protected authHeaders(token: Token = null) {
-    return { 'X-Access-Token': token || this.token };
-  }
-
-  protected defaultOptions(token: Token = null) {
-    const x = {
-      headers: { ...this.authHeaders(token), ...Headers.applicationJson },
-    };
-    return x;
-  }
-
-  protected responseLogging(tag: string, res: AxiosResponse) {
-    console.debug(`[${tag}]Response: status: ${res.status}, body: ${JSON.stringify(res.data)}`);
+  protected responseLogging(tag: string, res: AxiosResponse): void {
+    console.info(`[${tag}]Response: status: ${res.status}, body: ${JSON.stringify(res.data)}`);
   }
 }

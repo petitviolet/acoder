@@ -1,16 +1,14 @@
-import Token from '../models/Token';
+import { Token } from '../models/Authentication';
 import Gateway from './Gateway';
 import Snippet from '../models/Snippet';
 
 class SnippetGateway extends Gateway {
   search(userId: string) {
-    this.defaultOptions();
     return this.axios
       .get<Snippet[]>('/snippets/search', {
         params: {
           userId: userId,
-        },
-        headers: this.authHeaders(),
+        }
       })
       .then(res => {
         this.responseLogging('currentSnippet', res);

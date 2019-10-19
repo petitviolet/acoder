@@ -5,9 +5,32 @@ import UserGateway from '../gateways/UserGateway';
 import * as Flash from './Flash';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
+import SnippetGateway from "../gateways/SnippetGateway";
 
-const SnippetComponent = (snippet: Snippet) => {
+type SnippetProps = { snippetId: string } | { snippet: Snippet };
+const SnippetComponent = (props: SnippetProps) => {
   const [user, setUser] = React.useState<User>(null);
+  const [snippet, setSnippet] = React.useState<Snippet>(null);
+  if ('snippetId' in props) {
+      React.useMemo(() => {
+          SnippetGateway()
+              .findById(props.snippetId)
+              .then(snippet => {
+                  console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
+                  setSnippet(snippet);
+              })
+              .catch(err => {
+                  Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
+              });
+      }, [props]);
+  } else {
+      setSnippet(props.snippet);
+  }
+
+  if (snippet == null) {
+      return <>loading</>;
+  }
+
   React.useMemo(() => {
     console.log(JSON.stringify(snippet));
     UserGateway()
@@ -43,6 +66,10 @@ const SnippetComponent = (snippet: Snippet) => {
         <div>description:</div>
         <div>{snippet.description}</div>
       </div>
+        <div>
+            <div>content:</div>
+            <div>{snippet.content}</div>
+        </div>
     </div>
   );
 };

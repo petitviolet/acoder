@@ -27,38 +27,31 @@ const SnippetComponent = (props: SnippetProps) => {
     setSnippet(props.snippet);
   }
 
-    if (snippet == null) {
-        return <>loading...</>;
-    }
+  if (snippet == null) {
+    return <>loading...</>;
+  }
 
   return (
-    <div>
-      <div>
-        <div>id:</div>
-        <div>{snippet.id}</div>
-      </div>
-      <div>
-        <div>title:</div>
-        <div>{snippet.title}</div>
-      </div>
-      <div>
-        <div>fileType:</div>
-        <div>{snippet.fileType}</div>
-      </div>
-      <div>
-        <div>description:</div>
-        <div>{snippet.description}</div>
-      </div>
-      <div>
-        <div>content:</div>
-        <div>{snippet.content}</div>
-      </div>
-    </div>
+    <bs.Container>
+      <bs.Row>
+        <bs.Col md={{ span: 6, offset: 3 }}>
+          <bs.Badge variant="info">{snippet.fileType || 'unknown'}</bs.Badge>
+        </bs.Col>
+      </bs.Row>
+      <bs.Row>
+        <bs.Col md={{ span: 6, offset: 3 }}>{snippet.title}</bs.Col>
+      </bs.Row>
+      <bs.Row>
+        <bs.Col md={{ span: 6, offset: 3 }}>{snippet.description || '-'}</bs.Col>
+      </bs.Row>
+      <bs.Row>
+        <bs.Col md={{ span: 6, offset: 3 }}>{snippet.content}</bs.Col>
+      </bs.Row>
+    </bs.Container>
   );
 };
 
-const Container = style.div`
+const Container = style(bs.Container)`
 `;
-
 
 export default SnippetComponent;

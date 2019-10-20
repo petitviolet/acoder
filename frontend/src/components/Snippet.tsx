@@ -27,32 +27,12 @@ const SnippetComponent = (props: SnippetProps) => {
     setSnippet(props.snippet);
   }
 
-  React.useMemo(() => {
-    if (!snippet) {
-      return;
-    }
-    console.log(JSON.stringify(snippet));
-    UserGateway()
-      .findById(snippet.userId)
-      .then(user => {
-        console.log(`UserGateway#findById: ${JSON.stringify(user)}`);
-        setUser(user);
-      })
-      .catch(err => {
-        Flash.error(`Failed to fetch user(id: ${snippet.userId}). message = ${err}`);
-      });
-  }, [snippet]);
-
     if (snippet == null) {
         return <>loading...</>;
     }
 
   return (
     <div>
-      <div>
-        <div>createdBy:</div>
-        <div>{user ? user.name : 'loading'}</div>
-      </div>
       <div>
         <div>id:</div>
         <div>{snippet.id}</div>
@@ -79,5 +59,6 @@ const SnippetComponent = (props: SnippetProps) => {
 
 const Container = style.div`
 `;
+
 
 export default SnippetComponent;

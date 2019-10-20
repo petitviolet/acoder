@@ -9,7 +9,6 @@ import SnippetGateway from '../gateways/SnippetGateway';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 const SnippetComponent = (props: SnippetProps) => {
-  const [user, setUser] = React.useState<User>(null);
   const [snippet, setSnippet] = React.useState<Snippet>(null);
   if ('snippetId' in props) {
     React.useMemo(() => {

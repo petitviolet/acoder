@@ -4,7 +4,7 @@ class Snippet {
   readonly title: string;
   readonly fileType: string;
   readonly description: string;
-  readonly content: object;
+  readonly content: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 
@@ -14,7 +14,7 @@ class Snippet {
     title: string,
     fileType: string,
     description: string,
-    content: object,
+    content: string,
     createdAt: Date,
     updatedAt: Date,
   ) {

@@ -7946,6 +7946,13 @@ react-transition-group@^4.0.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-trix@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-trix/-/react-trix-0.5.1.tgz#e0a949e07516c02e56828dc4483ac189c243ae4f"
+  integrity sha512-2Wqh5NJIrUyxso3SWreWMdkwIrcysdrAaIjZo91sURgs/TZeTPduYH/deCOJTq+7/vrvpIu78yRBRrOjAOTqyw==
+  dependencies:
+    trix "^1.2.0"
+
 react@^16.8.3:
   version "16.10.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.10.2.tgz#a5ede5cdd5c536f745173c8da47bda64797a4cf0"
@@ -9256,6 +9263,11 @@ trix@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/trix/-/trix-1.2.0.tgz#b314101abd1d8d3d5da22ae5b866a719a73a6e21"
   integrity sha512-gJ7edoWzcnc9DBjsgeGkmotVpyVhFQTlSOmUYjwFn71NlGixAhNgsu8pVIq/jkIkbk6om0PSetc9cRJm+qU3+A==
+
+trix@^1.2.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/trix/-/trix-1.2.1.tgz#883abd5c996eeb35d50aefc3716c582b7870358f"
+  integrity sha512-4TjqDk+v4OcJmSCMjQNiSbtZ5X8VQHTvIUhIzj1z+Wx63jM+g2yE+MT9qJS6uQZy3j60jpCqoxaCTZT8uEI2Xg==
 
 ts-loader@^6.2.0:
   version "6.2.0"

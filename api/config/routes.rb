@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'home#index'
   get '*page', to: 'home#index', constraints: ->(req) do
     !req.xhr? && req.format.html?

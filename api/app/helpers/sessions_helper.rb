@@ -5,7 +5,7 @@ module SessionsHelper
   using Sessions
 
   included do
-    before_action :user_authenticate
+    before_action :user_authenticate! unless :devise_controller? # via devise || access_token
     attr_reader :current_user
   end
 
@@ -16,6 +16,6 @@ module SessionsHelper
     end
 
     def user_authenticate
-      @current_user ||= request.current_user
+      @current_user ||= request.current_user_by_token
     end
 end

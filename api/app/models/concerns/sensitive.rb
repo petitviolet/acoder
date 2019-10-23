@@ -1,9 +1,9 @@
 module Sensitive
   extend ActiveSupport::Concern
+  @@excludes = []
 
   class_methods do
     def sensitive_fields(*fields)
-      @@excludes ||= []
       @@excludes = @@excludes.concat(fields)
     end
   end

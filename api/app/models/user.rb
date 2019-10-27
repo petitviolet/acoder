@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
   include Sensitive
 
@@ -9,16 +9,16 @@ class User < ApplicationRecord
   attr_writer :password, :password_confirmation
 
   validates :name, presence: true, uniqueness: true
-  # validates :email, presence: true, uniqueness: true, format: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, uniqueness: true, format: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   before_save do
-    # email.downcase!
+    email.downcase!
     # set_password_digest
   end
 
   # validate :password_validation
 
   # sensitive_fields :password_salt, :password_digest
-  # validates :password_salt, presence: true, allow_nil: true
+  validates :password_salt, presence: true, allow_nil: true
   # validates :password_digest, presence: true, allow_nil: true
 
   has_many :access_tokens, dependent: :destroy
@@ -38,7 +38,7 @@ class User < ApplicationRecord
   # end
 
   private
-
+    #
     # def password_validation
     #   return if id.present? && (@password.nil? && @password_confirmation.nil?)
     #
@@ -49,7 +49,7 @@ class User < ApplicationRecord
     #   @errors.add(:password, 'password is too short') if @password.length < Security::MIN_PASSWORD_LENGTH
     #   @errors.add(:password, 'password is too long') if @password.length > Security::MAX_PASSWORD_LENGTH
     # end
-    #
+
     # def set_password_digest
     #   self.password_salt ||= Security.new_token
     #   self.password_digest = Security.digest(concat_password(@password, self.password_salt)) if @password.present?

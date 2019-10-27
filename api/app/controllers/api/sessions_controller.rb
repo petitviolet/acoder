@@ -1,5 +1,4 @@
-class Api::SessionsController < Api::ApiController
-  before_action :user_authenticate!, only: %i[whoami]
+class Api::SessionsController < Devise::SessionsController
 
   def whoami
     render json: current_user, status: :ok

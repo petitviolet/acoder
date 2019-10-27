@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include SessionsHelper
   include ApplicationHelper
   before_action :configure_permitted_parameters, if: :devise_controller?
+  respond_to :json
 
   rescue_from(ActiveRecord::RecordNotFound) do |e|
     render json: { error: e.message }, status: :not_found

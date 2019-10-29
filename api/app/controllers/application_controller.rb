@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+        include DeviseTokenAuth::Concerns::SetUserByToken
   include SessionsHelper
   include ApplicationHelper
   before_action :configure_permitted_parameters, if: :devise_controller?

@@ -1,11 +1,5 @@
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'Account', at: 'auth'
-
-  devise_for :users, skip: :all
-  devise_scope :user do
-    post '/api/sign_in' => 'api/sessions#create', as: :user_session
-    delete '/api/sign_out' => 'api/sessions#destroy', as: :destroy_user_session
-  end
+  mount_devise_token_auth_for 'Account', at: 'accounts'
 
   root 'home#index'
   get '*page', to: 'home#index', constraints: ->(req) do

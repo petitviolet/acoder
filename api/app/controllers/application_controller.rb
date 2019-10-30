@@ -34,8 +34,6 @@ class ApplicationController < ActionController::API
     end
 
     def devise_token_auth_controller?
-      res = params[:controller].split('/')[0] == 'devise_token_auth'
-      binding.pry
-      res
+      params[:controller].split('/')[0] == 'devise_token_auth'
     end
 end

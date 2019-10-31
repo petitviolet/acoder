@@ -1,5 +1,4 @@
 class Api::SnippetsController < Api::ApiController
-  before_action :user_authenticate!
 
   def index
     render json: Snippet.feed.without_content, status: :ok

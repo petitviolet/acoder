@@ -4,7 +4,7 @@ module Sessions
   end
 
   refine ActionDispatch::Request do
-    def current_user
+    def current_user_by_token
       User.authenticate(access_token) if access_token
     end
 

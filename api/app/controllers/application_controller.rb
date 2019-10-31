@@ -46,19 +46,15 @@ class ApplicationController < ActionController::API
     end
 
     def join_tokens
-      return if request.headers['access-token'].nil?
+      return if response.headers['access-token'].nil?
 
       auth_json = {
-        'access-token' => request.headers['access-token'],
-        'client' => request.headers['client'],
-        'uid' => request.headers['uid'],
+        'access-token' => response.headers['access-token'],
+        'client' => response.headers['client'],
+        'uid' => response.headers['uid'],
       }
-      response.headers.delete_if{|key| auth_json.include? key}
+      response.headers.delete_if{ |key| auth_json.include? key }
       response.headers['X-Access-Token'] = CGI.escape(Base64.encode64(JSON.dump(auth_json)))
-    end
-
-    def devise_token_auth_controller?
-      params[:controller].split('/')[0] == 'devise_token_auth'
     end
 
     def configure_permitted_parameters

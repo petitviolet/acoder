@@ -4,7 +4,8 @@ class ApplicationController < ActionController::API
 
   before_action :split_tokens
   prepend_after_action :join_tokens
-  before_action :authenticate_user!, unless: :devise_token_auth_controller?
+  before_action :authenticate_user!, unless: :devise_controller?
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   respond_to :json
 
@@ -58,5 +59,10 @@ class ApplicationController < ActionController::API
 
     def devise_token_auth_controller?
       params[:controller].split('/')[0] == 'devise_token_auth'
+    end
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name])
     end
 end

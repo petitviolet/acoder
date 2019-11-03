@@ -8,7 +8,7 @@ class Api::UsersController < Api::ApiController
   def show
     user = User.find_by(id: params[:id])
     if user
-      render json: user, status: :ok
+      render json: user, status: :ok, serializer: UserSerializer
     else
       render json: {}, status: :not_found
     end
@@ -17,12 +17,12 @@ class Api::UsersController < Api::ApiController
   def sign_up
     byebug
     user = User.sign_up!(account_params)
-    render json: user, status: :created
+    render json: user, status: :created, serializer: UserSerializer
   end
 
   def update
     current_user.update(user_params)
-    render json: user, status: :ok
+    render json: user, status: :ok, serializer: UserSerializer
   end
 
   def destroy

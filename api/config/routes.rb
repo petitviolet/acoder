@@ -6,15 +6,19 @@ Rails.application.routes.draw do
 
   scope :api do
     mount_devise_token_auth_for 'Account', at: 'accounts', skip: [:registrations]
-    devise_scope :account do
-      post '/accounts/sign_up', to: 'devise_token_auth/registrations#create'
-      put '/accounts', to: 'devise_token_auth/registrations#update'
-      delete '/accounts', to: 'devise_token_auth/registrations#destroy'
-    end
+    # devise_scope :account do
+    #   post '/accounts/sign_up', to: 'devise_token_auth/registrations#create'
+    #   put '/accounts', to: 'devise_token_auth/registrations#update'
+    #   delete '/accounts', to: 'devise_token_auth/registrations#destroy'
+    # end
   end
 
   namespace :api, defaults: { format: :json } do
-    resources :users
+    resources :users, only: %i[show update delete] do
+      collection do
+        post 'sign_up'
+      end
+    end
 
     resources :snippets, only: %i[index show create update delete] do
       collection do

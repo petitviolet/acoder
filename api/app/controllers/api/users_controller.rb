@@ -1,9 +1,9 @@
 class Api::UsersController < Api::ApiController
-  before_action :user_authenticate!, only: %i[update destroy]
+  skip_before_action :authenticate_user!, only: %i[sign_up]
 
-  def index
-    render json: User.all
-  end
+  # def index
+  #   render json: User.all
+  # end
 
   def show
     user = User.find_by(id: params[:id])
@@ -14,8 +14,9 @@ class Api::UsersController < Api::ApiController
     end
   end
 
-  def create
-    user = User.create!(user_params)
+  def sign_up
+    byebug
+    user = User.sign_up!(account_params)
     render json: user, status: :created
   end
 
@@ -30,6 +31,12 @@ class Api::UsersController < Api::ApiController
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name)
+    end
+
+    def account_params
+      p = params.require(:user)
+      p[:password_confirmation] = p[:password] if p[:password]
+      p.permit(:name, :email, :password, :password_confirmation)
     end
 end

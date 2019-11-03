@@ -4,6 +4,10 @@ class User < ApplicationRecord
   belongs_to :account, optional: false
   has_many :snippets, dependent: :nullify
 
+  def self.by_account(account)
+    find_by(account_id: account.id)
+  end
+
   def self.sign_up!(params)
     ActiveRecord::Base.transaction do
       account = Account.new(params.slice(:name, :email, :password, :password_confirmation))

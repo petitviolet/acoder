@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   }
 
   scope :api do
-    mount_devise_token_auth_for 'Account', at: 'accounts', skip: [:registrations]
+    mount_devise_token_auth_for 'Account', at: 'users', skip: [:registrations], controllers: {
+      sessions: 'api/sessions'
+    }
     # devise_scope :account do
     #   post '/accounts/sign_up', to: 'devise_token_auth/registrations#create'
     #   put '/accounts', to: 'devise_token_auth/registrations#update'

@@ -33,7 +33,7 @@ class ApplicationController < ActionController::API
     def current_user
       return nil if current_account.nil?
 
-      @current_user ||= User.find_by(account_id: current_account.id)
+      @current_user ||= User.by_account(current_account)
     end
 
     def split_tokens

@@ -12,10 +12,6 @@ const UserComponent = (user: User) => {
         <div>name:</div>
         <div>{user.name}</div>
       </div>
-      <div>
-        <div>email:</div>
-        <div>{user.email}</div>
-      </div>
     </div>
   );
 };

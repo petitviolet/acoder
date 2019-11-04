@@ -3,15 +3,16 @@ import Gateway from './Gateway';
 import User from '../models/User';
 
 class UserGateway extends Gateway {
-  login(email: string, password: string): Promise<{token: Token, user: User}> {
+  login(email: string, password: string): Promise<{ token: Token; user: User }> {
     return this.axios
-      .post<{token: string, user: User}>('/login', {
+      .post<User>('/users/sign_in', {
         email: email,
         password: password,
       })
       .then(res => {
+        const token = res.headers['x-access-token'];
         this.responseLogging('login', res);
-        return { token: new Token(res.data.token), user: res.data.user };
+        return { token: new Token(token), user: res.data };
       });
   }
 

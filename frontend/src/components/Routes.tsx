@@ -26,10 +26,6 @@ const Routes: React.FC = () => {
             <Route exact path={'/snippets/:id'}
                    render={(props: RouteComponentProps<any>) =>
                        <SnippetComponent {...{snippetId: props.match.params.id}} />} />
-            {/*<Route*/}
-            {/*  path={"/users/:id"}*/}
-            {/*  component={(props: {currentUser: Auth.Context}) => UserComponent(props.currentUser)}*/}
-            {/*/>*/}
           </Switch>
         </Switch>
       </div>

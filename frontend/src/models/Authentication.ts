@@ -4,7 +4,9 @@ export class SessionStore {
   static readonly KEY = 'Session';
 
   static save(user: User, token: Token): void {
-    localStorage.setItem(SessionStore.KEY, JSON.stringify({ user: user, token: token }));
+    if (!!user && !!token) {
+      localStorage.setItem(SessionStore.KEY, JSON.stringify({user: user, token: token}));
+    }
   }
 
   static load(): { user: User; token: Token } | null {

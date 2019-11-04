@@ -45,6 +45,8 @@ class ApplicationController < ActionController::API
       request.headers['access-token'] = token['access-token']
       request.headers['client'] = token['client']
       request.headers['uid'] = token['uid']
+    rescue => e
+      logger.debug("Failed to split_tokens. header = #{request.headers['X-Access-Token']}. cause = #{e.inspect}")
     end
 
     def join_tokens

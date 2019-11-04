@@ -8,7 +8,7 @@ class Api::SessionsController < DeviseTokenAuth::SessionsController
   def create
     def self.render_create_success
       user = User.by_account(@resource)
-      render json: user
+      render json: user, serializer: UserSerializer
     end
     super
   end

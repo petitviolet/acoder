@@ -58,15 +58,16 @@ const validator: Validator<SignUpState> = new (class implements Validator<SignUp
 
 const SignUp = () => {
   const [signUpSucceeded, setSignUpSucceeded] = React.useState<boolean>(false);
+  const history = useHistory();
 
   const moveToAfterSignUp = () => {
     const url = '/login';
     console.debug(`[AfterSignUp]move to ${url}`);
-    return useHistory().push(url);
+    return history.push(url);
   };
 
   React.useEffect(() => {
-      console.log(`signUpSucceeded? ${signUpSucceeded}`);
+    console.log(`signUpSucceeded? ${signUpSucceeded}`);
     if (!signUpSucceeded) {
       return;
     }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Snippet from '../models/Snippet';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const SnippetListComponent = (props: { snippets: Snippet[] }) => {
   const { snippets } = props;
@@ -25,7 +25,9 @@ const SnippetListComponent = (props: { snippets: Snippet[] }) => {
 const SnippetCompactComponent = (snippet: Snippet) => {
   return (
     <Container striped bordered hove>
-        <Title><Link to={`/snippets/${snippet.id}`}>{snippet.title}</Link></Title>
+      <Title>
+        <Link to={`/snippets/${snippet.id}`}>{snippet.title}</Link>
+      </Title>
       <FileType>{snippet.fileType}</FileType>
       <UpdatedAt>{snippet.updatedAt.toLocaleString('jp-JP')}</UpdatedAt>
     </Container>

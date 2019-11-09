@@ -6,11 +6,11 @@ class UserGateway extends Gateway {
   signUp(name: string, email: string, password: string): Promise<{ user: User }> {
     return this.axios
       .post<User>('/users/sign_up', {
-          user: {
-            name: name,
-            email: email,
-            password: password,
-          },
+        user: {
+          name: name,
+          email: email,
+          password: password,
+        },
       })
       .then(res => {
         this.responseLogging('sign_up', res);

@@ -1,11 +1,11 @@
-import User from "./User";
+import User from './User';
 
 export class SessionStore {
   static readonly KEY = 'Session';
 
   static save(user: User, token: Token): void {
     if (!!user && !!token) {
-      localStorage.setItem(SessionStore.KEY, JSON.stringify({user: user, token: token}));
+      localStorage.setItem(SessionStore.KEY, JSON.stringify({ user: user, token: token }));
     }
   }
 

@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import style from 'styled-components';
-import {Errors, useForm, Validator} from './useForm';
+import { Errors, useForm, Validator } from './useForm';
 import * as Flash from './Flash';
 import UserGateway from '../gateways/UserGateway';
 import * as bs from 'react-bootstrap';
-
 
 type SignUpState = {
   readonly name: string;
@@ -108,13 +107,13 @@ const SignUp = () => {
         <bs.Col md={{ span: 6, offset: 3 }}>
           <form onSubmit={handleSubmit}>
             <Inputs
-                title={'Name'}
-                name={'name'}
-                type={'text'}
-                value={state.name}
-                placeholder={''}
-                errors={errors}
-                onChange={handleChange}
+              title={'Name'}
+              name={'name'}
+              type={'text'}
+              value={state.name}
+              placeholder={''}
+              errors={errors}
+              onChange={handleChange}
             />
             <Inputs
               title={'Email'}

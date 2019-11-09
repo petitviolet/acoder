@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Flash from './Flash';
 import { Redirect } from 'react-router-dom';
 import User from '../models/User';
-import {Token, SessionStore} from '../models/Authentication';
+import { Token, SessionStore } from '../models/Authentication';
 
 export type Props = {
   readonly currentUser: User;

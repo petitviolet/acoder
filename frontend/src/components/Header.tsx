@@ -21,12 +21,12 @@ const LoginButton = () => {
 };
 
 const LogoutButton = () => {
-    const { authDispatch } = React.useContext(Auth.Context);
+  const { authDispatch } = React.useContext(Auth.Context);
   const onClick = () => {
-      authDispatch({
-          type: Auth.ActionType.Logout,
-      });
-      Flash.success('Log out successfully')
+    authDispatch({
+      type: Auth.ActionType.Logout,
+    });
+    Flash.success('Log out successfully');
   };
 
   return (

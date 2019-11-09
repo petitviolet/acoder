@@ -33,7 +33,7 @@ const MyPageComponent = () => {
       <bs.Row>
         <bs.Col md={{ span: 8, offset: 2 }}>
           <UserComponent {...currentUser} />
-          <SnippetListComponent {...{snippets: snippets}} />
+          <SnippetListComponent {...{ snippets: snippets }} />
         </bs.Col>
       </bs.Row>
     </bs.Container>

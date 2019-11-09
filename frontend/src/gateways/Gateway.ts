@@ -1,4 +1,4 @@
-import {SessionStore, Token} from '../models/Authentication';
+import { SessionStore, Token } from '../models/Authentication';
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import config from '../config';
 import humps from 'humps';

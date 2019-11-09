@@ -68,17 +68,19 @@ const Editor = (props: { snippet: Snippet; edit: boolean }) => {
   const mergeTags = [];
   console.log(`editor: ${snippet.content}`);
 
-  return (<>
-      <TrixEditorComponent
-          onChange={handleChange}
-          onEditorReady={handleEditorReady}
-          mergeTags={mergeTags} />
+  return (
+    <>
+      <TrixEditorComponent onChange={handleChange} onEditorReady={handleEditorReady} mergeTags={mergeTags} />
       <bs.ButtonToolbar>
-          <bs.Button className="mr-1" variant={"info"} size={"sm"}>Save</bs.Button>
-          <bs.Button variant={"outline-dark"} size={"sm"}>Cancel</bs.Button>
+        <bs.Button className="mr-1" variant={'info'} size={'sm'}>
+          Save
+        </bs.Button>
+        <bs.Button variant={'outline-dark'} size={'sm'}>
+          Cancel
+        </bs.Button>
       </bs.ButtonToolbar>
-
-      </>);
+    </>
+  );
 };
 
 const TrixEditorComponent = style(TrixEditor)`

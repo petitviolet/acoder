@@ -9,6 +9,7 @@ import SnippetComponent from './Snippet';
 import SnippetListComponent from './SnippetList';
 import Header from './Header';
 import Snippet from "../models/Snippet";
+import SignUp from "./SignUp";
 
 const Routes: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const Routes: React.FC = () => {
         <FlashComponent />
         <Switch>
           <Route exact path={'/'} render={() => 'Home!!!'} />
+          <Route exact path={'/sign_up'} component={SignUp} />
           <Route path={'/login'} component={Login} />
           <Switch>
             <Route exact path={'/me'} component={MyPageComponent} />

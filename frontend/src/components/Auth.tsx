@@ -57,7 +57,7 @@ export const Context = React.createContext<{
   loggedIn: false,
 });
 
-const NOT_LOGIN_REQUIRED_PATHS = ['/login'];
+const NOT_LOGIN_REQUIRED_PATHS = ['/login', '/sign_up'];
 
 export const Component = ({ children }) => {
   const storedState = SessionStore.load();

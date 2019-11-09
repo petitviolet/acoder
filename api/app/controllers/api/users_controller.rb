@@ -15,7 +15,6 @@ class Api::UsersController < Api::ApiController
   end
 
   def sign_up
-    byebug
     user = User.sign_up!(account_params)
     render json: user, status: :created, serializer: UserSerializer
   end

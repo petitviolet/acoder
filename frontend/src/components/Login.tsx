@@ -10,7 +10,6 @@ import * as bs from 'react-bootstrap';
 type LoginState = {
   readonly email: string;
   readonly password: string;
-  readonly passwordConfirmation: string;
 };
 
 const validator: Validator<LoginState> = new (class implements Validator<LoginState> {
@@ -32,17 +31,10 @@ const validator: Validator<LoginState> = new (class implements Validator<LoginSt
     }
   }
 
-  passwordConfirmationValidator(password: string, passwordConfirmation: string): string | null {
-    if (password != passwordConfirmation) {
-      return 'PasswordConfirmation is not match';
-    }
-  }
-
   runAll(state: LoginState): Map<string, string> {
     return new Map([
       ['email', this.emailValidator(state.email)],
       ['password', this.passwordValidator(state.password)],
-      ['passwordConfirmation', this.passwordConfirmationValidator(state.password, state.passwordConfirmation)],
     ]);
   }
 })();
@@ -62,7 +54,7 @@ const Login = () => {
 
   const onSubmit = values => {
     console.debug(`authState onSubmit: ${JSON.stringify(authState)}`);
-    if (values.email && values.password && values.password == values.passwordConfirmation) {
+    if (values.email && values.password) {
       UserGateway()
         .login(values.email, values.password)
         .then(response => {
@@ -88,7 +80,6 @@ const Login = () => {
     {
       email: 'alice@example.com',
       password: 'password',
-      passwordConfirmation: 'password',
     },
     validator,
   );
@@ -114,15 +105,6 @@ const Login = () => {
               name={'password'}
               type={'password'}
               value={state.password}
-              placeholder={''}
-              errors={errors}
-              onChange={handleChange}
-            />
-            <Inputs
-              title={'Password(again)'}
-              name={'passwordConfirmation'}
-              type={'password'}
-              value={state.passwordConfirmation}
               placeholder={''}
               errors={errors}
               onChange={handleChange}

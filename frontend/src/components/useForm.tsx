@@ -52,7 +52,7 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
     event => {
       const name: string = event.target.name;
       const value: string = event.target.value;
-      if (value.length > 0) {
+      if (!isEditing && value.length > 0) {
         setIsEditing(true);
       }
       setState(prevState => {

@@ -26,7 +26,7 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
     setErrors(_errors);
     console.dir(_errors);
     return _errors.size == 0;
-  }, [state, errors]);
+  }, [state]);
 
   const handleSubmit = React.useCallback(
     event => {
@@ -38,7 +38,7 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
         console.log(`submit is disabled. error = ${errors}`);
       }
     },
-    [state, errors, submitEnabled],
+    [state],
   );
 
   const handleChange = React.useCallback(
@@ -55,7 +55,7 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
         return newState;
       });
     },
-    [validator, state],
+    [state],
   );
 
   return {

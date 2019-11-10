@@ -90,7 +90,7 @@ const SignUp = () => {
     }
   };
 
-  const { state, errors, disable, handleChange, handleSubmit } = useForm<SignUpState>(
+  const { state, errors, disabled, handleChange, handleSubmit } = useForm<SignUpState>(
     onSubmit,
     {
       name: 'alice',
@@ -142,7 +142,7 @@ const SignUp = () => {
               errors={errors}
               onChange={handleChange}
             />
-            <bs.Button type="submit" disabled={disable}>
+            <bs.Button type="submit" disabled={disabled}>
               送信
             </bs.Button>
           </form>

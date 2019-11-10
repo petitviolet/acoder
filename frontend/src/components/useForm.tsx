@@ -9,14 +9,7 @@ export type Errors = Map<string, string>;
 export const useForm = <State extends {}>(onSubmit, initial: State, validator: Validator<State>) => {
   const [state, setState] = React.useState<State>(initial);
   const [errors, setErrors] = React.useState<Errors>(new Map());
-  const [disable, setDisable] = React.useState<boolean>(true);
-  const [isEditing, setIsEditing] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    if (isEditing) {
-      setDisable(false);
-    }
-  }, [isEditing, errors]);
+  const [submitEnabled, submitEnable] = React.useState<boolean>(false);
 
   const isValid: () => boolean = React.useCallback(() => {
     const _errors = Array.from(validator.runAll(state)).reduce<Map<string, string>>(
@@ -39,21 +32,21 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
     event => {
       if (event) event.preventDefault();
 
-      if (!disable && isValid()) {
+      if (submitEnabled && isValid()) {
         onSubmit(state);
       } else {
         console.log(`submit is disabled. error = ${errors}`);
       }
     },
-    [state, errors, disable],
+    [state, errors, submitEnabled],
   );
 
   const handleChange = React.useCallback(
     event => {
       const name: string = event.target.name;
       const value: string = event.target.value;
-      if (!isEditing && value.length > 0) {
-        setIsEditing(true);
+      if (!submitEnabled && value.length > 0) {
+        submitEnable(true);
       }
       setState(prevState => {
         const newState = { ...prevState, [name]: value };
@@ -68,7 +61,7 @@ export const useForm = <State extends {}>(onSubmit, initial: State, validator: V
   return {
     state,
     errors,
-    disable,
+    disabled: !submitEnabled,
     handleChange,
     handleSubmit,
   };

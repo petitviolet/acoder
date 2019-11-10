@@ -75,7 +75,7 @@ const Login = () => {
     }
   };
 
-  const { state, errors, disable, handleChange, handleSubmit } = useForm<LoginState>(
+  const { state, errors, disabled, handleChange, handleSubmit } = useForm<LoginState>(
     onSubmit,
     {
       email: 'alice@example.com',
@@ -109,7 +109,7 @@ const Login = () => {
               errors={errors}
               onChange={handleChange}
             />
-            <bs.Button type="submit" disabled={disable}>
+            <bs.Button type="submit" disabled={disabled}>
               送信
             </bs.Button>
           </form>

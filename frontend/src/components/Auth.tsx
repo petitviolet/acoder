@@ -13,11 +13,10 @@ const INITIAL_STATE: Props = {
   token: null,
 };
 
-export enum ActionType {
+enum ActionType {
   Login = 'A',
   Logout = 'B',
 }
-
 type Action = LoginAction | LogoutAction;
 type LoginAction = {
   readonly type: ActionType.Login;
@@ -46,14 +45,18 @@ const reducer = (state: Props, action: Action) => {
     return state;
   }
 };
+type AuthActions = {
+  login: (token: Token, user: User) => void;
+  logout: () => void;
+};
 
 export const Context = React.createContext<{
   authState: Props;
-  authDispatch: React.Dispatch<Action>;
+  authActions: AuthActions;
   loggedIn: boolean;
 }>({
   authState: INITIAL_STATE,
-  authDispatch: null,
+  authActions: null,
   loggedIn: false,
 });
 
@@ -62,13 +65,21 @@ const NOT_LOGIN_REQUIRED_PATHS = ['/login', '/sign_up'];
 export const Component = ({ children }) => {
   const storedState = SessionStore.load();
   const initialState = storedState ? { currentUser: storedState.user, token: storedState.token } : INITIAL_STATE;
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  console.log(`Auth.Component state:${JSON.stringify(state)}`);
+  const [authState, dispatch] = React.useReducer(reducer, initialState);
+  console.log(`Auth.Component state:${JSON.stringify(authState)}`);
+  const authActions = {
+    login: (token: Token, user: User) => {
+      dispatch({ type: ActionType.Login, token, user });
+    },
+    logout: () => {
+      dispatch({ type: ActionType.Logout });
+    },
+  };
 
-  const loggedIn: boolean = !!state.token && !!state.currentUser;
+  const loggedIn: boolean = !!authState.token && !!authState.currentUser;
   if (loggedIn || NOT_LOGIN_REQUIRED_PATHS.includes(window.location.pathname)) {
     return (
-      <Context.Provider value={{ authState: state, authDispatch: dispatch, loggedIn }}>
+      <Context.Provider value={{ authState, authActions, loggedIn }}>
         {/*<Context.Consumer>*/}
         {children}
         {/*</Context.Consumer>*/}

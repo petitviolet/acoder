@@ -21,11 +21,9 @@ const LoginButton = () => {
 };
 
 const LogoutButton = () => {
-  const { authDispatch } = React.useContext(Auth.Context);
+  const { authActions } = React.useContext(Auth.Context);
   const onClick = () => {
-    authDispatch({
-      type: Auth.ActionType.Logout,
-    });
+    authActions.logout();
     Flash.success('Log out successfully');
   };
 

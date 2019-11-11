@@ -46,7 +46,7 @@ const moveToAfterLogin = (returnUrl: string | null = null) => {
 };
 
 const Login = () => {
-  const { authState, authDispatch, loggedIn } = React.useContext(Auth.Context);
+  const { authState, authActions, loggedIn } = React.useContext(Auth.Context);
 
   if (loggedIn) {
     return moveToAfterLogin();
@@ -60,11 +60,7 @@ const Login = () => {
         .then(response => {
           Flash.success('Login successfully');
           console.debug(`authState onLogin: ${JSON.stringify(authState)}`);
-          authDispatch({
-            type: Auth.ActionType.Login,
-            token: response.token,
-            user: response.user,
-          });
+          authActions.login(response.token, response.user);
           return;
         })
         .catch(err => {

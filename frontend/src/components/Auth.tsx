@@ -41,8 +41,6 @@ const reducer = (state: Props, action: Action) => {
   case ActionType.Logout:
     SessionStore.clear();
     return INITIAL_STATE;
-  default:
-    return state;
   }
 };
 type AuthActions = {

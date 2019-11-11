@@ -12,6 +12,14 @@ const INITIAL_STATE: Props = {
   currentUser: null,
   token: null,
 };
+const initialState = (() => {
+  const storedState = SessionStore.load();
+  if (storedState) {
+    return { currentUser: storedState.user, token: storedState.token };
+  } else {
+    return INITIAL_STATE;
+  }
+})();
 
 enum ActionType {
   Login = 'A',
@@ -28,7 +36,6 @@ type LogoutAction = {
 };
 
 const reducer = (state: Props, action: Action) => {
-  console.log(`Auth.reducer called. action: ${JSON.stringify(action)}, state: ${JSON.stringify(state)}`);
   switch (action.type) {
   case ActionType.Login:
     const newState = {
@@ -61,8 +68,6 @@ export const Context = React.createContext<{
 const NOT_LOGIN_REQUIRED_PATHS = ['/login', '/sign_up'];
 
 export const Component = ({ children }) => {
-  const storedState = SessionStore.load();
-  const initialState = storedState ? { currentUser: storedState.user, token: storedState.token } : INITIAL_STATE;
   const [authState, dispatch] = React.useReducer(reducer, initialState);
   console.log(`Auth.Component state:${JSON.stringify(authState)}`);
   const authActions = {

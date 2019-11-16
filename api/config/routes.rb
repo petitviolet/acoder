@@ -28,6 +28,6 @@ Rails.application.routes.draw do
       end
     end
 
-    get '/whoami', to: 'sessions#whoami'
+    get '/whoami', to: 'users#whoami'
   end
 end

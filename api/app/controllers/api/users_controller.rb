@@ -1,6 +1,10 @@
 class Api::UsersController < Api::ApiController
   skip_before_action :authenticate_user!, only: %i[sign_up]
 
+  def whoami
+    render json: current_user, status: :ok
+  end
+
   # def index
   #   render json: User.all
   # end

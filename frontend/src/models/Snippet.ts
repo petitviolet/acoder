@@ -1,3 +1,5 @@
+import User from './User';
+
 class Snippet {
   readonly id: string;
   readonly userId: string;
@@ -26,6 +28,10 @@ class Snippet {
     this.content = content;
     this.createdAt = new Date(createdAt);
     this.updatedAt = new Date(updatedAt);
+  }
+
+  static create(user: User): Snippet {
+    return new Snippet(null, user.id, '', null, '', '', null, null);
   }
 }
 

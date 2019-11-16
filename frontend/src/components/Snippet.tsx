@@ -1,12 +1,13 @@
 import * as React from 'react';
 import Snippet from '../models/Snippet';
 import * as Flash from './Flash';
+import SnippetEditor from './SnippetEditor';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import SnippetGateway from '../gateways/SnippetGateway';
-import { TrixEditor } from 'react-trix';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
+
 const SnippetComponent = (props: SnippetProps) => {
   const [snippet, setSnippet] = React.useState<Snippet>(null);
   if ('snippetId' in props) {
@@ -34,56 +35,39 @@ const SnippetComponent = (props: SnippetProps) => {
     <bs.Container>
       <bs.Row>
         <bs.Col md={layout}>
-          <bs.Badge variant="info">{snippet.fileType || 'unknown'}</bs.Badge>
+          <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
         </bs.Col>
       </bs.Row>
       <bs.Row>
         <bs.Col md={layout}>{snippet.title}</bs.Col>
       </bs.Row>
       <bs.Row>
-        <bs.Col md={layout}>{snippet.description || '-'}</bs.Col>
+        <bs.Col md={layout}>{snippet.description || ''}</bs.Col>
       </bs.Row>
       <bs.Row>
         <bs.Col md={layout}>
-          <Editor {...{ snippet: snippet, edit: false }} />
+          <Content {...snippet} />
         </bs.Col>
       </bs.Row>
     </bs.Container>
   );
 };
 
-const Container = style(bs.Container)`
-`;
-
-const Editor = (props: { snippet: Snippet; edit: boolean }) => {
-  // https://github.com/dstpierre/react-trix
-  const { snippet, edit } = props;
-  const handleEditorReady = editor => {
-    console.log('ready!');
-    editor.insertString(snippet.content);
-  };
-  const handleChange = (html, text) => {
-    console.log(`text: ${text}`);
-  };
-  const mergeTags = [];
-  console.log(`editor: ${snippet.content}`);
-
+const Content = (props: Snippet) => {
+    const editorProps = {
+        fileType: props.fileType,
+        contents: props.content,
+        readOnly: true,
+        onChange: null,
+    };
   return (
     <>
-      <TrixEditorComponent onChange={handleChange} onEditorReady={handleEditorReady} mergeTags={mergeTags} />
-      <bs.ButtonToolbar>
-        <bs.Button className="mr-1" variant={'info'} size={'sm'}>
-          Save
-        </bs.Button>
-        <bs.Button variant={'outline-dark'} size={'sm'}>
-          Cancel
-        </bs.Button>
-      </bs.ButtonToolbar>
+      <ContentViewer {...editorProps}/>
     </>
   );
 };
 
-const TrixEditorComponent = style(TrixEditor)`
+const ContentViewer = style(SnippetEditor)`
   border: solid 1px #b0b0b0;
 `;
 

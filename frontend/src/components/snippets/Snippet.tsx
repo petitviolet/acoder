@@ -32,10 +32,10 @@ export const SnippetComponent = (props: SnippetProps) => {
 
   const layout = { span: 8, offset: 2 };
 
-  const Cell = ({ children }) => {
+  const Cell = (props: { children: any }) => {
     return (
       <bs.Row>
-        <bs.Col md={layout}>{children}</bs.Col>
+        <bs.Col md={layout}>{props.children}</bs.Col>
       </bs.Row>
     );
   };

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Snippet from '../models/Snippet';
+import Snippet from '../../models/Snippet';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const SnippetListComponent = (props: { snippets: Snippet[] }) => {
+export const SnippetListComponent = (props: { snippets: Snippet[] }) => {
   const { snippets } = props;
   if (snippets.length == 0) {
     return <>No snippets</>;
@@ -50,4 +50,3 @@ const UpdatedAt = style.td`
     background-color: #848;
 `;
 
-export default SnippetListComponent;

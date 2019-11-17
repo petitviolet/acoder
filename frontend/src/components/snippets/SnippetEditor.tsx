@@ -11,7 +11,7 @@ interface EditorProps {
   onChange?: (content: string) => void;
 }
 
-const EditorComponent = (props: EditorProps) => {
+export const EditorComponent = (props: EditorProps) => {
   const [fileTypes, addFileTypes] = React.useState<string[]>([]);
   React.useEffect(() => {
     if (props.fileType == null || fileTypes.includes(props.fileType)) {
@@ -50,4 +50,3 @@ const EditorComponent = (props: EditorProps) => {
   );
 };
 
-export default EditorComponent;

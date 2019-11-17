@@ -1,14 +1,14 @@
 import * as React from 'react';
-import Snippet from '../models/Snippet';
-import * as Flash from './Flash';
-import SnippetEditor from './SnippetEditor';
+import Snippet from '../../models/Snippet';
+import * as Flash from '../Flash';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
-import SnippetGateway from '../gateways/SnippetGateway';
+import SnippetGateway from '../../gateways/SnippetGateway';
+import {EditorComponent} from "./SnippetEditor";
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 
-const SnippetComponent = (props: SnippetProps) => {
+export const SnippetComponent = (props: SnippetProps) => {
   const [snippet, setSnippet] = React.useState<Snippet>(null);
   if ('snippetId' in props) {
     React.useMemo(() => {
@@ -67,8 +67,7 @@ const Content = (props: Snippet) => {
   );
 };
 
-const ContentViewer = style(SnippetEditor)`
+const ContentViewer = style(EditorComponent)`
   border: solid 1px #b0b0b0;
 `;
 
-export default SnippetComponent;

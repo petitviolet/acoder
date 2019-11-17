@@ -5,7 +5,7 @@ import * as Flash from '../components/Flash';
 import Snippet from '../models/Snippet';
 import SnippetGateway from '../gateways/SnippetGateway';
 import * as bs from 'react-bootstrap';
-import SnippetListComponent from './SnippetList';
+import { SnippetListComponent } from './snippets';
 
 const MyPageComponent = () => {
   const {

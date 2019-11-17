@@ -5,10 +5,8 @@ import * as Auth from './Auth';
 import UserComponent from './User';
 import { FlashComponent } from './Flash';
 import MyPageComponent from './MyPage';
-import SnippetComponent from './Snippet';
-import SnippetListComponent from './SnippetList';
+import { SnippetComponent, SnippetListComponent } from "./snippets";
 import Header from './Header';
-import Snippet from '../models/Snippet';
 import SignUp from './SignUp';
 
 const Routes: React.FC = () => {

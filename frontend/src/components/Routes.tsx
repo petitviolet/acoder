@@ -5,7 +5,7 @@ import * as Auth from './Auth';
 import UserComponent from './User';
 import { FlashComponent } from './Flash';
 import MyPageComponent from './MyPage';
-import { SnippetComponent, SnippetListComponent } from "./snippets";
+import { SnippetComponent, SnippetListComponent, NewSnippetComponent } from "./snippets";
 import Header from './Header';
 import SignUp from './SignUp';
 
@@ -23,6 +23,7 @@ const Routes: React.FC = () => {
             <Route exact path={'/me'} component={MyPageComponent} />
             <Route exact path={'/users/:id'} component={UserComponent} />
             <Route exact path={'/snippets'} component={SnippetListComponent} />
+            <Route exact path={'/snippets/new'} component={NewSnippetComponent} />
             <Route
               exact
               path={'/snippets/:id'}

@@ -4,7 +4,7 @@ import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-min-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-interface EditorProps {
+export interface EditorProps {
   fileType: string;
   contents: string;
   readOnly: boolean;
@@ -12,6 +12,7 @@ interface EditorProps {
 }
 
 export const EditorComponent = (props: EditorProps) => {
+  console.log(`Editor props: ${JSON.stringify(props)}`);
   const [fileTypes, addFileTypes] = React.useState<string[]>([]);
   React.useEffect(() => {
     if (props.fileType == null || fileTypes.includes(props.fileType)) {

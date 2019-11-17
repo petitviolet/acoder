@@ -4,7 +4,7 @@ import * as Flash from '../Flash';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
-import {EditorComponent} from "./SnippetEditor";
+import { EditorComponent } from './SnippetEditor';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 
@@ -31,38 +31,36 @@ export const SnippetComponent = (props: SnippetProps) => {
   }
 
   const layout = { span: 8, offset: 2 };
+
+  const Cell = ({children}) => {
+    return <bs.Row>
+      <bs.Col md={layout}>{children}</bs.Col>
+    </bs.Row>;
+  };
   return (
     <bs.Container>
-      <bs.Row>
-        <bs.Col md={layout}>
-          <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
-        </bs.Col>
-      </bs.Row>
-      <bs.Row>
-        <bs.Col md={layout}>{snippet.title}</bs.Col>
-      </bs.Row>
-      <bs.Row>
-        <bs.Col md={layout}>{snippet.description || ''}</bs.Col>
-      </bs.Row>
-      <bs.Row>
-        <bs.Col md={layout}>
-          <Content {...snippet} />
-        </bs.Col>
-      </bs.Row>
+      <Cell>
+        <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
+      </Cell>
+      <Cell>{snippet.title}</Cell>
+      <Cell>{snippet.description || ''}</Cell>
+      <Cell>
+        <Content {...snippet} />
+      </Cell>
     </bs.Container>
   );
 };
 
 const Content = (props: Snippet) => {
-    const editorProps = {
-        fileType: props.fileType,
-        contents: props.content,
-        readOnly: true,
-        onChange: null,
-    };
+  const editorProps = {
+    fileType: props.fileType,
+    contents: props.content,
+    readOnly: true,
+    onChange: null,
+  };
   return (
     <>
-      <ContentViewer {...editorProps}/>
+      <ContentViewer {...editorProps} />
     </>
   );
 };
@@ -70,4 +68,3 @@ const Content = (props: Snippet) => {
 const ContentViewer = style(EditorComponent)`
   border: solid 1px #b0b0b0;
 `;
-

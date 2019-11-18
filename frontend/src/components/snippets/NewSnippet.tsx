@@ -29,10 +29,13 @@ export const NewSnippetComponent = () => {
   const {
     authState: { currentUser },
   } = React.useContext(Auth.Context);
-  const [snippet, setSnippet] = React.useState<Snippet>(Snippet.create(currentUser));
-
   const onSubmit = () => {};
-  const { state, errors, disabled, handleChange, handleSubmit } = useForm<Snippet>(onSubmit, snippet, validator);
+  const { state: snippet, errors, disabled, handleChange, handleSubmit } = useForm<Snippet>(
+    onSubmit,
+    Snippet.create(currentUser),
+    validator,
+  );
+  const [content, setContent] = React.useState<string>(snippet.content);
 
   const Cell = (props: { children: any }) => {
     const layout = { span: 8, offset: 2 };
@@ -46,7 +49,6 @@ export const NewSnippetComponent = () => {
     <bs.Container>
       <Cell>
         <TextInput
-          title={'title'}
           name={'title'}
           value={snippet.title || ''}
           placeholder={'Title'}
@@ -57,7 +59,7 @@ export const NewSnippetComponent = () => {
       <Cell>
         <SelectInput
           candidates={FileTypes}
-          title={'fileType'}
+          title={'File Type'}
           name={'fileType'}
           value={snippet.fileType || ''}
           placeholder={'File Type'}
@@ -67,7 +69,6 @@ export const NewSnippetComponent = () => {
       </Cell>
       <Cell>
         <TextInput
-          title={'description'}
           name={'description'}
           value={snippet.description || ''}
           placeholder={'Description'}
@@ -76,17 +77,19 @@ export const NewSnippetComponent = () => {
         />
       </Cell>
       <Cell>
-        <Content {...{ snippet: snippet, onChange: handleChange }} />
+        <Content
+          {...{ fileType: snippet.fileType, content: content, onChange: (content: string) => setContent(content) }}
+        />
       </Cell>
     </bs.Container>
   );
 };
 
-const Content = (props: { snippet: Snippet; onChange: (snippet) => void }) => {
-  const { snippet, onChange } = props;
+const Content = (props: { fileType: string; content: string; onChange: (content: string) => void }) => {
+  const { fileType, content, onChange } = props;
   const editorProps: EditorProps = {
-    fileType: snippet.fileType,
-    contents: snippet.content,
+    fileType: fileType,
+    contents: content,
     readOnly: false,
     onChange: onChange,
   };
@@ -119,23 +122,7 @@ const SelectInput = (props: {
         </bs.InputGroup.Prepend>
       </label>
 
-      <bs.Form.Group>
-        <bs.Form.Control
-          id={name}
-          placeholder={placeholder}
-          name={name}
-          aria-label={name}
-          aria-describedby={name}
-          onChange={onChange}
-          value={value}
-          as="select"
-        >
-          {candidates.map((fileType: string, i: number) => (
-            <option key={i}>{fileType}</option>
-          ))}
-        </bs.Form.Control>
-      </bs.Form.Group>
-      <bs.FormControl
+      <bs.Form.Control
         id={name}
         placeholder={placeholder}
         name={name}
@@ -143,28 +130,27 @@ const SelectInput = (props: {
         aria-describedby={name}
         onChange={onChange}
         value={value}
-      />
+        as="select"
+      >
+        {candidates.map((fileType: string, i: number) => (
+          <option key={i}>{fileType}</option>
+        ))}
+      </bs.Form.Control>
       <div>{errors.get(name)}</div>
     </bs.InputGroup>
   );
 };
 
 const TextInput = (props: {
-  title: string;
   name: string;
   value: string;
   placeholder: string;
   errors: Errors;
   onChange: (event: any) => void;
 }) => {
-  const { title, name, value, placeholder, errors, onChange } = props;
+  const { name, value, placeholder, errors, onChange } = props;
   return (
     <bs.InputGroup>
-      <label htmlFor={name}>
-        <bs.InputGroup.Prepend>
-          <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
-        </bs.InputGroup.Prepend>
-      </label>
       <bs.FormControl
         id={name}
         placeholder={placeholder}

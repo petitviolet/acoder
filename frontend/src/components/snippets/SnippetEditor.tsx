@@ -11,9 +11,12 @@ export interface EditorProps {
   onChange?: (content: string) => void;
 }
 
+const MIN_LINE = 30;
+
+const fileTypes = [];
+
 export const EditorComponent = (props: EditorProps) => {
   console.log(`Editor props: ${JSON.stringify(props)}`);
-  const [fileTypes, addFileTypes] = React.useState<string[]>([]);
   React.useEffect(() => {
     if (props.fileType == null || fileTypes.includes(props.fileType)) {
       return;
@@ -21,12 +24,12 @@ export const EditorComponent = (props: EditorProps) => {
     try {
       require(`ace-builds/src-noconflict/mode-${props.fileType}`);
       console.log(`new mode: ${props.fileType}`);
-      addFileTypes(fileTypes.concat([props.fileType]));
+      fileTypes.push(props.fileType);
     } catch (e) {
       console.log('error new mode: ' + e);
     }
   }, [props.fileType]);
-  const lines = (() => {
+  const maxLines = (() => {
     const lineNum = props.contents.split('\n').length;
     return lineNum < 50 ? lineNum : 50;
   })();
@@ -44,7 +47,8 @@ export const EditorComponent = (props: EditorProps) => {
       mode={props.fileType}
       theme="monokai"
       value={props.contents}
-      maxLines={lines}
+      minLines={MIN_LINE}
+      maxLines={maxLines}
       readOnly={props.readOnly}
       onChange={onChange}
     />

@@ -11,7 +11,8 @@ export interface EditorProps {
   onChange?: (content: string) => void;
 }
 
-const MIN_LINE = 30;
+const MIN_LINE = 10;
+const MAX_LINE = 50;
 
 const fileTypes = [];
 
@@ -29,10 +30,6 @@ export const EditorComponent = (props: EditorProps) => {
       console.log('error new mode: ' + e);
     }
   }, [props.fileType]);
-  const maxLines = (() => {
-    const lineNum = props.contents.split('\n').length;
-    return lineNum < 50 ? lineNum : 50;
-  })();
   const onChange: (string) => void = (() => {
     if (props.onChange) {
       return (content: string) => {
@@ -47,9 +44,11 @@ export const EditorComponent = (props: EditorProps) => {
       mode={props.fileType}
       theme="monokai"
       value={props.contents}
+      width={null}
       minLines={MIN_LINE}
-      maxLines={maxLines}
+      maxLines={MAX_LINE}
       readOnly={props.readOnly}
+      enableBasicAutocompletion={true}
       onChange={onChange}
     />
   );

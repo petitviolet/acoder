@@ -35,69 +35,64 @@ export const NewSnippetComponent = () => {
     Snippet.create(currentUser),
     validator,
   );
-  const [content, setContent] = React.useState<string>(snippet.content);
-
-  const Cell = (props: { children: any }) => {
-    const layout = { span: 8, offset: 2 };
-    return (
-      <bs.Row>
-        <bs.Col md={layout}>{props.children}</bs.Col>
-      </bs.Row>
-    );
+  const setContent = (content: string) => {
+    handleChange({ target: { name: 'content', value: content } });
   };
+
   return (
     <bs.Container>
-      <Cell>
-        <TextInput
-          name={'title'}
-          value={snippet.title || ''}
-          placeholder={'Title'}
-          errors={errors}
-          onChange={handleChange}
-        />
-      </Cell>
-      <Cell>
-        <SelectInput
-          candidates={FileTypes}
-          title={'File Type'}
-          name={'fileType'}
-          value={snippet.fileType || ''}
-          placeholder={'File Type'}
-          errors={errors}
-          onChange={handleChange}
-        />
-      </Cell>
-      <Cell>
-        <TextInput
-          name={'description'}
-          value={snippet.description || ''}
-          placeholder={'Description'}
-          errors={errors}
-          onChange={handleChange}
-        />
-      </Cell>
-      <Cell>
-        <Content
-          {...{ fileType: snippet.fileType, content: content, onChange: (content: string) => setContent(content) }}
-        />
-      </Cell>
+      <bs.Row>
+        <bs.Col md={{ span: 5, offset: 2 }}>
+          <TextInput
+            name={'title'}
+            value={snippet.title || ''}
+            placeholder={'Title'}
+            errors={errors}
+            onChange={handleChange}
+          />
+        </bs.Col>
+        <bs.Col md={{ span: 3 }}>
+          <SelectInput
+            candidates={FileTypes}
+            name={'fileType'}
+            value={snippet.fileType || ''}
+            placeholder={'File Type'}
+            errors={errors}
+            onChange={handleChange}
+          />
+        </bs.Col>
+      </bs.Row>
+      <br />
+      <bs.Row>
+        <bs.Col md={{ span: 8, offset: 2 }}>
+          <TextInput
+            name={'description'}
+            value={snippet.description || ''}
+            placeholder={'Description'}
+            errors={errors}
+            onChange={handleChange}
+          />
+        </bs.Col>
+      </bs.Row>
+      <br />
+      <bs.Row>
+        <bs.Col md={{ span: 8, offset: 2 }}>
+          <Content {...{ snippet: snippet, onChange: (content: string) => setContent(content) }} />
+        </bs.Col>
+      </bs.Row>
     </bs.Container>
   );
 };
 
-const Content = (props: { fileType: string; content: string; onChange: (content: string) => void }) => {
-  const { fileType, content, onChange } = props;
+const Content = (props: { snippet: Snippet; onChange: (content: string) => void }) => {
+  const { snippet, onChange } = props;
   const editorProps: EditorProps = {
-    fileType: fileType,
-    contents: content,
+    fileType: snippet.fileType,
+    contents: snippet.content,
     readOnly: false,
     onChange: onChange,
   };
-  return (
-    <>
-      <Editor {...editorProps} />
-    </>
-  );
+  return <Editor {...editorProps} />;
 };
 
 const Editor = style(EditorComponent)`
@@ -106,7 +101,7 @@ const Editor = style(EditorComponent)`
 
 const SelectInput = (props: {
   candidates: string[];
-  title: string;
+  title?: string;
   name: string;
   value: string;
   placeholder: string;
@@ -116,11 +111,13 @@ const SelectInput = (props: {
   const { candidates, title, name, value, placeholder, errors, onChange } = props;
   return (
     <bs.InputGroup>
-      <label htmlFor={name}>
-        <bs.InputGroup.Prepend>
-          <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
-        </bs.InputGroup.Prepend>
-      </label>
+      {title != null && (
+        <label htmlFor={name}>
+          <bs.InputGroup.Prepend>
+            <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
+          </bs.InputGroup.Prepend>
+        </label>
+      )}
 
       <bs.Form.Control
         id={name}

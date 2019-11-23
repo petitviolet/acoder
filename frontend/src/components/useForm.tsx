@@ -6,7 +6,7 @@ export interface Validator<State extends {}> {
 
 export type Errors = Map<string, string>;
 
-export const useForm = <State extends {}>(onSubmit, initial: State, validator: Validator<State>) => {
+export const useForm = <State extends {}>(onSubmit: (State) => void, initial: State, validator: Validator<State>) => {
   const [state, setState] = React.useState<State>(initial);
   const [errors, setErrors] = React.useState<Errors>(new Map());
   const [submitEnabled, submitEnable] = React.useState<boolean>(false);

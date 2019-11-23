@@ -36,7 +36,7 @@ const shared = ((): AxiosInstance => {
     },
     transformResponse: merge(Axios.defaults.transformResponse, data => humps.camelizeKeys(data)),
     transformRequest: merge(Axios.defaults.transformRequest, data =>
-      JSON.stringify(humps.decamelizeKeys(JSON.parse(data))),
+      humps.decamelizeKeys(data),
     ),
   });
   instance.interceptors.request.use((config: AxiosRequestConfig) => {

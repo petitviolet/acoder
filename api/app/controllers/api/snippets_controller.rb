@@ -39,6 +39,6 @@ class Api::SnippetsController < Api::ApiController
   private
 
     def snippet_params
-      params.permit(:title, :description, :file_type, :content)
+      params.require(:snippet).permit(:title, :description, :file_type, :content)
     end
 end

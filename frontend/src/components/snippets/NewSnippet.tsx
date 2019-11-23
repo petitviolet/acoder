@@ -7,6 +7,7 @@ import SnippetGateway from '../../gateways/SnippetGateway';
 import { EditorComponent, EditorProps } from './SnippetEditor';
 import * as Auth from '../Auth';
 import { Errors, useForm, Validator } from '../useForm';
+import { useHistory } from 'react-router';
 
 const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
   nonEmptyValidator(label: string, text: string): string | null {
@@ -25,28 +26,63 @@ const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
 
 const FileTypes: string[] = ['python', 'ruby', 'java', 'scala', 'shell', 'bash', 'perl', 'js', 'ts'];
 
-export const NewSnippetComponent = () => {
+type SnippetProps = { snippetId: string } | { snippet: Snippet } | null;
+
+export const NewSnippetComponent = (props: SnippetProps) => {
   const {
     authState: { currentUser },
   } = React.useContext(Auth.Context);
 
+  const [snippet, setSnippet] = (() => {
+    if ('snippetId' in props) {
+      return React.useState<Snippet>(null);
+    } else if ('snippet' in props) {
+      return React.useState<Snippet>(props.snippet);
+    } else {
+      return React.useState<Snippet>(Snippet.create(currentUser));
+    }
+  })();
+
+  if ('snippetId' in props) {
+    React.useMemo(() => {
+      SnippetGateway()
+        .findById(props.snippetId)
+        .then(snippet => {
+          console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
+          setSnippet(snippet);
+        })
+        .catch(err => {
+          Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
+        });
+    }, [props]);
+  }
+
+  const history = useHistory();
   const onSubmit = (snippet: Snippet) => {
-    SnippetGateway()
-      .create(snippet)
-      .then(response => {
-        Flash.success('Created snippet successfully');
-        return;
-      })
-      .catch(err => {
-        Flash.error(`Failed to create snippet. message = ${err}`);
-      });
+    if (snippet.id) {
+      SnippetGateway()
+        .update(snippet)
+        .then(response => {
+          Flash.success('Updated snippet successfully');
+          return;
+        })
+        .catch(err => {
+          Flash.error(`Failed to update snippet. message = ${err}`);
+        });
+    } else {
+      SnippetGateway()
+        .create(snippet)
+        .then(response => {
+          Flash.success('Created snippet successfully');
+          return history.push(`/snippets/${response.id}`);
+        })
+        .catch(err => {
+          Flash.error(`Failed to create snippet. message = ${err}`);
+        });
+    }
   };
 
-  const { state: snippet, errors, disabled, handleChange, handleSubmit } = useForm<Snippet>(
-    onSubmit,
-    Snippet.create(currentUser),
-    validator,
-  );
+  const { state, errors, disabled, handleChange, handleSubmit } = useForm<Snippet>(onSubmit, snippet, validator);
   const setContent = (content: string) => {
     handleChange({ target: { name: 'content', value: content } });
   };
@@ -58,7 +94,7 @@ export const NewSnippetComponent = () => {
           <bs.Col md={{ span: 5, offset: 2 }}>
             <TextInput
               name={'title'}
-              value={snippet.title || ''}
+              value={state.title || ''}
               placeholder={'Title'}
               errors={errors}
               onChange={handleChange}
@@ -68,7 +104,7 @@ export const NewSnippetComponent = () => {
             <SelectInput
               candidates={FileTypes}
               name={'fileType'}
-              value={snippet.fileType || ''}
+              value={state.fileType || ''}
               placeholder={'File Type'}
               errors={errors}
               onChange={handleChange}
@@ -79,7 +115,7 @@ export const NewSnippetComponent = () => {
           <bs.Col md={{ span: 8, offset: 2 }}>
             <TextInput
               name={'description'}
-              value={snippet.description || ''}
+              value={state.description || ''}
               placeholder={'Description'}
               errors={errors}
               onChange={handleChange}
@@ -88,7 +124,7 @@ export const NewSnippetComponent = () => {
         </Row>
         <Row>
           <bs.Col md={{ span: 8, offset: 2 }}>
-            <Content {...{ snippet: snippet, onChange: (content: string) => setContent(content) }} />
+            <Content {...{ snippet: state, onChange: (content: string) => setContent(content) }} />
           </bs.Col>
         </Row>
         <Row>

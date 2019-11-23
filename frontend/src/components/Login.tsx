@@ -32,10 +32,7 @@ const validator: Validator<LoginState> = new (class implements Validator<LoginSt
   }
 
   runAll(state: LoginState): Map<string, string> {
-    return new Map([
-      ['email', this.emailValidator(state.email)],
-      ['password', this.passwordValidator(state.password)],
-    ]);
+    return new Map([['email', this.emailValidator(state.email)], ['password', this.passwordValidator(state.password)]]);
   }
 })();
 

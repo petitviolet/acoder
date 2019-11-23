@@ -49,4 +49,3 @@ const FileType = style.td`
 const UpdatedAt = style.td`
     background-color: #848;
 `;
-

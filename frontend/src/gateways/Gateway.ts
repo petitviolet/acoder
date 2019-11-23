@@ -2,7 +2,6 @@ import { SessionStore, Token } from '../models/Authentication';
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import config from '../config';
 import humps from 'humps';
-import { instanceOf } from 'prop-types';
 
 class Headers {
   static readonly applicationJson = {
@@ -36,7 +35,9 @@ const shared = ((): AxiosInstance => {
       delete: Headers.applicationJson,
     },
     transformResponse: merge(Axios.defaults.transformResponse, data => humps.camelizeKeys(data)),
-    transformRequest: merge(Axios.defaults.transformRequest, data => JSON.stringify(humps.decamelizeKeys(JSON.parse(data)))),
+    transformRequest: merge(Axios.defaults.transformRequest, data =>
+      JSON.stringify(humps.decamelizeKeys(JSON.parse(data))),
+    ),
   });
   instance.interceptors.request.use((config: AxiosRequestConfig) => {
     const session = SessionStore.load();

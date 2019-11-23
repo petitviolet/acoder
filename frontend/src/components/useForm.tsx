@@ -42,7 +42,7 @@ export const useForm = <State extends {}>(onSubmit: (State) => void, initial: St
   );
 
   const handleChange = React.useCallback(
-    (event: {target: { name: string, value: string }}) => {
+    (event: { target: { name: string; value: string } }) => {
       const name: string = event.target.name;
       const value: string = event.target.value;
       if (!submitEnabled && value.length > 0) {

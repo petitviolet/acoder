@@ -5,7 +5,7 @@ import * as Auth from './Auth';
 import UserComponent from './User';
 import { FlashComponent } from './Flash';
 import MyPageComponent from './MyPage';
-import { SnippetComponent, SnippetListComponent, NewSnippetComponent } from "./snippets";
+import { SnippetComponent, SnippetListComponent, NewSnippetComponent } from './snippets';
 import Header from './Header';
 import SignUp from './SignUp';
 

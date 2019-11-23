@@ -7,7 +7,6 @@ import SnippetGateway from '../../gateways/SnippetGateway';
 import { EditorComponent, EditorProps } from './SnippetEditor';
 import * as Auth from '../Auth';
 import { Errors, useForm, Validator } from '../useForm';
-import UserGateway from "../../gateways/UserGateway";
 
 const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
   nonEmptyValidator(label: string, text: string): string | null {
@@ -56,47 +55,47 @@ export const NewSnippetComponent = () => {
     <bs.Container>
       <form onSubmit={handleSubmit}>
         <Row>
-        <bs.Col md={{ span: 5, offset: 2 }}>
-          <TextInput
-            name={'title'}
-            value={snippet.title || ''}
-            placeholder={'Title'}
-            errors={errors}
-            onChange={handleChange}
-          />
-        </bs.Col>
-        <bs.Col md={{ span: 3 }}>
-          <SelectInput
-            candidates={FileTypes}
-            name={'fileType'}
-            value={snippet.fileType || ''}
-            placeholder={'File Type'}
-            errors={errors}
-            onChange={handleChange}
-          />
-        </bs.Col>
-      </Row>
-      <Row>
-        <bs.Col md={{ span: 8, offset: 2 }}>
-          <TextInput
-            name={'description'}
-            value={snippet.description || ''}
-            placeholder={'Description'}
-            errors={errors}
-            onChange={handleChange}
-          />
-        </bs.Col>
-      </Row>
-      <Row>
-        <bs.Col md={{ span: 8, offset: 2 }}>
-          <Content {...{ snippet: snippet, onChange: (content: string) => setContent(content) }} />
-        </bs.Col>
-      </Row>
-      <Row>
-      <bs.Button type="submit" disabled={disabled}>
-        保存
-      </bs.Button>
-      </Row>
+          <bs.Col md={{ span: 5, offset: 2 }}>
+            <TextInput
+              name={'title'}
+              value={snippet.title || ''}
+              placeholder={'Title'}
+              errors={errors}
+              onChange={handleChange}
+            />
+          </bs.Col>
+          <bs.Col md={{ span: 3 }}>
+            <SelectInput
+              candidates={FileTypes}
+              name={'fileType'}
+              value={snippet.fileType || ''}
+              placeholder={'File Type'}
+              errors={errors}
+              onChange={handleChange}
+            />
+          </bs.Col>
+        </Row>
+        <Row>
+          <bs.Col md={{ span: 8, offset: 2 }}>
+            <TextInput
+              name={'description'}
+              value={snippet.description || ''}
+              placeholder={'Description'}
+              errors={errors}
+              onChange={handleChange}
+            />
+          </bs.Col>
+        </Row>
+        <Row>
+          <bs.Col md={{ span: 8, offset: 2 }}>
+            <Content {...{ snippet: snippet, onChange: (content: string) => setContent(content) }} />
+          </bs.Col>
+        </Row>
+        <Row>
+          <bs.Button type="submit" disabled={disabled}>
+            保存
+          </bs.Button>
+        </Row>
       </form>
     </bs.Container>
   );

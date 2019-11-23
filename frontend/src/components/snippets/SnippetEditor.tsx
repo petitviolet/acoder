@@ -53,4 +53,3 @@ export const EditorComponent = (props: EditorProps) => {
     />
   );
 };
-

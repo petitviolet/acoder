@@ -41,7 +41,7 @@ export const NewSnippetComponent = () => {
 
   return (
     <bs.Container>
-      <bs.Row>
+      <Row>
         <bs.Col md={{ span: 5, offset: 2 }}>
           <TextInput
             name={'title'}
@@ -61,9 +61,8 @@ export const NewSnippetComponent = () => {
             onChange={handleChange}
           />
         </bs.Col>
-      </bs.Row>
-      <br />
-      <bs.Row>
+      </Row>
+      <Row>
         <bs.Col md={{ span: 8, offset: 2 }}>
           <TextInput
             name={'description'}
@@ -73,8 +72,7 @@ export const NewSnippetComponent = () => {
             onChange={handleChange}
           />
         </bs.Col>
-      </bs.Row>
-      <br />
+      </Row>
       <bs.Row>
         <bs.Col md={{ span: 8, offset: 2 }}>
           <Content {...{ snippet: snippet, onChange: (content: string) => setContent(content) }} />
@@ -83,6 +81,10 @@ export const NewSnippetComponent = () => {
     </bs.Container>
   );
 };
+
+const Row = style(bs.Row)`
+  padding-bottom: 0.5em;
+`;
 
 const Content = (props: { snippet: Snippet; onChange: (content: string) => void }) => {
   const { snippet, onChange } = props;

@@ -36,7 +36,7 @@ const shared = ((): AxiosInstance => {
       delete: Headers.applicationJson,
     },
     transformResponse: merge(Axios.defaults.transformResponse, data => humps.camelizeKeys(data)),
-    transformRequest: merge(Axios.defaults.transformRequest, data => humps.decamelizeKeys(data)),
+    transformRequest: merge(Axios.defaults.transformRequest, data => JSON.stringify(humps.decamelizeKeys(JSON.parse(data)))),
   });
   instance.interceptors.request.use((config: AxiosRequestConfig) => {
     const session = SessionStore.load();

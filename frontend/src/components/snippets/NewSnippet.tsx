@@ -7,6 +7,7 @@ import SnippetGateway from '../../gateways/SnippetGateway';
 import { EditorComponent, EditorProps } from './SnippetEditor';
 import * as Auth from '../Auth';
 import { Errors, useForm, Validator } from '../useForm';
+import UserGateway from "../../gateways/UserGateway";
 
 const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
   nonEmptyValidator(label: string, text: string): string | null {
@@ -29,7 +30,19 @@ export const NewSnippetComponent = () => {
   const {
     authState: { currentUser },
   } = React.useContext(Auth.Context);
-  const onSubmit = () => {};
+
+  const onSubmit = (snippet: Snippet) => {
+    SnippetGateway()
+      .create(snippet)
+      .then(response => {
+        Flash.success('Created snippet successfully');
+        return;
+      })
+      .catch(err => {
+        Flash.error(`Failed to create snippet. message = ${err}`);
+      });
+  };
+
   const { state: snippet, errors, disabled, handleChange, handleSubmit } = useForm<Snippet>(
     onSubmit,
     Snippet.create(currentUser),
@@ -41,7 +54,8 @@ export const NewSnippetComponent = () => {
 
   return (
     <bs.Container>
-      <Row>
+      <form onSubmit={handleSubmit}>
+        <Row>
         <bs.Col md={{ span: 5, offset: 2 }}>
           <TextInput
             name={'title'}
@@ -73,11 +87,17 @@ export const NewSnippetComponent = () => {
           />
         </bs.Col>
       </Row>
-      <bs.Row>
+      <Row>
         <bs.Col md={{ span: 8, offset: 2 }}>
           <Content {...{ snippet: snippet, onChange: (content: string) => setContent(content) }} />
         </bs.Col>
-      </bs.Row>
+      </Row>
+      <Row>
+      <bs.Button type="submit" disabled={disabled}>
+        保存
+      </bs.Button>
+      </Row>
+      </form>
     </bs.Container>
   );
 };

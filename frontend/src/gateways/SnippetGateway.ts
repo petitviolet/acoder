@@ -38,5 +38,21 @@ class SnippetGateway extends Gateway {
         return res.data;
       });
   }
+
+  update(snippet: Snippet) {
+    return this.axios
+      .patch<Snippet>(`/snippets/${snippet.id}`, {
+        snippet: {
+          title: snippet.title,
+          description: snippet.description,
+          fileType: snippet.fileType,
+          content: snippet.content,
+        },
+      })
+      .then(res => {
+        this.responseLogging(`updated snippet`, res);
+        return res.data;
+      });
+  }
 }
 export default (token: Token | null = null) => new SnippetGateway(token);

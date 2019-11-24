@@ -33,30 +33,40 @@ export const NewSnippetComponent = (props: SnippetProps) => {
     authState: { currentUser },
   } = React.useContext(Auth.Context);
 
-  const [snippet, setSnippet] = (() => {
+  const [snippet, setSnippet] = React.useState(() => {
     if ('snippetId' in props) {
-      return React.useState<Snippet>(null);
+      return null;
     } else if ('snippet' in props) {
-      return React.useState<Snippet>(props.snippet);
+      return props.snippet;
     } else {
-      return React.useState<Snippet>(Snippet.create(currentUser));
+      return Snippet.create(currentUser);
     }
-  })();
+  });
 
-  if ('snippetId' in props) {
-    React.useMemo(() => {
-      SnippetGateway()
-        .findById(props.snippetId)
-        .then(snippet => {
-          console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
-          setSnippet(snippet);
-        })
-        .catch(err => {
-          Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
-        });
-    }, [props]);
+  React.useEffect(() => {
+    if (!('snippetId' in props)) {
+      return;
+    }
+
+    SnippetGateway()
+      .findById(props.snippetId)
+      .then(snippet => {
+        console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
+        setSnippet(snippet);
+      })
+      .catch(err => {
+        Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
+      });
+  }, []);
+
+  if (snippet == null) {
+    return <>loading...</>;
+  } else {
+    return <NewSnippetComponentInner {...snippet} />;
   }
+};
 
+const NewSnippetComponentInner = (snippet: Snippet) => {
   const history = useHistory();
   const onSubmit = (snippet: Snippet) => {
     if (snippet.id) {

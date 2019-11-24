@@ -31,6 +31,13 @@ const Routes: React.FC = () => {
                 <SnippetComponent {...{ snippetId: props.match.params.id }} />
               )}
             />
+            <Route
+              exact
+              path={'/snippets/:id/edit'}
+              render={(props: RouteComponentProps<any>) => (
+                <NewSnippetComponent {...{ snippetId: props.match.params.id }} />
+              )}
+            />
           </Switch>
         </Switch>
       </div>

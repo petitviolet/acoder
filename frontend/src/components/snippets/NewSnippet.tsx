@@ -138,9 +138,11 @@ const NewSnippetComponentInner = (snippet: Snippet) => {
           </bs.Col>
         </Row>
         <Row>
-          <bs.Button type="submit" disabled={disabled}>
-            保存
-          </bs.Button>
+          <bs.Col md={{ span: 2, offset: 8 }}>
+            <RightButton type="submit" disabled={disabled}>
+              保存
+            </RightButton>
+          </bs.Col>
         </Row>
       </form>
     </bs.Container>
@@ -149,6 +151,12 @@ const NewSnippetComponentInner = (snippet: Snippet) => {
 
 const Row = style(bs.Row)`
   padding-bottom: 0.5em;
+`;
+
+const RightButton = style(bs.Button)`
+  float: right;
+  padding-left: 1.5em !important;
+  padding-right: 1.5em !important;
 `;
 
 const Content = (props: { snippet: Snippet; onChange: (content: string) => void }) => {

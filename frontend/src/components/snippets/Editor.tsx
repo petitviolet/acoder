@@ -20,13 +20,12 @@ const THEME = 'monokai';
 // This is only for 'Editor', not for 'Snippet'
 export const EditorComponent = (props: EditorProps) => {
   console.log(`Editor props: ${JSON.stringify(props)}`);
-  React.useEffect(() => {
+  React.useMemo(() => {
     if (props.fileType == null || fileTypes.includes(props.fileType)) {
       return;
     }
     try {
-      // require(`ace-builds/src-noconflict/mode-${props.fileType}`);
-      require(`brace/mode/${props.fileType}`);
+      require(`ace-builds/src-noconflict/mode-${props.fileType}`)
       console.log(`new mode: ${props.fileType}`);
       fileTypes.push(props.fileType);
     } catch (e) {

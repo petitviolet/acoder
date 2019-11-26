@@ -1,55 +1,238 @@
 import * as React from 'react';
-import AceEditor from 'react-ace';
-import 'ace-builds/webpack-resolver';
-import 'ace-builds/src-min-noconflict/ext-language_tools';
-import 'ace-builds/src-noconflict/theme-monokai';
+import Snippet from '../../models/Snippet';
+import * as Flash from '../Flash';
+import style from 'styled-components';
+import * as bs from 'react-bootstrap';
+import SnippetGateway from '../../gateways/SnippetGateway';
+import { EditorComponent, EditorProps } from './Editor';
+import * as Auth from '../Auth';
+import { Errors, useForm, Validator } from '../useForm';
+import { useHistory } from 'react-router';
 
-export interface EditorProps {
-  fileType: string;
-  contents: string;
-  readOnly: boolean;
-  onChange?: (content: string) => void;
-}
+const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
+  nonEmptyValidator(label: string, text: string): string | null {
+    if (text.length == 0) {
+      return `${label} is empty.`;
+    }
+  }
+  runAll(state: Snippet): Map<string, string> {
+    return new Map([
+      ['title', this.nonEmptyValidator('Title', state.title)],
+      ['fileType', this.nonEmptyValidator('FileType', state.fileType)],
+      ['content', this.nonEmptyValidator('Content', state.content)],
+    ]);
+  }
+})();
 
-const MIN_LINE = 10;
-const MAX_LINE = 50;
+const FileTypes: string[] = ['python', 'ruby', 'java', 'scala', 'shell', 'bash', 'perl', 'js', 'ts'];
 
-const fileTypes = [];
+type SnippetProps = { snippetId: string } | { snippet: Snippet } | null;
 
-export const EditorComponent = (props: EditorProps) => {
-  console.log(`Editor props: ${JSON.stringify(props)}`);
+export const SnippetEditorComponent = (props: SnippetProps) => {
+  const {
+    authState: { currentUser },
+  } = React.useContext(Auth.Context);
+
+  const [snippet, setSnippet] = React.useState(() => {
+    if ('snippetId' in props) {
+      return null;
+    } else if ('snippet' in props) {
+      return props.snippet;
+    } else {
+      return Snippet.create(currentUser);
+    }
+  });
+
   React.useEffect(() => {
-    if (props.fileType == null || fileTypes.includes(props.fileType)) {
+    if (!('snippetId' in props)) {
       return;
     }
-    try {
-      require(`ace-builds/src-noconflict/mode-${props.fileType}`);
-      console.log(`new mode: ${props.fileType}`);
-      fileTypes.push(props.fileType);
-    } catch (e) {
-      console.log('error new mode: ' + e);
-    }
-  }, [props.fileType]);
-  const onChange: (string) => void = (() => {
-    if (props.onChange) {
-      return (content: string) => {
-        props.onChange(content);
-      };
+
+    SnippetGateway()
+      .findById(props.snippetId)
+      .then(snippet => {
+        console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
+        setSnippet(snippet);
+      })
+      .catch(err => {
+        Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
+      });
+  }, []);
+
+  if (snippet == null) {
+    return <>loading...</>;
+  } else {
+    return <SnippetEditorComponentInner {...snippet} />;
+  }
+};
+
+const SnippetEditorComponentInner = (snippet: Snippet) => {
+  const history = useHistory();
+  const onSubmit = (snippet: Snippet) => {
+    if (snippet.id) {
+      SnippetGateway()
+        .update(snippet)
+        .then(response => {
+          Flash.success('Updated snippet successfully');
+          return;
+        })
+        .catch(err => {
+          Flash.error(`Failed to update snippet. message = ${err}`);
+        });
     } else {
-      return () => {};
+      SnippetGateway()
+        .create(snippet)
+        .then(response => {
+          Flash.success('Created snippet successfully');
+          return history.push(`/snippets/${response.id}`);
+        })
+        .catch(err => {
+          Flash.error(`Failed to create snippet. message = ${err}`);
+        });
     }
-  })();
+  };
+
+  const { state, errors, disabled, handleChange, handleSubmit } = useForm<Snippet>(onSubmit, snippet, validator);
+  const setContent = (content: string) => {
+    handleChange({ target: { name: 'content', value: content } });
+  };
+
   return (
-    <AceEditor
-      mode={props.fileType}
-      theme="monokai"
-      value={props.contents}
-      width={null}
-      minLines={MIN_LINE}
-      maxLines={MAX_LINE}
-      readOnly={props.readOnly}
-      enableBasicAutocompletion={true}
-      onChange={onChange}
-    />
+    <bs.Container>
+      <form onSubmit={handleSubmit}>
+        <Row>
+          <bs.Col md={{ span: 5, offset: 2 }}>
+            <TextInput
+              name={'title'}
+              value={state.title || ''}
+              placeholder={'Title'}
+              errors={errors}
+              onChange={handleChange}
+            />
+          </bs.Col>
+          <bs.Col md={{ span: 3 }}>
+            <SelectInput
+              candidates={FileTypes}
+              name={'fileType'}
+              value={state.fileType || ''}
+              placeholder={'File Type'}
+              errors={errors}
+              onChange={handleChange}
+            />
+          </bs.Col>
+        </Row>
+        <Row>
+          <bs.Col md={{ span: 8, offset: 2 }}>
+            <TextInput
+              name={'description'}
+              value={state.description || ''}
+              placeholder={'Description'}
+              errors={errors}
+              onChange={handleChange}
+            />
+          </bs.Col>
+        </Row>
+        <Row>
+          <bs.Col md={{ span: 8, offset: 2 }}>
+            <Content {...{ snippet: state, onChange: (content: string) => setContent(content) }} />
+          </bs.Col>
+        </Row>
+        <Row>
+          <bs.Col md={{ span: 2, offset: 8 }}>
+            <RightButton type="submit" disabled={disabled}>
+              保存
+            </RightButton>
+          </bs.Col>
+        </Row>
+      </form>
+    </bs.Container>
+  );
+};
+
+const Row = style(bs.Row)`
+  padding-bottom: 0.5em;
+`;
+
+const RightButton = style(bs.Button)`
+  float: right;
+  padding-left: 1.5em !important;
+  padding-right: 1.5em !important;
+`;
+
+const Content = (props: { snippet: Snippet; onChange: (content: string) => void }) => {
+  const { snippet, onChange } = props;
+  const editorProps: EditorProps = {
+    fileType: snippet.fileType,
+    contents: snippet.content,
+    readOnly: false,
+    onChange: onChange,
+  };
+  return <Editor {...editorProps} />;
+};
+
+const Editor = style(EditorComponent)`
+  border: solid 1px #b0b0b0;
+`;
+
+const SelectInput = (props: {
+  candidates: string[];
+  title?: string;
+  name: string;
+  value: string;
+  placeholder: string;
+  errors: Errors;
+  onChange: (event: any) => void;
+}) => {
+  const { candidates, title, name, value, placeholder, errors, onChange } = props;
+  return (
+    <bs.InputGroup>
+      {title != null && (
+        <label htmlFor={name}>
+          <bs.InputGroup.Prepend>
+            <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
+          </bs.InputGroup.Prepend>
+        </label>
+      )}
+
+      <bs.Form.Control
+        id={name}
+        placeholder={placeholder}
+        name={name}
+        aria-label={name}
+        aria-describedby={name}
+        onChange={onChange}
+        value={value}
+        as="select"
+      >
+        {candidates.map((fileType: string, i: number) => (
+          <option key={i}>{fileType}</option>
+        ))}
+      </bs.Form.Control>
+      <div>{errors.get(name)}</div>
+    </bs.InputGroup>
+  );
+};
+
+const TextInput = (props: {
+  name: string;
+  value: string;
+  placeholder: string;
+  errors: Errors;
+  onChange: (event: any) => void;
+}) => {
+  const { name, value, placeholder, errors, onChange } = props;
+  return (
+    <bs.InputGroup>
+      <bs.FormControl
+        id={name}
+        placeholder={placeholder}
+        name={name}
+        aria-label={name}
+        aria-describedby={name}
+        onChange={onChange}
+        value={value}
+      />
+      <div>{errors.get(name)}</div>
+    </bs.InputGroup>
   );
 };

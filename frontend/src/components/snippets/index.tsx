@@ -1,4 +1,4 @@
 export { SnippetComponent } from './Snippet';
-export { EditorComponent } from './SnippetEditor';
+export { EditorComponent } from './Editor';
 export { SnippetListComponent } from './SnippetList';
-export { NewSnippetComponent } from './NewSnippet';
+export { SnippetEditorComponent } from './SnippetEditor';

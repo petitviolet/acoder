@@ -4,7 +4,7 @@ import * as Flash from '../Flash';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
-import { EditorComponent } from './SnippetEditor';
+import {EditorComponent, EditorProps} from './Editor';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 
@@ -40,16 +40,33 @@ export const SnippetComponent = (props: SnippetProps) => {
     );
   };
   return (
-    <bs.Container>
-      <Cell>
-        <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
-      </Cell>
-      <Cell>{snippet.title}</Cell>
-      <Cell>{snippet.description || ''}</Cell>
-      <Cell>
-        <Content {...snippet} />
-      </Cell>
-    </bs.Container>
+      <bs.Container>
+          <Row>
+            <bs.Col md={{ span: 5, offset: 2 }}>
+              {snippet.title}
+            </bs.Col>
+            <bs.Col md={{ span: 3 }}>
+              <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
+            </bs.Col>
+          </Row>
+          <Row>
+            <bs.Col md={{ span: 8, offset: 2 }}>
+              {snippet.description}
+            </bs.Col>
+          </Row>
+          <Row>
+            <bs.Col md={{ span: 8, offset: 2 }}>
+              <Content {...snippet} />
+            </bs.Col>
+          </Row>
+          <Row>
+            <bs.Col md={{ span: 2, offset: 8 }}>
+              <RightButton>
+                Edit
+              </RightButton>
+            </bs.Col>
+          </Row>
+      </bs.Container>
   );
 };
 
@@ -70,3 +87,14 @@ const Content = (props: Snippet) => {
 const ContentViewer = style(EditorComponent)`
   border: solid 1px #b0b0b0;
 `;
+
+const Row = style(bs.Row)`
+  padding-bottom: 0.5em;
+`;
+
+const RightButton = style(bs.Button)`
+  float: right;
+  padding-left: 1.5em !important;
+  padding-right: 1.5em !important;
+`;
+

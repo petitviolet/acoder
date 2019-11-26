@@ -25,7 +25,7 @@ export const EditorComponent = (props: EditorProps) => {
       return;
     }
     try {
-      require(`ace-builds/src-noconflict/mode-${props.fileType}`)
+      require(`ace-builds/src-noconflict/mode-${props.fileType}`);
       console.log(`new mode: ${props.fileType}`);
       fileTypes.push(props.fileType);
     } catch (e) {
@@ -54,8 +54,8 @@ export const EditorComponent = (props: EditorProps) => {
         focus={false}
         highlightActiveLine={false}
         enableBasicAutocompletion={false}
-        onLoad={(editor) => {
-          editor.renderer.$cursorLayer.element.style.opacity=0
+        onLoad={editor => {
+          editor.renderer.$cursorLayer.element.style.opacity = 0;
         }}
       />
     );

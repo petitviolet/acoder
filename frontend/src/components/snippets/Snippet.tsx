@@ -4,7 +4,7 @@ import * as Flash from '../Flash';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
-import { EditorComponent, EditorProps } from './Editor';
+import { EditorComponent } from './Editor';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 

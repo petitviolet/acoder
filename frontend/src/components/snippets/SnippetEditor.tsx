@@ -72,9 +72,9 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
     if (snippet.id) {
       SnippetGateway()
         .update(snippet)
-        .then(response => {
+        .then((response: Snippet) => {
           Flash.success('Updated snippet successfully');
-          return;
+          return history.push(`/snippets/${response.id}`);
         })
         .catch(err => {
           Flash.error(`Failed to update snippet. message = ${err}`);
@@ -82,7 +82,7 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
     } else {
       SnippetGateway()
         .create(snippet)
-        .then(response => {
+        .then((response: Snippet) => {
           Flash.success('Created snippet successfully');
           return history.push(`/snippets/${response.id}`);
         })

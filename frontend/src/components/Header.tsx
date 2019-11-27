@@ -42,7 +42,7 @@ const HeaderContainer = style.header`
   margin-bottom: 0.5em;
 `;
 
-const HeaderLinkComponent = (props: { path: string, text: string }) => (
+const HeaderLinkComponent = (props: { path: string; text: string }) => (
   <HeaderLink to={props.path}>{props.text}</HeaderLink>
 );
 

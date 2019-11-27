@@ -68,6 +68,7 @@ export const SnippetEditorComponent = (props: SnippetProps) => {
 
 const SnippetEditorComponentInner = (snippet: Snippet) => {
   const history = useHistory();
+
   const onSubmit = (snippet: Snippet) => {
     if (snippet.id) {
       SnippetGateway()

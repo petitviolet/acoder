@@ -9,8 +9,8 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <HeaderLink>Home</HeaderLink>
-      <HeaderLink>About</HeaderLink>
+      <HeaderLinkComponent path={'/'} text={'Home'} />
+      <HeaderLinkComponent path={'/me'} text={'MyPage'} />
       <HeaderSession>{loggedIn ? <LogoutButton /> : <LoginButton />}</HeaderSession>
     </HeaderContainer>
   );
@@ -42,7 +42,11 @@ const HeaderContainer = style.header`
   margin-bottom: 0.5em;
 `;
 
-const HeaderLink = style.div`
+const HeaderLinkComponent = (props: { path: string, text: string }) => (
+  <HeaderLink to={props.path}>{props.text}</HeaderLink>
+);
+
+const HeaderLink = style(Link)`
   float: left;
   display: block;
   color: black;

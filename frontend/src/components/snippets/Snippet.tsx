@@ -5,11 +5,14 @@ import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
 import { EditorComponent } from './Editor';
+import { useHistory } from 'react-router-dom';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 
 export const SnippetComponent = (props: SnippetProps) => {
+  const history = useHistory();
   const [snippet, setSnippet] = React.useState<Snippet>(null);
+
   if ('snippetId' in props) {
     React.useMemo(() => {
       SnippetGateway()
@@ -57,7 +60,13 @@ export const SnippetComponent = (props: SnippetProps) => {
       </Row>
       <Row>
         <bs.Col md={{ span: 2, offset: 8 }}>
-          <RightButton>Edit</RightButton>
+          <RightButton
+            onClick={() => {
+              history.push(`/snippets/${snippet.id}/edit`);
+            }}
+          >
+            Edit
+          </RightButton>
         </bs.Col>
       </Row>
     </bs.Container>

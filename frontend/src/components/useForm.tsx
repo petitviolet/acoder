@@ -27,14 +27,16 @@ export const useForm = <State extends {}>(onSubmit: (State) => void, initial: St
     return _errors.size == 0;
   }, [state]);
 
-  const [submitEnabled, submitEnable] = React.useState<boolean>(() => isValid());
+  const [submitEnabled, setSubmitEnable] = React.useState<boolean>(() => isValid());
 
   const handleSubmit = React.useCallback(
     event => {
       if (event) event.preventDefault();
 
       if (submitEnabled && isValid()) {
+        setSubmitEnable(false);
         onSubmit(state);
+        setSubmitEnable(true);
       } else {
         console.log(`submit is disabled. error = ${errors}`);
       }
@@ -47,7 +49,7 @@ export const useForm = <State extends {}>(onSubmit: (State) => void, initial: St
       const name: string = event.target.name;
       const value: string = event.target.value;
       if (!submitEnabled && value.length > 0) {
-        submitEnable(true);
+        setSubmitEnable(true);
       }
       setState(prevState => {
         const newState = { ...prevState, [name]: value };

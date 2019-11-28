@@ -27,7 +27,13 @@ export const useForm = <State extends {}>(onSubmit: (State) => void, initial: St
     return _errors.size == 0;
   }, [state]);
 
-  const [submitEnabled, setSubmitEnable] = React.useState<boolean>(() => isValid());
+  const [submitEnabled, setSubmitEnable] = React.useState<boolean>(() => {
+    const result = isValid();
+    if (!result) {
+      setErrors(new Map());
+    }
+    return result;
+  });
 
   const handleSubmit = React.useCallback(
     event => {

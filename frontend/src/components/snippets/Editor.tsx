@@ -1,33 +1,46 @@
 import * as React from 'react';
 import AceEditor from 'react-ace';
-import 'ace-builds/webpack-resolver';
-import 'ace-builds/src-min-noconflict/ext-language_tools';
-import 'ace-builds/src-noconflict/theme-monokai';
 
-export interface EditorProps {
+export type EditorProps = {
   fileType: string;
   contents: string;
   readOnly: boolean;
   onChange?: (content: string) => void;
-}
+  theme?: string;
+};
 
 const MIN_LINE = 10;
 const MAX_LINE = 50;
 
-const fileTypes = [];
-const THEME = 'monokai';
+const FILE_TYPES = [];
+const THEMES = [];
+const DEFAULT_THEME = 'monokai';
 
 // This is only for 'Editor', not for 'Snippet'
 export const EditorComponent = (props: EditorProps) => {
   console.log(`Editor props: ${JSON.stringify(props)}`);
+  const theme = props.theme || DEFAULT_THEME;
   React.useMemo(() => {
-    if (props.fileType == null || fileTypes.includes(props.fileType)) {
+    if (THEMES.includes(props.theme)) {
+      return;
+    }
+    try {
+      require(`ace-builds/src-noconflict/theme-${theme}`);
+      console.log(`new theme: ${theme}`);
+      THEMES.push(theme);
+    } catch (e) {
+      console.log(`error new theme(${theme}): ${e}`);
+    }
+  }, [props.theme]);
+
+  React.useMemo(() => {
+    if (props.fileType == null || FILE_TYPES.includes(props.fileType)) {
       return;
     }
     try {
       require(`ace-builds/src-noconflict/mode-${props.fileType}`);
       console.log(`new mode: ${props.fileType}`);
-      fileTypes.push(props.fileType);
+      FILE_TYPES.push(props.fileType);
     } catch (e) {
       console.log(`error new mode(${props.fileType}): ${e}`);
     }
@@ -45,7 +58,7 @@ export const EditorComponent = (props: EditorProps) => {
     return (
       <AceEditor
         mode={props.fileType}
-        theme={THEME}
+        theme={theme}
         value={props.contents}
         width={null}
         minLines={MIN_LINE}
@@ -63,7 +76,7 @@ export const EditorComponent = (props: EditorProps) => {
     return (
       <AceEditor
         mode={props.fileType}
-        theme={THEME}
+        theme={theme}
         value={props.contents}
         width={null}
         minLines={MIN_LINE}

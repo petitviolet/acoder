@@ -31,7 +31,7 @@ class Snippet {
   }
 
   static create(user: User): Snippet {
-    return new Snippet(null, user.id, '', null, '', '', null, null);
+    return new Snippet(null, user.id, '', '', '', '', null, null);
   }
 }
 

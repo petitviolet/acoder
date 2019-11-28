@@ -205,8 +205,9 @@ const SelectInput = (props: {
         value={value}
         as="select"
       >
+        <option key={0} value={''}>Choose...</option>
         {candidates.map((fileType: string, i: number) => (
-          <option key={i}>{fileType}</option>
+          <option key={i+1}>{fileType}</option>
         ))}
       </bs.Form.Control>
       <div>{errors.get(name)}</div>

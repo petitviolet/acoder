@@ -34,7 +34,7 @@ export const EditorComponent = (props: EditorProps) => {
   }, [props.theme]);
 
   React.useMemo(() => {
-    if (props.fileType == null || FILE_TYPES.includes(props.fileType)) {
+    if (!props.fileType || FILE_TYPES.includes(props.fileType)) {
       return;
     }
     try {

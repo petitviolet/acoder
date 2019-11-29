@@ -27,14 +27,16 @@ const loadLib = (libType: string, lib: string, cache: string[]) => {
       switch (libType) {
         case 'mode':
           require(`ace-builds/src-noconflict/mode-${lib}`);
+          break;
         case 'theme':
           require(`ace-builds/src-noconflict/theme-${lib}`);
+          break;
       }
       cache.push(lib);
     } catch (e) {
       console.log(`error new ${libType}(${lib}): ${e}`);
     }
-  }, [lib]);
+  }, [libType, lib]);
 };
 
 // This is only for 'Editor', not for 'Snippet'

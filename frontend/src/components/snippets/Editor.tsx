@@ -16,44 +16,37 @@ const FILE_TYPES = [];
 const THEMES = [];
 const DEFAULT_THEME = 'monokai';
 
+const loadLib = (libType: string, lib: string, cache: string[]) => {
+  React.useMemo(() => {
+    if (!lib || cache.includes(lib)) {
+      return;
+    }
+    try {
+      // somehow, compile error
+      // require(`ace-builds/src-noconflict/${libType}-${lib}`);
+      switch (libType) {
+        case 'mode':
+          require(`ace-builds/src-noconflict/mode-${lib}`);
+        case 'theme':
+          require(`ace-builds/src-noconflict/theme-${lib}`);
+      }
+      cache.push(lib);
+    } catch (e) {
+      console.log(`error new ${libType}(${lib}): ${e}`);
+    }
+  }, [lib]);
+};
+
 // This is only for 'Editor', not for 'Snippet'
 export const EditorComponent = (props: EditorProps) => {
   console.log(`Editor props: ${JSON.stringify(props)}`);
   const theme = props.theme || DEFAULT_THEME;
-  React.useMemo(() => {
-    if (THEMES.includes(props.theme)) {
-      return;
-    }
-    try {
-      require(`ace-builds/src-noconflict/theme-${theme}`);
-      console.log(`new theme: ${theme}`);
-      THEMES.push(theme);
-    } catch (e) {
-      console.log(`error new theme(${theme}): ${e}`);
-    }
-  }, [props.theme]);
 
-  React.useMemo(() => {
-    if (!props.fileType || FILE_TYPES.includes(props.fileType)) {
-      return;
-    }
-    try {
-      require(`ace-builds/src-noconflict/mode-${props.fileType}`);
-      console.log(`new mode: ${props.fileType}`);
-      FILE_TYPES.push(props.fileType);
-    } catch (e) {
-      console.log(`error new mode(${props.fileType}): ${e}`);
-    }
-  }, [props.fileType]);
-  const onChange: (string) => void = (() => {
-    if (props.onChange) {
-      return (content: string) => {
-        props.onChange(content);
-      };
-    } else {
-      return () => {};
-    }
-  })();
+  // load theme & mode
+  loadLib('theme', theme, THEMES);
+  loadLib('mode', props.fileType, FILE_TYPES);
+
+  const onChange: (string) => void = props.onChange ? props.onChange : () => {};
   if (props.readOnly) {
     return (
       <AceEditor

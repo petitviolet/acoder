@@ -11,6 +11,28 @@ export type EditorProps = {
   theme?: string;
 };
 
+// Label -> Mode name
+export const AVAILABLE_FILE_TYPES = new Map([
+  ['Plain Text', 'text'],
+  ['Shell', 'sh'],
+  ['Java', 'java'],
+  ['Scala', 'scala'],
+  ['JavaScript', 'javascript'],
+  ['TypeScript', 'typescript'],
+  ['Ruby', 'ruby'],
+  ['Perl', 'perl'],
+  ['Python', 'python'],
+  ['PHP', 'php'],
+  ['HTML', 'html'],
+  ['Markdown', 'md'],
+  ['CSS', 'css'],
+  ['C', 'c_cpp'],
+  ['C++', 'c_cpp'],
+  ['C#', 'csharp'],
+  ['SQL', 'sql'],
+  ['YAML', 'yaml'],
+]);
+
 const MIN_LINE = 10;
 const MAX_LINE = 50;
 

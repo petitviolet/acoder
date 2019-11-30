@@ -18,6 +18,7 @@ const DEFAULT_THEME = 'monokai';
 
 const loadLib = (libType: string, lib: string, cache: string[]) => {
   React.useMemo(() => {
+    console.log(`Start to load ${libType}.${lib}`);
     if (!lib || cache.includes(lib)) {
       return;
     }
@@ -44,9 +45,11 @@ export const EditorComponent = (props: EditorProps) => {
   console.log(`Editor props: ${JSON.stringify(props)}`);
   const theme = props.theme || DEFAULT_THEME;
 
+  console.log('before load');
   // load theme & mode
   loadLib('theme', theme, THEMES);
   loadLib('mode', props.fileType, FILE_TYPES);
+  console.log('after load');
 
   const onChange: (string) => void = props.onChange ? props.onChange : () => {};
   if (props.readOnly) {

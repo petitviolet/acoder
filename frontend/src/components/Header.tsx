@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from 'styled-components';
 import * as Auth from './Auth';
-import { Link } from 'react-router-dom';
+import { Link as rLink } from 'react-router-dom';
 import * as Flash from './Flash';
 
 const Header = () => {
@@ -9,9 +9,13 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <HeaderLinkComponent path={'/'} text={'Home'} />
-      <HeaderLinkComponent path={'/me'} text={'MyPage'} />
-      <HeaderSession>{loggedIn ? <LogoutButton /> : <LoginButton />}</HeaderSession>
+      {/* left */}
+      <HeaderLeft><HeaderLinkComponent path={'/'} text={'Home'} /></HeaderLeft>
+      <HeaderLeft><HeaderLinkComponent path={'/me'} text={'MyPage'} /></HeaderLeft>
+
+      {/* right */}
+      <HeaderRight>{loggedIn ? <LogoutButton /> : <LoginButton />}</HeaderRight>
+      <HeaderRight><HeaderLinkComponent path={'/snippets/new'} text={'Create snippet'} /></HeaderRight>
     </HeaderContainer>
   );
 };
@@ -43,17 +47,22 @@ const HeaderContainer = style.header`
 `;
 
 const HeaderLinkComponent = (props: { path: string; text: string }) => (
-  <HeaderLink to={props.path}>{props.text}</HeaderLink>
+  <Link to={props.path}>{props.text}</Link>
 );
 
-const HeaderLink = style(Link)`
-  float: left;
+const Link = style(rLink)`
+  text-decoration: none;
+  &:focus, &:hover, &:visited, &:link, &:active {
+      text-decoration: none;
+  }
+`;
+const HeaderLink = style.div`
   display: block;
   color: black;
   text-align: center;
   padding: 14px 16px;
-  text-decoration: none;
   font-size: 17px;
+  cursor: pointer;
   
   &:hover {
     background-color: #ddd;
@@ -63,6 +72,13 @@ const HeaderLink = style(Link)`
     background-color: #2196F3;
     color: white;
   }
+`;
+const HeaderLeft = style(HeaderLink)`
+  float: left;
+`;
+
+const HeaderRight = style(HeaderLink)`
+  float: right;
 `;
 
 const HeaderSession = style.div`

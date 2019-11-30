@@ -1,5 +1,7 @@
 import * as React from 'react';
 import AceEditor from 'react-ace';
+import 'ace-builds/webpack-resolver';
+import 'ace-builds/src-min-noconflict/ext-language_tools';
 
 export type EditorProps = {
   fileType: string;

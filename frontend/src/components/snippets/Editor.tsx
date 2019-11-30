@@ -20,7 +20,6 @@ const DEFAULT_THEME = 'monokai';
 
 const loadLib = (libType: string, lib: string, cache: string[]) => {
   React.useMemo(() => {
-    console.log(`Start to load ${libType}.${lib}`);
     if (!lib || cache.includes(lib)) {
       return;
     }
@@ -35,6 +34,7 @@ const loadLib = (libType: string, lib: string, cache: string[]) => {
           require(`ace-builds/src-noconflict/theme-${lib}`);
           break;
       }
+      console.log(`Loaded: ${libType}.${lib}`);
       cache.push(lib);
     } catch (e) {
       console.log(`error new ${libType}(${lib}): ${e}`);
@@ -44,14 +44,11 @@ const loadLib = (libType: string, lib: string, cache: string[]) => {
 
 // This is only for 'Editor', not for 'Snippet'
 export const EditorComponent = (props: EditorProps) => {
-  console.log(`Editor props: ${JSON.stringify(props)}`);
   const theme = props.theme || DEFAULT_THEME;
 
-  console.log('before load');
   // load theme & mode
   loadLib('theme', theme, THEMES);
   loadLib('mode', props.fileType, FILE_TYPES);
-  console.log('after load');
 
   const onChange: (string) => void = props.onChange ? props.onChange : () => {};
   if (props.readOnly) {

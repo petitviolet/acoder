@@ -4,7 +4,7 @@ import * as Flash from '../Flash';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
-import { EditorComponent, EditorProps } from './Editor';
+import { AVAILABLE_FILE_TYPES, EditorComponent, EditorProps } from './Editor';
 import * as Auth from '../Auth';
 import { Errors, useForm, Validator } from '../useForm';
 import { useHistory } from 'react-router';
@@ -23,8 +23,6 @@ const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
     ]);
   }
 })();
-
-const FileTypes: string[] = ['python', 'ruby', 'java', 'scala', 'shell', 'bash', 'perl', 'js', 'ts'];
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet } | null;
 
@@ -113,7 +111,7 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
           </bs.Col>
           <bs.Col md={{ span: 3 }}>
             <SelectInput
-              candidates={FileTypes}
+              candidates={AVAILABLE_FILE_TYPES}
               name={'fileType'}
               value={state.fileType || ''}
               placeholder={'File Type'}
@@ -176,7 +174,7 @@ const Editor = style(EditorComponent)`
 `;
 
 const SelectInput = (props: {
-  candidates: string[];
+  candidates: Map<string, string>;
   title?: string;
   name: string;
   value: string;
@@ -185,6 +183,22 @@ const SelectInput = (props: {
   onChange: (event: any) => void;
 }) => {
   const { candidates, title, name, value, placeholder, errors, onChange } = props;
+
+  // memoize building options
+  const options = React.useMemo(() => {
+    return [
+      <option key={0} value={''}>
+        Choose...
+      </option>,
+    ].concat(
+      Array.from(candidates.keys()).map((label: string, i: number) => (
+        <option key={i + 1} value={candidates.get(label)}>
+          {label}
+        </option>
+      )),
+    );
+  }, [candidates]);
+
   return (
     <bs.InputGroup>
       {title != null && (
@@ -205,10 +219,7 @@ const SelectInput = (props: {
         value={value}
         as="select"
       >
-        <option key={0} value={''}>Choose...</option>
-        {candidates.map((fileType: string, i: number) => (
-          <option key={i+1}>{fileType}</option>
-        ))}
+        {options}
       </bs.Form.Control>
       <div>{errors.get(name)}</div>
     </bs.InputGroup>

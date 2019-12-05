@@ -11,12 +11,14 @@ const MyPageComponent = () => {
   const {
     authState: { currentUser, token },
   } = React.useContext(Auth.Context);
+  const [isLoading, setLoading] = React.useState<boolean>(true);
   const [snippets, setSnippets] = React.useState<Snippet[]>([]);
   React.useMemo(() => {
     SnippetGateway(token)
       .search(currentUser.id)
       .then(snippets => {
         console.log(`SnippetGateway#search: ${JSON.stringify(snippets)}`);
+        setLoading(false);
         setSnippets(snippets);
       })
       .catch(err => {
@@ -24,16 +26,12 @@ const MyPageComponent = () => {
       });
   }, [currentUser]);
 
-  console.log('MyPage1');
-  console.dir(snippets);
-  console.log('MyPage2');
-
   return (
     <bs.Container>
       <bs.Row>
         <bs.Col md={{ span: 8, offset: 2 }}>
           <UserComponent {...currentUser} />
-          <SnippetListComponent {...{ snippets: snippets }} />
+          {isLoading ? <>loading...</> : <SnippetListComponent {...{ snippets: snippets }} /> }
         </bs.Col>
       </bs.Row>
     </bs.Container>

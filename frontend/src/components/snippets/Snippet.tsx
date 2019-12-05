@@ -13,20 +13,22 @@ export const SnippetComponent = (props: SnippetProps) => {
   const history = useHistory();
   const [snippet, setSnippet] = React.useState<Snippet>(null);
 
-  if ('snippetId' in props) {
-    React.useMemo(() => {
-      SnippetGateway()
-        .findById(props.snippetId)
-        .then(snippet => {
-          console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
-          setSnippet(snippet);
-        })
-        .catch(err => {
-          Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
-        });
-    }, [props]);
-  } else {
-    setSnippet(props.snippet);
+  if (snippet == null) {
+    if ('snippetId' in props) {
+      React.useMemo(() => {
+        SnippetGateway()
+          .findById(props.snippetId)
+          .then(snippet => {
+            console.log(`SnippetGateway#findById: ${JSON.stringify(snippet)}`);
+            setSnippet(snippet);
+          })
+          .catch(err => {
+            Flash.error(`Failed to fetch snippet(${props.snippetId}). message = ${err}`);
+          });
+      }, [props]);
+    } else {
+      setSnippet(props.snippet);
+    }
   }
 
   if (snippet == null) {

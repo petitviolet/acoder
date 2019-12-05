@@ -27,9 +27,13 @@ const Routes: React.FC = () => {
             <Route
               exact
               path={'/snippets/:id'}
-              render={(props: RouteComponentProps<any>) => (
-                <SnippetComponent {...{ snippetId: props.match.params.id }} />
-              )}
+              render={(props: RouteComponentProps<any>) => {
+                if (props.location.state && 'snippet' in props.location.state) {
+                  return <SnippetComponent {...{snippet: props.location.state.snippet}} />
+                } else {
+                  return <SnippetComponent {...{snippetId: props.match.params.id}} />
+                }
+              }}
             />
             <Route
               exact

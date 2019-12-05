@@ -26,7 +26,14 @@ const SnippetCompactComponent = (snippet: Snippet) => {
   return (
     <Container striped bordered hove>
       <Title>
-        <Link to={`/snippets/${snippet.id}`}>{snippet.title}</Link>
+        <Link
+          to={{
+            pathname: `/snippets/${snippet.id}`,
+            state: { snippet: snippet },
+          }}
+        >
+          {snippet.title}
+        </Link>
       </Title>
       <FileType>{snippet.fileType}</FileType>
       <UpdatedAt>{snippet.updatedAt.toLocaleString('jp-JP')}</UpdatedAt>

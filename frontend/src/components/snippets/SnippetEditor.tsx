@@ -100,7 +100,7 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
     <bs.Container>
       <form onSubmit={handleSubmit}>
         <Row>
-          <bs.Col md={{ span: 5, offset: 2 }}>
+          <bs.Col md={{ span: 7, offset: 1 }}>
             <TextInput
               name={'title'}
               value={state.title || ''}
@@ -121,7 +121,7 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
           </bs.Col>
         </Row>
         <Row>
-          <bs.Col md={{ span: 8, offset: 2 }}>
+          <bs.Col md={{ span: 10, offset: 1 }}>
             <TextInput
               name={'description'}
               value={state.description || ''}
@@ -132,14 +132,14 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
           </bs.Col>
         </Row>
         <Row>
-          <bs.Col md={{ span: 8, offset: 2 }}>
+          <bs.Col md={{ span: 10, offset: 1 }}>
             <Content {...{ snippet: state, onChange: (content: string) => setContent(content) }} />
           </bs.Col>
         </Row>
         <Row>
-          <bs.Col md={{ span: 2, offset: 8 }}>
+          <bs.Col md={{ span: 1, offset: 10 }}>
             <RightButton type="submit" disabled={disabled}>
-              保存
+              Save
             </RightButton>
           </bs.Col>
         </Row>

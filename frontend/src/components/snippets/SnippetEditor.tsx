@@ -183,46 +183,39 @@ const SelectInput = (props: {
   onChange: (event: any) => void;
 }) => {
   const { candidates, title, name, value, placeholder, errors, onChange } = props;
+  const [label, setLabel] = React.useState<string>(candidates.get(value) || placeholder);
 
   // memoize building options
-  const options = React.useMemo(() => {
-    return [
-      <option key={0} value={''}>
-        Choose...
-      </option>,
-    ].concat(
+  const items = React.useMemo(() => {
+    return [<bs.Dropdown.Item key={0}>Choose...</bs.Dropdown.Item>].concat(
       Array.from(candidates.keys()).map((label: string, i: number) => (
-        <option key={i + 1} value={candidates.get(label)}>
+        <bs.Dropdown.Item
+          key={i + 1}
+          onSelect={() => {
+            onChange({ target: { name: name, value: candidates.get(label) } });
+            setLabel(label);
+          }}
+        >
           {label}
-        </option>
+        </bs.Dropdown.Item>
       )),
     );
-  }, [candidates]);
+  }, [candidates, name, onChange]);
 
   return (
-    <bs.InputGroup>
-      {title != null && (
-        <label htmlFor={name}>
-          <bs.InputGroup.Prepend>
-            <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
-          </bs.InputGroup.Prepend>
-        </label>
-      )}
-
-      <bs.Form.Control
+    <>
+      <bs.DropdownButton
         id={name}
-        placeholder={placeholder}
+        title={label}
         name={name}
         aria-label={name}
         aria-describedby={name}
         onChange={onChange}
-        value={value}
-        as="select"
       >
-        {options}
-      </bs.Form.Control>
+        {items}
+      </bs.DropdownButton>
       <div>{errors.get(name)}</div>
-    </bs.InputGroup>
+    </>
   );
 };
 
@@ -235,7 +228,7 @@ const TextInput = (props: {
 }) => {
   const { name, value, placeholder, errors, onChange } = props;
   return (
-    <bs.InputGroup>
+    <>
       <bs.FormControl
         id={name}
         placeholder={placeholder}
@@ -246,6 +239,6 @@ const TextInput = (props: {
         value={value}
       />
       <div>{errors.get(name)}</div>
-    </bs.InputGroup>
+    </>
   );
 };

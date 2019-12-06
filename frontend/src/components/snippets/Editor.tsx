@@ -1,7 +1,8 @@
 import * as React from 'react';
-import AceEditor from 'react-ace';
+import ReactAce from 'react-ace';
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-min-noconflict/ext-language_tools';
+import style from 'styled-components';
 
 export type EditorProps = {
   fileType: string;
@@ -107,3 +108,7 @@ export const EditorComponent = (props: EditorProps) => {
     );
   }
 };
+
+const AceEditor = style(ReactAce)`
+  font-size: 16px;
+`;

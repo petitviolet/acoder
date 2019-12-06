@@ -28,19 +28,23 @@ const Routes: React.FC = () => {
               exact
               path={'/snippets/:id'}
               render={(props: RouteComponentProps<any>) => {
-                if (props.location.state && 'snippet' in props.location.state) {
-                  return <SnippetComponent {...{snippet: props.location.state.snippet}} />
-                } else {
-                  return <SnippetComponent {...{snippetId: props.match.params.id}} />
-                }
+                const p =
+                  (props.location.state && 'snippet' in props.location.state)
+                    ? { snippet: props.location.state.snippet }
+                    : { snippetId: props.match.params.id };
+                return <SnippetComponent {...p} />;
               }}
             />
             <Route
               exact
               path={'/snippets/:id/edit'}
-              render={(props: RouteComponentProps<any>) => (
-                <SnippetEditorComponent {...{ snippetId: props.match.params.id }} />
-              )}
+              render={(props: RouteComponentProps<any>) => {
+                const p =
+                  (props.location.state && 'snippet' in props.location.state)
+                    ? { snippet: props.location.state.snippet }
+                    : { snippetId: props.match.params.id };
+                return <SnippetEditorComponent {...p} />;
+              }}
             />
           </Switch>
         </Switch>

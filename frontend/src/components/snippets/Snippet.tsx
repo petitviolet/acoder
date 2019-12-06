@@ -35,42 +35,35 @@ export const SnippetComponent = (props: SnippetProps) => {
     return <>loading...</>;
   }
 
-  const layout = { span: 8, offset: 2 };
-
-  const Cell = (props: { children: any }) => {
+  const Cell = (props: { children; layout }) => {
     return (
-      <bs.Row>
-        <bs.Col md={layout}>{props.children}</bs.Col>
-      </bs.Row>
+      <Row>
+        <bs.Col md={props.layout}>{props.children}</bs.Col>
+      </Row>
     );
   };
+
   return (
     <bs.Container>
-      <Row>
-        <bs.Col md={{ span: 5, offset: 2 }}>{snippet.title}</bs.Col>
-        <bs.Col md={{ span: 3 }}>
-          <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
-        </bs.Col>
-      </Row>
-      <Row>
-        <bs.Col md={{ span: 8, offset: 2 }}>{snippet.description}</bs.Col>
-      </Row>
-      <Row>
-        <bs.Col md={{ span: 8, offset: 2 }}>
-          <Content {...snippet} />
-        </bs.Col>
-      </Row>
-      <Row>
-        <bs.Col md={{ span: 2, offset: 8 }}>
-          <RightButton
-            onClick={() => {
-              history.push(`/snippets/${snippet.id}/edit`);
-            }}
-          >
-            Edit
-          </RightButton>
-        </bs.Col>
-      </Row>
+      <Cell layout={{ span: 10, offset: 1 }}>
+        <bs.Badge variant="info">{snippet.fileType || ''}</bs.Badge>
+      </Cell>
+      <Cell layout={{ span: 10, offset: 1 }}>
+        <Title>{snippet.title}</Title>
+      </Cell>
+      <Cell layout={{ span: 10, offset: 1 }}>{snippet.description}</Cell>
+      <Cell layout={{ span: 10, offset: 1 }}>
+        <Content {...snippet} />
+      </Cell>
+      <Cell layout={{ span: 1, offset: 10 }}>
+        <RightButton
+          onClick={() => {
+            history.push(`/snippets/${snippet.id}/edit`);
+          }}
+        >
+          Edit
+        </RightButton>
+      </Cell>
     </bs.Container>
   );
 };
@@ -90,11 +83,17 @@ const Content = (props: Snippet) => {
 };
 
 const ContentViewer = style(EditorComponent)`
-  border: solid 1px #b0b0b0;
+  margin-top: 8px;
+  margin-bottom: 8px;
 `;
 
 const Row = style(bs.Row)`
   padding-bottom: 0.5em;
+  vertical-align: middle;
+`;
+
+const Title = style.div`
+  font-size: 32px;
 `;
 
 const RightButton = style(bs.Button)`

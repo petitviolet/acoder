@@ -191,7 +191,7 @@ const SelectInput = (props: {
         Choose...
       </option>,
     ].concat(
-      Array.from(candidates.keys()).map((label: string, i: number) => (
+      Array.from(candidates.keys()).sort().map((label: string, i: number) => (
         <option key={i + 1} value={candidates.get(label)}>
           {label}
         </option>

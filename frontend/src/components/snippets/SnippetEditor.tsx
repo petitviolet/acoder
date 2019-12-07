@@ -100,7 +100,7 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
     <bs.Container>
       <form onSubmit={handleSubmit}>
         <Row>
-          <bs.Col md={{ span: 7, offset: 1 }}>
+          <bs.Col md={{ span: 8, offset: 1 }}>
             <TextInput
               name={'title'}
               value={state.title || ''}
@@ -205,6 +205,7 @@ const SelectInput = (props: {
   return (
     <>
       <bs.DropdownButton
+        as={bs.InputGroup.Append}
         id={name}
         title={label}
         name={name}

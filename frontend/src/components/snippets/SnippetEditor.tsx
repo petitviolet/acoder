@@ -100,7 +100,7 @@ const SnippetEditorComponentInner = (snippet: Snippet) => {
     <bs.Container>
       <form onSubmit={handleSubmit}>
         <Row>
-          <bs.Col md={{ span: 8, offset: 1 }}>
+          <bs.Col md={{ span: 7, offset: 1 }}>
             <TextInput
               name={'title'}
               value={state.title || ''}
@@ -200,15 +200,7 @@ const SelectInput = (props: {
   }, [candidates]);
 
   return (
-    <bs.InputGroup>
-      {title != null && (
-        <label htmlFor={name}>
-          <bs.InputGroup.Prepend>
-            <bs.InputGroup.Text>{title}</bs.InputGroup.Text>
-          </bs.InputGroup.Prepend>
-        </label>
-      )}
-
+    <>
       <bs.Form.Control
         id={name}
         placeholder={placeholder}
@@ -222,7 +214,7 @@ const SelectInput = (props: {
         {options}
       </bs.Form.Control>
       <div>{errors.get(name)}</div>
-    </bs.InputGroup>
+    </>
   );
 };
 
@@ -235,7 +227,7 @@ const TextInput = (props: {
 }) => {
   const { name, value, placeholder, errors, onChange } = props;
   return (
-    <bs.InputGroup>
+    <>
       <bs.FormControl
         id={name}
         placeholder={placeholder}
@@ -246,6 +238,6 @@ const TextInput = (props: {
         value={value}
       />
       <div>{errors.get(name)}</div>
-    </bs.InputGroup>
+    </>
   );
 };

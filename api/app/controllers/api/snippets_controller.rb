@@ -1,13 +1,13 @@
 class Api::SnippetsController < Api::ApiController
 
   def index
-    render json: Snippet.feed.without_content, status: :ok
+    render json: Snippet.feed.without_content, status: :ok, each_serializer: SnippetSummarySerializer
   end
 
   def search
     user_id = params[:userId]
-    render json: User.includes(:snippets)
-                   .find(user_id).snippets.without_content, status: :ok
+    render json: Snippet.without_content.includes(:user)
+                   .where(snippets: { user_id: user_id }), status: :ok, each_serializer: SnippetSummarySerializer
   end
 
   def show

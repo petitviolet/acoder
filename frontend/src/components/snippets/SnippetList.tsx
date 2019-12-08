@@ -53,6 +53,7 @@ const SnippetCompactComponent = (snippet: Snippet) => {
 };
 
 const SnippetList = style(bs.Table)`
+    table-layout: fixed; 
 `;
 
 const Container = style.tr` 
@@ -61,9 +62,14 @@ const Container = style.tr`
     cursor: pointer;
 `;
 const Title = style.td`
+  max-width: 12em;
+  text-overflow: ellipsis;
+  overflow: hidden; 
 `;
 const Description = style.td`
+  max-width: 16em;
   text-overflow: ellipsis;
+  overflow: hidden; 
 `;
 const FileType = style.td`
 `;

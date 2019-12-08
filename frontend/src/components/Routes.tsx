@@ -23,7 +23,7 @@ const Routes: React.FC = () => {
             <Route exact path={'/me'} component={MyPageComponent} />
             <Route exact path={'/users/:id'} component={UserComponent} />
             <Route exact path={'/snippets'} component={SnippetListComponent} />
-            <Route exact path={'/snippets/new'} component={SnippetEditorComponent} />
+            <Route exact key={'snippets/new'} path={'/snippets/new'} component={SnippetEditorComponent} />
             <Route
               exact
               path={'/snippets/:id'}
@@ -37,6 +37,7 @@ const Routes: React.FC = () => {
             />
             <Route
               exact
+              key={'snippets/edit'}
               path={'/snippets/:id/edit'}
               render={(props: RouteComponentProps<any>) => {
                 const p =

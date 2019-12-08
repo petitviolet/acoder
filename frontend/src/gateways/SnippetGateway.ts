@@ -12,14 +12,14 @@ class SnippetGateway extends Gateway {
       })
       .then(res => {
         this.responseLogging('currentSnippet', res);
-        return res.data;
+        return res.data.map(Snippet.fromJson);
       });
   }
 
   findById(snippetId: string) {
     return this.axios.get<Snippet>(`/snippets/${snippetId}`).then(res => {
       this.responseLogging('user', res);
-      return res.data;
+      return Snippet.fromJson(res.data);
     });
   }
 

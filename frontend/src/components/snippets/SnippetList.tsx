@@ -2,7 +2,7 @@ import * as React from 'react';
 import Snippet from '../../models/Snippet';
 import style from 'styled-components';
 import * as bs from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
 export const SnippetListComponent = (props: { snippets: Snippet[] }) => {
   const { snippets } = props;
@@ -12,7 +12,7 @@ export const SnippetListComponent = (props: { snippets: Snippet[] }) => {
   console.dir(snippets);
 
   return (
-    <SnippetList responsive striped bordered hover>
+    <SnippetList responsive bordered hover>
       <thead>
       <tr>
         <th>Title</th>
@@ -33,18 +33,11 @@ export const SnippetListComponent = (props: { snippets: Snippet[] }) => {
 };
 
 const SnippetCompactComponent = (snippet: Snippet) => {
+  const history = useHistory();
+  const detailLink = `/snippets/${snippet.id}`;
   return (
-    <Container>
-      <Title>
-        <Link
-          to={{
-            pathname: `/snippets/${snippet.id}`,
-            state: { snippet: snippet },
-          }}
-        >
-          {snippet.title}
-        </Link>
-      </Title>
+    <Container onClick={() => {history.push(detailLink);}}>
+      <Title>{snippet.title}</Title>
       <FileType>{snippet.fileType}</FileType>
       <Description>{snippet.description || '-' }</Description>
       <UpdatedAt>{snippet.updatedAt.toLocaleString('jp-JP')}</UpdatedAt>
@@ -53,13 +46,13 @@ const SnippetCompactComponent = (snippet: Snippet) => {
 };
 
 const SnippetList = style(bs.Table)`
-    table-layout: fixed; 
+  table-layout: fixed; 
 `;
 
 const Container = style.tr` 
-    margin-bottom: 2px;
-    padding: 1px;
-    cursor: pointer;
+  margin-bottom: 2px;
+  padding: 1px;
+  cursor: pointer;
 `;
 const Title = style.td`
   max-width: 12em;

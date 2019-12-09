@@ -8,4 +8,7 @@ class HomeController < ActionController::Base
   def index
 
   end
+
+  def graphiql
+  end
 end

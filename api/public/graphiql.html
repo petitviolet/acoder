@@ -100,6 +100,19 @@
         history.replaceState(null, null, newSearch);
       }
 
+      function accessToken() {
+        var prm_token = encodeURIComponent(parameters.token);
+        var input_token = document.getElementById('token');
+        var token = null;
+        if (input_token && input_token.value) {
+          token = input_token.value;
+        } else {
+          token = prm_token;
+        }
+        console.log(`AccessToken: ${token}`);
+        return token;
+      }
+
       function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
@@ -108,7 +121,7 @@
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'X-Access-Token': parameters.token || document.getElementById('token') && document.getElementById('token').value,
+            'X-Access-Token': accessToken(),
           },
           body: JSON.stringify(graphQLParams),
           credentials: 'include',

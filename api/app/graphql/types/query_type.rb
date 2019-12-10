@@ -17,6 +17,8 @@ module Types
     end
 
     field :snippets, [Types::SnippetType], null: false, description: 'fetch snippets' do
+      argument :limit, Int, required: false
+      argument :offset, Int, required: false
     end
 
     def current_user
@@ -27,8 +29,8 @@ module Types
       User.find_by(id: id)
     end
 
-    def snippets
-      Snippet.feed
+    def snippets(limit: 10, offset: 0)
+      Snippet.feed.limit(limit).offset(offset)
     end
   end
 end

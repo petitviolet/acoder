@@ -1,4 +1,4 @@
-class AcoderSchema < GraphQL::Schema
+class GraphqlSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 end

@@ -6,6 +6,10 @@ module Types
       argument :id, String, required: true
     end
 
+    field :snippet, Types::SnippetType, null: true, description: 'fetch snippet by id' do
+      argument :id, String, required: true
+    end
+
     field :snippets, [Types::SnippetType], null: false, description: 'fetch snippets' do
       argument :limit, Int, required: false
       argument :offset, Int, required: false
@@ -17,6 +21,10 @@ module Types
 
     def user(id:)
       User.find_by(id: id)
+    end
+
+    def snippet(id:)
+      Snippet.find_by(id: id)
     end
 
     def snippets(limit: 10, offset: 0)

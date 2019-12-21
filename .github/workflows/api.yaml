@@ -33,6 +33,17 @@ jobs:
         cd api
         bundle -j 4 --path vendor/bundle
 
+    - name: Prepare Database
+      env:
+        PGHOST: 127.0.0.1
+        PGUSER: postgres
+        PGPASSWORD: password
+        RAILS_ENV: test
+      run: |
+        cd api
+        bundle exec rake db:create
+        bundle exec rake db:schema:load
+
     - name: Run Tests
       env:
         PGHOST: 127.0.0.1

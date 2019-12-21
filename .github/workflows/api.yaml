@@ -19,9 +19,19 @@ jobs:
       with:
         ruby-version: 2.6.3
 
+    - uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: bundle-${{ hashFiles('**/Gemfile.lock') }}
+
     - name: Install PostgreSQL 11 client
       run: |
         sudo apt-get -yqq install libpq-dev
+
+    - name: Bundle install
+      run: |
+        cd api
+        bundle -j 4 --path vendor/bundle
 
     - name: Run Tests
       env:
@@ -29,4 +39,5 @@ jobs:
         PGUSER: postgres
         RAILS_ENV: test
       run: |
+        cd api
         bundle exec rails test

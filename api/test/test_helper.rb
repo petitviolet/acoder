@@ -11,3 +11,14 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+class ActionDispatch::IntegrationTest
+  require 'controllers/sessions_helper'
+  include Controllers::SessionsHelper
+
+  def json_get(path, params: {}, headers: {})
+    headers.merge!(:'X-Access-Token' => @x_access_token) if @x_access_token
+    get(path, params: params, headers: headers, as: :json)
+  end
+end
+

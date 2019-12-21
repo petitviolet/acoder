@@ -1,15 +1,3 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  id: 
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  password_salt: MyString
-
-two:
-  id: 
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  password_salt: MyString
+alice:
+  name: Alice
+  account: alice

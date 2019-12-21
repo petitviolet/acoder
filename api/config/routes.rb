@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  if Rails.env.development?
+    get "/graphiql", to: "home#graphiql"
+  end
+  post "/graphql", to: "graphql#execute"
   root 'home#index'
   get '*page', to: 'home#index', constraints: lambda { |req|
     !req.xhr? && req.format.html?

@@ -31,5 +31,9 @@ module Acoder
     # the framework and any gems in your application.
     config.middleware.insert_before(ActionDispatch::ShowExceptions, ErrorHandler)
     config.middleware.delete(ActionDispatch::ShowExceptions)
+
+    config.assets.enabled = false
+    config.assets.precompile = []
+    config.public_file_server.enabled = false
   end
 end

@@ -5,8 +5,8 @@ class SystemController < ActionController::Base
   alias health liveness
 
   def readiness
-    res = ActiveRecord::Base.connection.execute("SELECT now() as now")&.first["now"]
-    render json: { message: 'OK', version: commit, date: Time.zone.now, result: res }
+    res = ActiveRecord::Base.connection.execute('select max(version) v from schema_migrations')&.first['v']
+    render json: { message: 'OK', version: commit, date: Time.zone.now, schema: res }
   end
 
   private

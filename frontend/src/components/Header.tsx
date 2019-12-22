@@ -14,12 +14,24 @@ const Header = () => {
       <HeaderLeft><HeaderLinkComponent path={'/me'} text={'MyPage'} /></HeaderLeft>
 
       {/* right */}
-      <HeaderRight>{loggedIn ? <LogoutButton /> : <LoginButton />}</HeaderRight>
-      <HeaderRight><HeaderLinkComponent path={'/snippets/new'} text={'Create snippet'} /></HeaderRight>
+        { loggedIn ? (
+          <>
+            <HeaderRight><LogoutButton /></HeaderRight>
+            <HeaderRight><HeaderLinkComponent path={'/snippets/new'} text={'Create snippet'} /></HeaderRight>
+          </>
+        ) : (
+          <>
+            <HeaderRight><SignUpButton /></HeaderRight>
+            <HeaderRight><LoginButton /></HeaderRight>
+          </>
+        )}
     </HeaderContainer>
   );
 };
 
+const SignUpButton = () => {
+  return <Link to={'/sign_up'}>Sign up</Link>;
+};
 const LoginButton = () => {
   return <Link to={'/login'}>Log in</Link>;
 };

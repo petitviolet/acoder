@@ -86,7 +86,7 @@ const Login = () => {
       <bs.Row>
         <bs.Col md={{ span: 6, offset: 3 }}>
           <form onSubmit={handleSubmit}>
-            <div>{u}</div>
+            {/*<div>{u}</div>*/}
             <Inputs
               title={'Email'}
               name={'email'}

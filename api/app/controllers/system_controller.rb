@@ -12,6 +12,6 @@ class SystemController < ActionController::Base
   private
 
   def commit
-    `git rev-parse --short HEAD`.strip
+    @commit ||= ENV.fetch('COMMIT_HASH') { `git rev-parse --short HEAD`.strip }
   end
 end

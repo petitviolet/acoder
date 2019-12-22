@@ -33,5 +33,10 @@ Rails.application.routes.draw do
     end
 
     get '/whoami', to: 'users#whoami'
+
   end
+
+  get '/health', to: 'system#health'
+  get '/liveness', to: 'system#liveness'
+  get '/readiness', to: 'system#readiness'
 end

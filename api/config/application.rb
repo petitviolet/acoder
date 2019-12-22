@@ -12,7 +12,7 @@ require 'action_controller/railtie'
 # require 'action_text/engine'
 # require 'action_view/railtie'
 # require "action_cable/engine"
-require 'sprockets/railtie'
+# require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 require_relative './error_handler'
 
@@ -32,8 +32,8 @@ module Acoder
     config.middleware.insert_before(ActionDispatch::ShowExceptions, ErrorHandler)
     config.middleware.delete(ActionDispatch::ShowExceptions)
 
-    config.assets.enabled = false
-    config.assets.precompile = []
-    config.public_file_server.enabled = false
+    # config.assets.enabled = false
+    # config.assets.precompile = []
+    # config.public_file_server.enabled = false
   end
 end

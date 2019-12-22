@@ -3,7 +3,7 @@ const development = {
 };
 
 const production = {
-  API_HOST: 'http://localhost:3000',
+  API_HOST: 'https://acoder-api.herokuapp.com',
 };
 
 const config = () => {

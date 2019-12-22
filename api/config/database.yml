@@ -20,10 +20,10 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
-  password: password
-  host: 127.0.0.1
-  port: 5433
+  username: <%= ENV.fetch('ACODER_DATABASE_USERNAME') { "postgres" } %>
+  password: <%= ENV.fetch('ACODER_DATABASE_PASSWORD') { "password" } %>
+  host: <%= ENV.fetch("ACODER_DATABASE_HOST") { "127.0.0.1" } %>
+  port: <%= ENV.fetch("ACODER_DATABASE_PORT") { "5432" } %>
   database: acoder
 
 
@@ -86,6 +86,3 @@ test:
 production:
   <<: *default
   database: acoder_production
-  username: acoder
-  password: <%= ENV['ACODER_DATABASE_PASSWORD'] %>
-  port: 5432

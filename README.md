@@ -34,7 +34,20 @@ $ yarn start
 
 ## How to deploy
 
-Todo
+```console
+# check heroku-(api|front) are available
+$ git remote 
+heroku-api
+heroku-front
+origin
+
+# check git url
+$ heroku apps --json | jq -S '.[] | select(.name | startswith("acoder-")) | [.name, .git_url]'
+
+# deploy to heroku
+$ make deploy/api
+$ make deploy/front
+```
 
 ## License
 

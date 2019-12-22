@@ -1,5 +1,5 @@
 APP_API=acoder-api
-APP_FRON=acoder-front
+APP_FRONT=acoder-front
 GIT_HEROKU_API=heroku-api
 GIT_HEROKU_FRONT=heroku-front
 
@@ -11,5 +11,5 @@ deploy/api/db_migration:
 	heroku run rails db:migrate --app $(APP_API)
 
 deploy/front:
-	heroku config:set COMMIT_HASH=$$(git rev-parse --short HEAD) --app $(APP_FRONT
+	heroku config:set COMMIT_HASH=$$(git rev-parse --short HEAD) --app $(APP_FRONT)
 	git subtree push --prefix frontend/ $(GIT_HEROKU_FRONT) master

@@ -28,7 +28,7 @@ module.exports = (env, argv) => ({
   devServer: {
     contentBase: path.resolve(__dirname, "public"),
     historyApiFallback: true,
-    port: process.env.PORT || 5000,
+    port: process.env.PORT || 3035,
     hot: true,
     open: true,
     watchContentBase: true

@@ -29,7 +29,6 @@
     "react-router-dom": "^5.1.2",
     "styled-components": "^4.3.2",
     "ts-loader": "^6.2.0",
-    "turbolinks": "^5.2.0",
     "typescript": "^3.7.2"
   },
   "version": "0.1.0",
@@ -65,7 +64,7 @@
   "scripts": {
     "start": "yarn && webpack-dev-server --mode=development",
     "build": "yarn && webpack --mode=production",
-    "heroku-postbuild": "npm build",
+    "heroku-postbuild": "yarn && webpack --mode=development",
     "dev": "webpack --progress",
     "watch": "webpack --progress --watch",
     "storybook": "start-storybook -p 6006",

@@ -93,10 +93,10 @@ const SignUp = () => {
   const { state, errors, disabled, handleChange, handleSubmit } = useForm<SignUpState>(
     onSubmit,
     {
-      name: 'alice',
-      email: 'alice@example.com',
-      password: 'password',
-      passwordConfirmation: 'password',
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
     },
     validator,
   );

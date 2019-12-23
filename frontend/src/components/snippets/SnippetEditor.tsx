@@ -7,7 +7,8 @@ import SnippetGateway from '../../gateways/SnippetGateway';
 import { AVAILABLE_FILE_TYPES, EditorComponent, EditorProps } from './Editor';
 import * as Auth from '../Auth';
 import { Errors, useForm, Validator } from '../useForm';
-import { useHistory } from 'react-router';
+import {Redirect, useHistory} from 'react-router';
+import User from "../../models/User";
 
 const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
   nonEmptyValidator(label: string, text: string): string | null {
@@ -60,12 +61,18 @@ export const SnippetEditorComponent = (props: SnippetProps) => {
   if (snippet == null) {
     return <>loading...</>;
   } else {
-    return <SnippetEditorComponentInner {...snippet} />;
+    return <SnippetEditorComponentInner currentUser={currentUser} snippet={snippet} />;
   }
 };
 
-const SnippetEditorComponentInner = (snippet: Snippet) => {
+const SnippetEditorComponentInner = ({ currentUser, snippet } : { currentUser: User; snippet: Snippet }) => {
   const history = useHistory();
+  React.useEffect(() => {
+    if (snippet.userId != currentUser.id) {
+      Flash.error('You cannot edit this snippet');
+      history.push(`/snippets/${snippet.id}`);
+    }
+  }, [currentUser.id, snippet.userId]);
 
   const onSubmit = (snippet: Snippet) => {
     if (snippet.id) {

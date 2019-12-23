@@ -6,10 +6,14 @@ import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
 import { EditorComponent } from './Editor';
 import { useHistory } from 'react-router-dom';
+import * as Auth from "../Auth";
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 
 export const SnippetComponent = (props: SnippetProps) => {
+  const {
+    authState: { currentUser },
+  } = React.useContext(Auth.Context);
   const history = useHistory();
   const [snippet, setSnippet] = React.useState<Snippet>(null);
 
@@ -35,6 +39,8 @@ export const SnippetComponent = (props: SnippetProps) => {
     return <>loading...</>;
   }
 
+  const canEdit: boolean = snippet && snippet.userId == currentUser.id;
+
   const Cell = (props: { children; layout }) => {
     return (
       <Row>
@@ -56,13 +62,13 @@ export const SnippetComponent = (props: SnippetProps) => {
         <Content {...snippet} />
       </Cell>
       <Cell layout={{ span: 1, offset: 10 }}>
-        <RightButton
-          onClick={() => {
-            history.push(`/snippets/${snippet.id}/edit`);
-          }}
-        >
-          Edit
-        </RightButton>
+        {canEdit ? <RightButton
+            onClick={() => {
+              history.push(`/snippets/${snippet.id}/edit`);
+            }}
+          >Edit</RightButton>
+          : <></>
+        }
       </Cell>
     </bs.Container>
   );

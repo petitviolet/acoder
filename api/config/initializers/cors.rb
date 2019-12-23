@@ -1,6 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins /localhost\:\d+/, /acoder-frontend\.herokuapp\.com/
+    origins /localhost\:\d+/, /acoder-front\.herokuapp\.com/
 
     resource '*',
              headers: :any,

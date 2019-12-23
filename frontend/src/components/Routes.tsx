@@ -8,6 +8,7 @@ import MyPageComponent from './MyPage';
 import { SnippetComponent, SnippetListComponent, SnippetEditorComponent } from './snippets';
 import Header from './Header';
 import SignUp from './SignUp';
+import FeedComponent from "./Feed";
 
 const Routes: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const Routes: React.FC = () => {
         <Header />
         <FlashComponent />
         <Switch>
-          <Route exact path={'/'} render={() => 'Home!!!'} />
+          <Route exact path={'/'} component={FeedComponent} />
           <Route exact path={'/sign_up'} component={SignUp} />
           <Route path={'/login'} component={Login} />
           <Switch>

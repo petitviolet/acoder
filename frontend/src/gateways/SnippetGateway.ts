@@ -3,6 +3,15 @@ import Gateway from './Gateway';
 import Snippet from '../models/Snippet';
 
 class SnippetGateway extends Gateway {
+  feed(limit: number, offset: number) {
+    return this.axios
+      .get<Snippet[]>(`/snippets?page[limit]=${limit}&page[offset]=${offset}`)
+      .then(res => {
+        this.responseLogging('feed', res);
+        return res.data.map(Snippet.fromJson);
+      });
+  }
+
   search(userId: string) {
     return this.axios
       .get<Snippet[]>('/snippets/search', {

@@ -1,7 +1,33 @@
 class Api::SnippetsController < Api::ApiController
+  class Pagination
+    class Page
+      attr_reader :limit
+      attr_reader :offset
+      def initialize(limit: 10, offset: 0)
+        @limit = limit || 10
+        @offset = offset || 0
+      end
+    end
+
+    def initialize(rel:, page: Page.new)
+      @rel = rel
+      @page = page
+    end
+
+    def to_a
+      @rel.limit(@page.limit).offset(@page.offset).to_a
+    end
+
+    def self.apply(rel, params)
+      params ||= {}
+      page = Pagination::Page.new(limit: params[:limit], offset: params[:offset])
+      Pagination.new(rel: rel, page: page).to_a
+    end
+  end
 
   def index
-    render json: Snippet.feed.without_content, status: :ok, each_serializer: SnippetSummarySerializer
+    contents = Pagination.apply(Snippet.feed.without_content, params.fetch(:page, {}))
+    render json: contents, status: :ok, each_serializer: SnippetSummarySerializer
   end
 
   def search

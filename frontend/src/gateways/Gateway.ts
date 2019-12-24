@@ -26,7 +26,7 @@ const shared = ((): AxiosInstance => {
 
   const instance = Axios.create({
     baseURL: `${config.API_HOST}/api`,
-    timeout: 1000,
+    timeout: 5000,
     headers: {
       get: Headers.applicationJson,
       post: Headers.applicationJson,

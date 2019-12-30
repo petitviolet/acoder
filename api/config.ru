@@ -1,6 +1,7 @@
 # This file is used by Rack-based servers to start the application.
 
 require_relative 'config/environment'
+require 'rack/rreplay'
 
 # https://spring-mt.hatenablog.com/entry/2015/01/24/112454
 is_stackprof = ENV['ENABLE_STACKPROF'].to_i.nonzero?
@@ -15,5 +16,8 @@ use StackProf::Middleware, enabled: is_stackprof,
     save_every: stackprof_save_every,
     path: stackprof_path
 
+
+use Rack::Rreplay.Middleware(directory: './tmp', format: :json),
+    { sample: 1, extra_header_keys: %w[ACCESS_TOKEN], debug: true }
 
 run Rails.application

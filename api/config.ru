@@ -18,6 +18,6 @@ use StackProf::Middleware, enabled: is_stackprof,
 
 
 use Rack::Rreplay.Middleware(directory: './tmp', format: :json),
-    { sample: 1, extra_header_keys: %w[ACCESS_TOKEN], debug: true }
+    { sample: 1, extra_header_keys: %w[X-ACCESS-TOKEN], debug: true }
 
 run Rails.application

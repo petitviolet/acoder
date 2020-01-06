@@ -8,7 +8,7 @@ import MyPageComponent from './MyPage';
 import { SnippetComponent, SnippetListComponent, SnippetEditorComponent } from './snippets';
 import Header from './Header';
 import SignUp from './SignUp';
-import FeedComponent from "./Feed";
+import FeedComponent from './Feed';
 
 const Routes: React.FC = () => {
   return (
@@ -30,7 +30,7 @@ const Routes: React.FC = () => {
               path={'/snippets/:id'}
               render={(props: RouteComponentProps<any>) => {
                 const p =
-                  (props.location.state && 'snippet' in props.location.state)
+                  props.location.state && 'snippet' in props.location.state
                     ? { snippet: props.location.state.snippet }
                     : { snippetId: props.match.params.id };
                 return <SnippetComponent {...p} />;
@@ -42,7 +42,7 @@ const Routes: React.FC = () => {
               path={'/snippets/:id/edit'}
               render={(props: RouteComponentProps<any>) => {
                 const p =
-                  (props.location.state && 'snippet' in props.location.state)
+                  props.location.state && 'snippet' in props.location.state
                     ? { snippet: props.location.state.snippet }
                     : { snippetId: props.match.params.id };
                 return <SnippetEditorComponent {...p} />;

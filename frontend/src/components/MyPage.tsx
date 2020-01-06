@@ -31,7 +31,7 @@ const MyPageComponent = () => {
       <bs.Row>
         <bs.Col md={{ span: 10, offset: 1 }}>
           <UserComponent {...currentUser} />
-          {isLoading ? <>loading...</> : <SnippetListComponent {...{ snippets: snippets }} /> }
+          {isLoading ? <>loading...</> : <SnippetListComponent {...{ snippets: snippets }} />}
         </bs.Col>
       </bs.Row>
     </bs.Container>

@@ -6,7 +6,7 @@ import * as bs from 'react-bootstrap';
 import SnippetGateway from '../../gateways/SnippetGateway';
 import { EditorComponent } from './Editor';
 import { useHistory } from 'react-router-dom';
-import * as Auth from "../Auth";
+import * as Auth from '../Auth';
 
 type SnippetProps = { snippetId: string } | { snippet: Snippet };
 
@@ -57,18 +57,22 @@ export const SnippetComponent = (props: SnippetProps) => {
       <Cell layout={{ span: 10, offset: 1 }}>
         <Title>{snippet.title}</Title>
       </Cell>
-      <Cell layout={{ span: 10, offset: 1 }}>{snippet.description || '---' }</Cell>
+      <Cell layout={{ span: 10, offset: 1 }}>{snippet.description || '---'}</Cell>
       <Cell layout={{ span: 10, offset: 1 }}>
         <Content {...snippet} />
       </Cell>
       <Cell layout={{ span: 1, offset: 10 }}>
-        {canEdit ? <RightButton
+        {canEdit ? (
+          <RightButton
             onClick={() => {
               history.push(`/snippets/${snippet.id}/edit`);
             }}
-          >Edit</RightButton>
-          : <></>
-        }
+          >
+            Edit
+          </RightButton>
+        ) : (
+          <></>
+        )}
       </Cell>
     </bs.Container>
   );

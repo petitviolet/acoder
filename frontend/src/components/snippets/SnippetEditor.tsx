@@ -7,8 +7,8 @@ import SnippetGateway from '../../gateways/SnippetGateway';
 import { AVAILABLE_FILE_TYPES, EditorComponent, EditorProps } from './Editor';
 import * as Auth from '../Auth';
 import { Errors, useForm, Validator } from '../useForm';
-import {Redirect, useHistory} from 'react-router';
-import User from "../../models/User";
+import { Redirect, useHistory } from 'react-router';
+import User from '../../models/User';
 
 const validator: Validator<Snippet> = new (class implements Validator<Snippet> {
   nonEmptyValidator(label: string, text: string): string | null {
@@ -65,7 +65,7 @@ export const SnippetEditorComponent = (props: SnippetProps) => {
   }
 };
 
-const SnippetEditorComponentInner = ({ currentUser, snippet } : { currentUser: User; snippet: Snippet }) => {
+const SnippetEditorComponentInner = ({ currentUser, snippet }: { currentUser: User; snippet: Snippet }) => {
   const history = useHistory();
   React.useEffect(() => {
     if (snippet.userId != currentUser.id) {
@@ -198,11 +198,13 @@ const SelectInput = (props: {
         Choose...
       </option>,
     ].concat(
-      Array.from(candidates.keys()).sort().map((label: string, i: number) => (
-        <option key={i + 1} value={candidates.get(label)}>
-          {label}
-        </option>
-      )),
+      Array.from(candidates.keys())
+        .sort()
+        .map((label: string, i: number) => (
+          <option key={i + 1} value={candidates.get(label)}>
+            {label}
+          </option>
+        )),
     );
   }, [candidates]);
 

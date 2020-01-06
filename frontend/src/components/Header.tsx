@@ -10,21 +10,33 @@ const Header = () => {
   return (
     <HeaderContainer>
       {/* left */}
-      <HeaderLeft><HeaderLinkComponent path={'/'} text={'Home'} /></HeaderLeft>
-      <HeaderLeft><HeaderLinkComponent path={'/me'} text={'MyPage'} /></HeaderLeft>
+      <HeaderLeft>
+        <HeaderLinkComponent path={'/'} text={'Home'} />
+      </HeaderLeft>
+      <HeaderLeft>
+        <HeaderLinkComponent path={'/me'} text={'MyPage'} />
+      </HeaderLeft>
 
       {/* right */}
-        { loggedIn ? (
-          <>
-            <HeaderRight><LogoutButton /></HeaderRight>
-            <HeaderRight><HeaderLinkComponent path={'/snippets/new'} text={'Create snippet'} /></HeaderRight>
-          </>
-        ) : (
-          <>
-            <HeaderRight><SignUpButton /></HeaderRight>
-            <HeaderRight><LoginButton /></HeaderRight>
-          </>
-        )}
+      {loggedIn ? (
+        <>
+          <HeaderRight>
+            <LogoutButton />
+          </HeaderRight>
+          <HeaderRight>
+            <HeaderLinkComponent path={'/snippets/new'} text={'Create snippet'} />
+          </HeaderRight>
+        </>
+      ) : (
+        <>
+          <HeaderRight>
+            <SignUpButton />
+          </HeaderRight>
+          <HeaderRight>
+            <LoginButton />
+          </HeaderRight>
+        </>
+      )}
     </HeaderContainer>
   );
 };
@@ -58,9 +70,7 @@ const HeaderContainer = style.header`
   margin-bottom: 0.5em;
 `;
 
-const HeaderLinkComponent = (props: { path: string; text: string }) => (
-  <Link to={props.path}>{props.text}</Link>
-);
+const HeaderLinkComponent = (props: { path: string; text: string }) => <Link to={props.path}>{props.text}</Link>;
 
 const Link = style(rLink)`
   text-decoration: none;

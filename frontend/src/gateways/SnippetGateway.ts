@@ -3,65 +3,52 @@ import Gateway from './Gateway';
 import Snippet from '../models/Snippet';
 
 class SnippetGateway extends Gateway {
-  feed(limit: number, offset: number) {
-    return this.axios
-      .get<Snippet[]>(`/snippets?page[limit]=${limit}&page[offset]=${offset}`)
-      .then(res => {
-        this.responseLogging('feed', res);
-        return res.data.map(Snippet.fromJson);
-      });
+  async feed(limit: number, offset: number) {
+    const res = await this.axios.get<Snippet[]>(`/snippets?page[limit]=${limit}&page[offset]=${offset}`);
+    this.responseLogging('feed', res);
+    return res.data.map(Snippet.fromJson);
   }
 
-  search(userId: string) {
-    return this.axios
-      .get<Snippet[]>('/snippets/search', {
-        params: {
-          userId: userId,
-        },
-      })
-      .then(res => {
-        this.responseLogging('currentSnippet', res);
-        return res.data.map(Snippet.fromJson);
-      });
-  }
-
-  findById(snippetId: string) {
-    return this.axios.get<Snippet>(`/snippets/${snippetId}`).then(res => {
-      this.responseLogging('user', res);
-      return Snippet.fromJson(res.data);
+  async search(userId: string) {
+    const res = await this.axios.get<Snippet[]>('/snippets/search', {
+      params: {
+        userId: userId,
+      },
     });
+    this.responseLogging('currentSnippet', res);
+    return res.data.map(Snippet.fromJson);
   }
 
-  create(snippet: Snippet) {
-    return this.axios
-      .post<Snippet>(`/snippets`, {
-        snippet: {
-          title: snippet.title,
-          description: snippet.description,
-          fileType: snippet.fileType,
-          content: snippet.content,
-        },
-      })
-      .then(res => {
-        this.responseLogging(`created snippet`, res);
-        return res.data;
-      });
+  async findById(snippetId: string) {
+    const res = await this.axios.get<Snippet>(`/snippets/${snippetId}`);
+    this.responseLogging('user', res);
+    return Snippet.fromJson(res.data);
   }
 
-  update(snippet: Snippet) {
-    return this.axios
-      .patch<Snippet>(`/snippets/${snippet.id}`, {
-        snippet: {
-          title: snippet.title,
-          description: snippet.description,
-          fileType: snippet.fileType,
-          content: snippet.content,
-        },
-      })
-      .then(res => {
-        this.responseLogging(`updated snippet`, res);
-        return res.data;
-      });
+  async create(snippet: Snippet) {
+    const res = await this.axios.post<Snippet>(`/snippets`, {
+      snippet: {
+        title: snippet.title,
+        description: snippet.description,
+        fileType: snippet.fileType,
+        content: snippet.content,
+      },
+    });
+    this.responseLogging(`created snippet`, res);
+    return res.data;
+  }
+
+  async update(snippet: Snippet) {
+    const res = await this.axios.patch<Snippet>(`/snippets/${snippet.id}`, {
+      snippet: {
+        title: snippet.title,
+        description: snippet.description,
+        fileType: snippet.fileType,
+        content: snippet.content,
+      },
+    });
+    this.responseLogging(`updated snippet`, res);
+    return res.data;
   }
 }
 export default (token: Token | null = null) => new SnippetGateway(token);
